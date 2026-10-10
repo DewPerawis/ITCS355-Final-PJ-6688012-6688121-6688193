@@ -24,7 +24,7 @@ ITCS355 Machine Learning Operation and Deployment · Faculty of ICT, Mahidol Uni
 | สมาชิก | งานหลักตาม Proposal |
 |---|---|
 | Perawis Buranasing · 6688012 | Data, DVC, preprocessing, training, tracking และ registry |
-| Supitsara Tanasansukstid · 6688121 | FastAPI, Docker, Container Apps, CI/CD และ load test |
+| Supitsara Tanasarnsukstid · 6688121 | FastAPI, Docker, Container Apps, CI/CD และ load test |
 | Atichat Kangsamut · 6688193 | Monitoring, drift, alert, failure demo, cost และ model card |
 
 การระบุชื่อใน Proposal ไม่ใช่หลักฐานว่าทีมยืนยัน ownership หรืออาจารย์อนุมัติแล้ว ต้องบันทึกหลักฐานทั้งสองส่วนก่อน build เต็มระบบ
