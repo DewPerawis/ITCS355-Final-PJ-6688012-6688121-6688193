@@ -3,7 +3,7 @@
   "planned_total_thb": 88.89,
   "planned_predictions": 10000,
   "planned_thb_per_1000_predictions": 8.89,
-  "actual_cost_per_1000_predictions": 0.002288025475285171,
+  "actual_cost_per_1000_predictions": 0.0014310361474435197,
   "actual_cost_ready": true,
   "limits": [
     "Planning treats each request as one prediction and includes the stated reserve.",
@@ -11,9 +11,9 @@
   ],
   "reported_pretax_cost": 0.0012035014,
   "billing_currency": "USD",
-  "observed_predictions": 526,
+  "observed_predictions": 841,
   "billing_from_utc": "2026-10-11T00:00:00+00:00",
-  "billing_to_utc": "2026-10-11T20:32:24.698603+00:00",
+  "billing_to_utc": "2026-10-11T20:48:39.189300+00:00",
   "actual_basis": "Project Resource Group reported PreTaxCost divided by observed valid API profile count over the same deployment-to-query UTC window.",
   "actual_limits": "Billing and telemetry may lag. Reported cost may include only part of the usage so far. This is provisional; free grants, billing currency and missing logs must be reviewed. It is not a final invoice or the before-credit planning budget."
 }

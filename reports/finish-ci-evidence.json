@@ -1,12 +1,17 @@
 {
-  "checked_at": "2026-10-11T19:33:58.542218+00:00",
+  "checked_at": "2026-10-11T20:48:17.478936+00:00",
   "phase": "ci-evidence",
   "errors": [],
   "workflow_published": true,
-  "ci_success_run": "https://github.com/DewPerawis/MLOP-PJ/actions/runs/38166188586",
+  "ci_success_run": "https://github.com/DewPerawis/MLOP-PJ/actions/runs/38173375457",
   "tests_blocked_deploy_runs": [
-    "https://github.com/DewPerawis/MLOP-PJ/actions/runs/38166197980"
+    "https://github.com/DewPerawis/MLOP-PJ/actions/runs/38173380800"
   ],
+  "tested_source_commit": "9fea51ae4e81251ac358a2c62139df591688275d",
+  "repository_head": "9fea51ae4e81251ac358a2c62139df591688275d",
+  "source_matches_head": true,
+  "intentional_test_failure_verified": true,
   "ci_evidence_ready": true,
-  "pending": false
+  "pending": false,
+  "next": "Both runs passed the evidence checks. Documentation-only commits keep this evidence valid while CI inputs stay unchanged."
 }

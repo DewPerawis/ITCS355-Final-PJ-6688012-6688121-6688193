@@ -12,10 +12,10 @@
   "model_version": "abfd88e893ca",
   "golden_predictions_match": true,
   "batch_100_passed": true,
-  "image_uri": "acrmloppj492ea24d.azurecr.io/travel-style@sha256:b55cd10aba3f8bb899f3cdec62cbc1815b5869ce22fc5676ebd06642382758a4",
-  "git_sha": "1e0bd12478d61abf05b55b79887b7bbe84ad6bc6",
-  "github_run": "https://github.com/DewPerawis/MLOP-PJ/actions/runs/38166188586",
-  "checked_at": "2026-10-11T19:04:43.118965+00:00",
+  "image_uri": "acrmloppj492ea24d.azurecr.io/travel-style@sha256:f124df59007a2ffe9c9c9320e2a40c28b269754390d95a3bcb4f073681cb6c6e",
+  "git_sha": "9fea51ae4e81251ac358a2c62139df591688275d",
+  "github_run": "https://github.com/DewPerawis/MLOP-PJ/actions/runs/38173375457",
+  "checked_at": "2026-10-11T20:48:01.086548+00:00",
   "live_image_verified": true,
   "live_canary_passed": true
 }

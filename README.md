@@ -22,12 +22,12 @@ GitHub Actions tests the code, downloads the verified model, builds an immutable
 | Model card | docs/MODEL_CARD.md; output/pdf/MODEL_CARD.pdf |
 | Presentation and live demo | output/presentation/MLOP-PJ_Presentation.pptx; docs/PRESENTATION.md |
 
-The latest verified CI source commit is `1e0bd12`. Both required runs use that commit:
+The latest verified CI source commit is `9fea51a`. Both required runs use that commit:
 
-- [Successful tests and deployment](https://github.com/DewPerawis/MLOP-PJ/actions/runs/38166188586)
-- [Intentional test failure; deployment skipped](https://github.com/DewPerawis/MLOP-PJ/actions/runs/38166197980)
+- [Successful tests and deployment](https://github.com/DewPerawis/MLOP-PJ/actions/runs/38173375457)
+- [Intentional test failure; deployment skipped](https://github.com/DewPerawis/MLOP-PJ/actions/runs/38173380800)
 
-Later local changes must be reviewed before publishing. The links above do not prove that later code was tested by CI.
+Documentation and evidence updates can reuse these runs while CI inputs stay unchanged. Changed source needs new runs. The check in `cloudlayer/finish_ci.py` verifies this before accepting evidence.
 
 ## Results and limits
 

@@ -200,7 +200,7 @@ Hash and golden checks at startup
 Model version: abfd88e893ca
 
 Bundle SHA-256: 71f3ba41b4b964f5...
-CI image digest: b55cd10aba3f...
+CI image digest: f124df59007a...
 
 Immutable images use one canonical bundle.
 
@@ -250,7 +250,7 @@ Use the editable diagram, table, or report panels already in this slide. Keep th
 
 **Speaker notes:**
 
-Live demo: open Notebook 22 and run the small smoke check in PRESENTATION.md. Show one valid prediction, an incomplete profile returning 422, and a batch of 100. A valid uncertain profile returns 200 with a null segment. The example shown here is a real HTTP response saved from the live API, not a live screenshot.
+Live demo: open Notebook 22 and run the small smoke check in PRESENTATION.md. Show one valid prediction, an incomplete profile returning 422, and a batch of 100. A valid uncertain profile returns 200 with a null segment. The example shown here is a saved real HTTP response, not a live screenshot.
 
 **Source / number check:**
 
@@ -277,11 +277,11 @@ Tests: failure
 Deploy: skipped
 Failed code was not shipped
 
-Open GitHub Actions run 38166188586
+Open GitHub Actions run 38173375457
 
-Open GitHub Actions run 38166197980
+Open GitHub Actions run 38173380800
 
-Same tested source commit: 1e0bd12  |  OIDC login + limited roles  |  Immutable image
+Same tested source commit: 9fea51a  |  OIDC login + limited roles  |  Immutable image
 
 **Visual:**
 
@@ -289,7 +289,7 @@ Use the editable diagram, table, or report panels already in this slide. Keep th
 
 **Speaker notes:**
 
-Both saved runs use commit 1e0bd12. In the normal run, tests and deployment passed. In the deliberate failure run, tests failed and deployment was skipped. Click the run links to show the actual jobs. These runs do not verify later local code changes.
+Both saved runs use commit 9fea51a. In the normal run, tests and deployment passed. In the deliberate failure run, tests failed and deployment was skipped. Click the run links to show the actual jobs. These runs do not verify later local code changes.
 
 **Source / number check:**
 
@@ -308,7 +308,7 @@ WARM TEST
 
 200 requests
 Concurrency: 10
-Errors: 0 in both runs
+Errors: 0 in all runs
 
 COLD REQUEST
 
@@ -320,15 +320,15 @@ One WSL HTTPS sample
 
 [warm-latency.png](C:/Users/SN23341J001185/Documents/MyWork/ICT/ICTYear4_1/MLop/public_teaching_mlaiops/course/MLOP-PJ/output/presentation/figures/warm-latency.png)
 
-`output/presentation/figures/warm-latency.png`; generated from reports/serving-recheck/local-load.json; reports/azure-load.json.
+`output/presentation/figures/warm-latency.png`; generated from reports/serving-recheck/local-load.json; reports/azure-load.json; reports/pooled-load.json.
 
 **Speaker notes:**
 
-Each warm test used 200 requests, concurrency 10, batch size 1, and excluded 10 warm-up requests. Both had zero errors. Azure timing includes the WSL network path. Local and cloud warm p95 are different scopes. Cold start is one first readiness request after verified zero replicas, not a percentile.
+Warm tests used 200 requests, concurrency 10, batch size 1, and excluded warm-up requests. All had zero errors. The pooled-client test used parallel warm-up and connection reuse, so it is a separate measurement, not proof of a server speedup. Azure timing includes the WSL network path. Cold start is one readiness request after verified zero replicas, not a percentile.
 
 **Source / number check:**
 
-reports/serving-recheck/local-load.json; azure-load.json; finish-cold.json
+reports/serving-recheck/local-load.json; azure-load.json; pooled-load.json; finish-cold.json
 
 ## Slide 9: MONITOR REQUESTS AND CHECK PREDICTION MEANING
 
@@ -465,11 +465,11 @@ PLANNED COST
 Assume 10,000 predictions
 One prediction per request
 
-ACTUAL BILL
+REPORTED COST
 
-Not available yet
-Budget is a target
-Keep billing and usage aligned
+0.00143104 USD / 1,000
+841 observed profiles
+Provisional; not a final bill
 
 Assumptions: 40 THB/USD; training 1 h; app active 2 h; ACR 2 days. No credits applied.
 
@@ -481,7 +481,7 @@ Assumptions: 40 THB/USD; training 1 h; app active 2 h; ACR 2 days. No credits ap
 
 **Speaker notes:**
 
-The short-demo plan totals 88.89 THB, including a 60 THB reserve. At 10,000 planned predictions, that is 8.89 THB per 1,000. The plan assumes 40 THB per USD, one training VM-hour, two app-active hours, and two ACR days. This is before credits. Actual billing is still unavailable, so we cannot claim the final spend or a real spending cap.
+The short-demo plan totals 88.89 THB, including a 60 THB reserve. At 10,000 planned predictions, that is 8.89 THB per 1,000 before credits. The reported Azure cost is 0.00120350 USD for 841 observed valid profiles in the same query window. Billing and logs may lag. This is provisional, not the final invoice or proof of the budget cap.
 
 **Source / number check:**
 
@@ -499,9 +499,9 @@ WOULD IMPROVE
 | Priority | Next action |
 | --- | --- |
 | Cloud warm latency | Measure network vs. application time; retest p95 |
-| Actual cost evidence | Match the bill and prediction count over one window |
+| Cost reconciliation | Recheck full cost and usage when billing updates |
 | Live feature drift | Add rolling windows when current data is available |
-| Final delivery | Review labels, capture Portal evidence, retest final code |
+| User quality | Review segment labels and test useful recommendations |
 
 Current limits: provisional labels, unknown zero meaning, and no user-quality study.
 
@@ -513,7 +513,7 @@ Use the editable diagram, table, or report panels already in this slide. Keep th
 
 **Speaker notes:**
 
-Our first priorities are the unmet latency target and the missing actual cost evidence. Measure from a closer client and separate network time from application time before changing replicas or spending more. Recheck billing over the same usage window. Add live feature windows only when we have valid current data. Review labels and prepare real Portal screenshots. Retest later source changes in CI and save evidence before cloud cleanup.
+Our first priorities are the unmet latency target and complete cost reconciliation. Separate network time from application time before changing replicas or spending more. Recheck billing and usage after cleanup when the data has settled. Add live feature windows only when current data is available. Review segment labels and improve the dashboard. Save evidence and remove resources after the demo.
 
 **Source / number check:**
 

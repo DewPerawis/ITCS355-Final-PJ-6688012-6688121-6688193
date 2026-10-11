@@ -12,10 +12,10 @@
   "model_version": "abfd88e893ca",
   "golden_predictions_match": true,
   "batch_100_passed": true,
-  "checked_at": "2026-10-11T19:56:12.064788+00:00",
+  "checked_at": "2026-10-11T20:49:03.464595+00:00",
   "sample_status": 200,
   "sample_response": {
-    "request_id": "617fbf01-ebdd-4f6d-ad7f-9c2c463f54ef",
+    "request_id": "d2384d3a-93aa-467a-8936-566b7818f5a9",
     "model_version": "abfd88e893ca",
     "mapping_status": "provisional; review the cluster profiles",
     "predictions": [

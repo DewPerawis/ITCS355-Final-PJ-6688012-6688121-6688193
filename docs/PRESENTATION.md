@@ -40,10 +40,10 @@ Show the segment, version, and uncertainty flag. Then show the 422 validation er
 
 The slides use saved project reports and a real API smoke check. Graphs are drawn from those reports; they are not Portal screenshots. Sources and figure paths are in `output/presentation/slide_sources.json`.
 
-- CI evidence covers source commit `1e0bd12`. Later local code still needs final CI checks.
+- CI evidence covers source commit `9fea51a`. Later documentation and evidence commits keep this proof valid only while CI inputs stay unchanged.
 - Warm cloud p95 missed 300 ms. Cold start is one 3.82-second request, not a percentile.
 - Input drift is an offline controlled shift. Logged application latency and client HTTPS latency are different measures.
 - Keep the planning estimate separate from the provisional reported cost. The reported row may not include all usage yet.
-- Save real dashboard and alert screenshots before cleanup. The reminder is 13 October 2026, 21:15 Bangkok; it does not delete resources.
+- The dashboard export is in `reports/dashboard-workbook.json`. Portal screenshots are useful extra evidence. The reminder is 13 October 2026, 21:15 Bangkok; it does not delete resources.
 
 The deck keeps the supplied template's backgrounds, decoration, fonts, and Mahidol logo. Old research text, other institutions, speaker notes, and embedded objects were removed from the new file. The original `example.pptx` was kept unchanged.

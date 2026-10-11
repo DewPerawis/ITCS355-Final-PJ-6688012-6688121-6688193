@@ -8,7 +8,7 @@ Estimated cost per 1,000 predictions = 88.89 / 10,000 * 1,000 = 8.89 THB.
 
 ## Actual cost
 
-The latest query returned a reported pre-tax cost of 0.0012035014 USD. Logs recorded 526 valid profiles in the same query window. Provisional reported cost per 1,000 predictions = 0.0012035014 / 526 * 1,000 = 0.00228803 USD. See reports/cost-per-1000.json for the exact window and provider response.
+The latest query returned a reported pre-tax cost of 0.0012035014 USD. Logs recorded 841 valid profiles in the same query window. Provisional reported cost per 1,000 predictions = 0.0012035014 / 841 * 1,000 = 0.00143104 USD. See reports/cost-per-1000.json for the exact window and provider response.
 
 This small reported amount may include only part of the usage so far. It is not a final invoice, a before-credit cost, or proof that the total demo cost stays within 150 THB. Do not convert it with the planning exchange rate and call that the billed THB amount. Recheck after billing settles and after cleanup.
 

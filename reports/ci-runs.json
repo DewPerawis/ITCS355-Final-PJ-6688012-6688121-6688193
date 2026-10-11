@@ -1,13 +1,13 @@
 {
-  "checked_at": "2026-10-11T19:05:18.685091+00:00",
+  "checked_at": "2026-10-11T20:48:01.086597+00:00",
   "runs": [
     {
-      "id": 38166188586,
+      "id": 38173375457,
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "head_sha": "1e0bd12478d61abf05b55b79887b7bbe84ad6bc6",
-      "html_url": "https://github.com/DewPerawis/MLOP-PJ/actions/runs/38166188586",
+      "head_sha": "9fea51ae4e81251ac358a2c62139df591688275d",
+      "html_url": "https://github.com/DewPerawis/MLOP-PJ/actions/runs/38173375457",
       "jobs": [
         {
           "name": "tests",
@@ -20,12 +20,12 @@
       ]
     },
     {
-      "id": 38166197980,
+      "id": 38173380800,
       "event": "workflow_dispatch",
       "status": "completed",
       "conclusion": "failure",
-      "head_sha": "1e0bd12478d61abf05b55b79887b7bbe84ad6bc6",
-      "html_url": "https://github.com/DewPerawis/MLOP-PJ/actions/runs/38166197980",
+      "head_sha": "9fea51ae4e81251ac358a2c62139df591688275d",
+      "html_url": "https://github.com/DewPerawis/MLOP-PJ/actions/runs/38173380800",
       "jobs": [
         {
           "name": "tests",

@@ -4,7 +4,7 @@
   "slide_count": 15,
   "presentation_seconds": 480,
   "qa_seconds": 300,
-  "ci_source_commit": "1e0bd12478d61abf05b55b79887b7bbe84ad6bc6",
+  "ci_source_commit": "9fea51ae4e81251ac358a2c62139df591688275d",
   "slides": [
     {
       "slide": 1,
@@ -46,21 +46,21 @@
       "title": "LIVE DEMO: VALID AND UNEXPECTED INPUT",
       "duration_seconds": 90,
       "source": "output/presentation/evidence/api-demo.json; service/schemas.py",
-      "notes": "Live demo: open Notebook 22 and run the small smoke check in PRESENTATION.md. Show one valid prediction, an incomplete profile returning 422, and a batch of 100. A valid uncertain profile returns 200 with a null segment. The example shown here is a real HTTP response saved from the live API, not a live screenshot."
+      "notes": "Live demo: open Notebook 22 and run the small smoke check in PRESENTATION.md. Show one valid prediction, an incomplete profile returning 422, and a batch of 100. A valid uncertain profile returns 200 with a null segment. The example shown here is a saved real HTTP response, not a live screenshot."
     },
     {
       "slide": 7,
       "title": "FAILED TESTS BLOCK DEPLOYMENT",
       "duration_seconds": 35,
       "source": "reports/ci-runs.json; reports/ci-deploy-result.json; .github/workflows/ci.yml",
-      "notes": "Both saved runs use commit 1e0bd12. In the normal run, tests and deployment passed. In the deliberate failure run, tests failed and deployment was skipped. Click the run links to show the actual jobs. These runs do not verify later local code changes."
+      "notes": "Both saved runs use commit 9fea51a. In the normal run, tests and deployment passed. In the deliberate failure run, tests failed and deployment was skipped. Click the run links to show the actual jobs. These runs do not verify later local code changes."
     },
     {
       "slide": 8,
       "title": "THE API WORKS; CLOUD LATENCY MISSES OUR TARGET",
       "duration_seconds": 25,
-      "source": "reports/serving-recheck/local-load.json; azure-load.json; finish-cold.json",
-      "notes": "Each warm test used 200 requests, concurrency 10, batch size 1, and excluded 10 warm-up requests. Both had zero errors. Azure timing includes the WSL network path. Local and cloud warm p95 are different scopes. Cold start is one first readiness request after verified zero replicas, not a percentile."
+      "source": "reports/serving-recheck/local-load.json; azure-load.json; pooled-load.json; finish-cold.json",
+      "notes": "Warm tests used 200 requests, concurrency 10, batch size 1, and excluded warm-up requests. All had zero errors. The pooled-client test used parallel warm-up and connection reuse, so it is a separate measurement, not proof of a server speedup. Azure timing includes the WSL network path. Cold start is one readiness request after verified zero replicas, not a percentile."
     },
     {
       "slide": 9,
@@ -88,14 +88,14 @@
       "title": "COST PER 1,000 PREDICTIONS: THE ESTIMATE AND ITS LIMITS",
       "duration_seconds": 30,
       "source": "reports/azure-cost-plan.json; cost-per-1000.json; docs/COST_REPORT.md",
-      "notes": "The short-demo plan totals 88.89 THB, including a 60 THB reserve. At 10,000 planned predictions, that is 8.89 THB per 1,000. The plan assumes 40 THB per USD, one training VM-hour, two app-active hours, and two ACR days. This is before credits. Actual billing is still unavailable, so we cannot claim the final spend or a real spending cap."
+      "notes": "The short-demo plan totals 88.89 THB, including a 60 THB reserve. At 10,000 planned predictions, that is 8.89 THB per 1,000 before credits. The reported Azure cost is 0.00120350 USD for 841 observed valid profiles in the same query window. Billing and logs may lag. This is provisional, not the final invoice or proof of the budget cap."
     },
     {
       "slide": 13,
       "title": "WHAT ANOTHER WEEK WOULD IMPROVE",
       "duration_seconds": 45,
       "source": "reports/finish-delivery.json; docs/DELIVERY_STATUS.md; docs/FINAL_STEPS.md",
-      "notes": "Our first priorities are the unmet latency target and the missing actual cost evidence. Measure from a closer client and separate network time from application time before changing replicas or spending more. Recheck billing over the same usage window. Add live feature windows only when we have valid current data. Review labels and prepare real Portal screenshots. Retest later source changes in CI and save evidence before cloud cleanup."
+      "notes": "Our first priorities are the unmet latency target and complete cost reconciliation. Separate network time from application time before changing replicas or spending more. Recheck billing and usage after cleanup when the data has settled. Add live feature windows only when current data is available. Review segment labels and improve the dashboard. Save evidence and remove resources after the demo."
     },
     {
       "slide": 14,
@@ -114,7 +114,7 @@
   ],
   "figures": {
     "data-split.png": "reports/prepared-data.json",
-    "warm-latency.png": "reports/serving-recheck/local-load.json; reports/azure-load.json",
+    "warm-latency.png": "reports/serving-recheck/local-load.json; reports/azure-load.json; reports/pooled-load.json",
     "monitor-logs.png": "reports/azure-telemetry.json",
     "controlled-drift.png": "reports/input-drift.json",
     "planned-cost.png": "reports/azure-cost-plan.json"
