@@ -1,95 +1,81 @@
 # Travel Style Segmentation & Drift Monitoring
 
-ITCS355, Faculty of ICT, Mahidol University
+ITCS355 project by Perawis Buranasing (6688012), Supitsara Tanasarnsukstid (6688121), and Atichat Kangsamut (6688193).
 
-Group users from their 24-category rating profiles. Use K-Means as the main model and Gaussian Mixture as a comparison. Build the MLOps system on Azure.
+The service groups 24-category travel-rating profiles with K-Means. It returns a segment, cluster distance, and an uncertainty flag. Segment names are provisional; this is not a personality test.
 
-## Start
+## System
 
-1. Keep VS Code in WSL and select the Python environment at `~/.venvs/mlop-pj`.
-2. Notebook 10 passed local correctness and the latency target. No rerun is needed.
-3. The saved 16 run verified all platform services and workspace roles. ARM deployment history remains Failed due to an already-existing role; configuration verification passed.
-4. Run the three code cells in 17 in order: check files, grant/check user Blob access, then upload and verify downloads.
-5. Save outputs and send the result. DVC remote and Azure ML training/registry come next.
+Blob/DVC -> Azure ML training and registry -> ACR -> Container Apps -> Azure Monitor.
 
-No retraining or kernel restart is needed. Notebook 11 reads cloud state only. Notebook 12 changes CLI setup and provider registration; it creates no paid resources. Notebook 13 reads public prices. Stop on errors and keep the output for review.
+GitHub Actions tests the code, downloads the verified model, builds an immutable image, and deploys only after tests pass. A separate staging app demonstrates a wrong segment mapping and recovery.
 
-The setup creates `~/.venvs/mlop-pj`, installs the notebook packages, checks imports, registers a kernel, and saves installed versions in `requirements-notebook.lock.txt`. If Ubuntu lacks venv support, it installs `python3-venv` using sudo. MLflow, DVC, and Azure tools come in later steps.
-
-## Files
-
-| File | Use |
+| Part | Saved evidence |
 |---|---|
-| [Proposal](proposals/current/Project%20Proposal%206688012-6688121-6688193.pdf) | Current Azure scope |
-| [Plan](PLAN.md) | Detailed work plan; local only |
-| [Rules](AGENT.md) | Assistant rules; local only |
-| [Environment check](notebooks/00_project_start.ipynb) | Kernel and package versions |
-| [Data audit](notebooks/01_data_audit.ipynb) | Raw file hash, invalid rows, zeros, and duplicates |
-| [Prepare data](notebooks/02_prepare_data.ipynb) | Quarantine invalid rows and split identical profiles together |
-| [Baseline study](notebooks/03_baseline_study.ipynb) | Compare zero policies, cluster counts, and seeds on validation |
-| [Save model](notebooks/04_save_model.ipynb) | Save a local model bundle, report test metrics, and check reload |
-| [Tracking and registry](notebooks/05_tracking_registry.ipynb) | DVC and local MLflow registration of the saved model |
-| [Local API](notebooks/06_local_api.ipynb) | Readiness, prediction, bad-input, and batch checks |
-| [Cloud readiness](notebooks/07_cloud_readiness.ipynb) | Read Docker and Azure login state; no resource creation |
-| [Docker and HTTP](notebooks/08_docker_http.ipynb) | Build the API image, check real HTTP, and measure local warm latency |
-| [HTTP recheck](notebooks/09_http_recheck.ipynb) | Correct client setup overhead and remeasure the same Docker image |
-| [Serving recheck](notebooks/10_serving_recheck.ipynb) | Avoid repeated serving setup and preprocessing, then check the new image |
-| [Azure preflight](notebooks/11_azure_preflight.ipynb) | Read candidate-region support, provider state, VM quota, and CLI extensions |
-| [Azure tools](notebooks/12_azure_tools.ipynb) | Install the Container Apps CLI extension and register Microsoft.App |
-| [Cost plan](notebooks/13_cost_plan.ipynb) | Read retail prices and estimate a short demo before credits |
-| [Access and quota](notebooks/14_access_quota.ipynb) | Read effective control-plane permissions and Azure ML/Container Apps quotas |
-| [Platform preview](notebooks/15_platform_preview.ipynb) | Create the project group, validate the ARM template, and preview changes |
-| [Platform deployment](notebooks/16_platform_deploy.ipynb) | Create the reviewed platform; applicable Azure charges start |
-| [Blob upload](notebooks/17_blob_upload.ipynb) | Grant scoped user data access, upload pinned files, and verify hashes |
-| [Scope review](docs/SCOPE_REVIEW.md) | Compare the design with the course requirements |
-| [Migration](docs/MIGRATION.md) | Moved files and checks |
+| Data and fresh DVC pull | reports/data-audit.json, reports/finish-assets.json |
+| Managed training and registry | reports/finish-training-registry.json |
+| Live API and latest CI image | reports/ci-deploy-result.json |
+| Successful CI and blocked deployment | reports/ci-runs.json, reports/finish-ci-evidence.json |
+| Dashboard, actual alert, failure/recovery | reports/dashboard-workbook.json, reports/finish-monitor.json, reports/finish-alert.json, reports/finish-failure.json |
+| Controlled input drift | reports/input-drift.json |
+| Cost and delivery checks | reports/cost-per-1000.json, docs/DELIVERY_STATUS.md |
+| Model card | docs/MODEL_CARD.md; output/pdf/MODEL_CARD.pdf |
+| Presentation and live demo | output/presentation/MLOP-PJ_Presentation.pptx; docs/PRESENTATION.md |
 
-## Team
+The latest verified CI source commit is `1e0bd12`. Both required runs use that commit:
 
-| Member | Main work |
-|---|---|
-| Perawis Buranasing, 6688012 | Data, training, tracking, registry |
-| Supitsara Tanasarnsukstid, 6688121 | API, Docker, deployment, CI/CD |
-| Atichat Kangsamut, 6688193 | Monitoring, alerts, failure demo, cost |
+- [Successful tests and deployment](https://github.com/DewPerawis/MLOP-PJ/actions/runs/38166188586)
+- [Intentional test failure; deployment skipped](https://github.com/DewPerawis/MLOP-PJ/actions/runs/38166197980)
 
-These roles come from the proposal. Confirm actual owners and reviewers with the team.
+Later local changes must be reviewed before publishing. The links above do not prove that later code was tested by CI.
 
-## Required system
+## Results and limits
 
-Versioned data/code, reproducible training, registry lineage, deployed inference, CI/CD, a dashboard, a working alert, cost per 1,000 predictions, a one-page model card, and a failure/recovery demo.
+UCI Travel Review Ratings: 5,456 raw rows, 5,454 accepted, two quarantined. Identical profiles stay in one split: 3,817 train, 817 validation, 820 test. User IDs are excluded. Data source and license are in reports/data-source.json.
 
-Planned flow: Blob/DVC -> Azure ML/MLflow/registry -> ACR -> Container Apps -> Monitor/Application Insights.
+K-Means k=5 had validation silhouette 0.1448 and test silhouette 0.1445. GMM validation silhouette was 0.0957. These are clustering metrics, not prediction accuracy.
 
-Targets: warm p95 <300 ms at concurrency 10, batch <=100, and 150 THB before credits. Report cold starts separately. These are targets, not measured results.
+Local warm p95 was 274.54 ms. Azure warm p95 was 813.77 ms from WSL, including network time; the 300 ms cloud target was not met. The first readiness request after verified zero replicas took 3,819.60 ms in one WSL HTTPS measurement. This includes network time and scale activation; it is not a cold-start percentile. See reports/finish-cold.json. The drift check is an offline controlled shift, not live feature-drift monitoring.
 
-## Current state
+A separate connection-pool check measured cloud p95 624.83 ms with zero errors across 200 requests at concurrency 10. It uses HTTPX and ten concurrent warm-up requests. This differs from the first client's method and still misses 300 ms. Reproduce it with `python -m scripts.check_pooled_load` while the API is available; it makes 210 requests and requires httpx==0.28.1. Results are in reports/pooled-load.json.
 
-The user's saved Notebook 00 result uses Python 3.13.11 in the WSL project environment. Notebook 01 ran successfully: 5,456 raw rows, 5,454 accepted rows, 2 invalid rows, 5,314 zero values, and 3 duplicate profiles. The raw SHA-256 matches the saved source report. Imports worked in Notebook 01.
+The short-demo estimate is 88.89 THB, or 8.89 THB per 1,000 predictions for the assumed 10,000 predictions. Billing now reports a provisional cost row; it may not include all usage yet. Read docs/COST_REPORT.md for the separate calculation and limits.
 
-Notebooks 02-04 ran successfully. Split counts are train 3,817, validation 817, and test 820, with no duplicate group crossing splits. The selected model is K-Means with 5 clusters and keep_zero. Mean validation silhouette is 0.144827; test silhouette is 0.144515. Cross-seed validation ARI is 1.0. Bundle abfd88e893ca passed reload checks. These scores indicate overlapping clusters; they are not classification accuracy or proof of user benefit.
+## Run locally
 
-Notebooks 05-07 ran successfully. Local MLflow model version 1 passed registry reload; raw-data DVC status was clean. The API passed 15 tests and in-process smoke checks. Docker was ready, Azure CLI was installed and logged in, and the subscription was enabled. These are saved checks, not a cloud deployment. Region, quota, permissions, and cost still need review. Segment names remain provisional. The proposal is a submission; no extra teacher approval gate is needed under the user's clarification.
+Use WSL and Python 3.13.11. Existing users select `~/.venvs/mlop-pj/bin/python` in VS Code. A fresh checkout can use `bash scripts/setup_wsl.sh` and the dependency files in this repo. The setup script installs packages and may ask for sudo if venv support is missing.
 
-Notebook 08 built the image and passed real HTTP smoke, golden predictions, and batch 100. The 200 requests at concurrency 10 had no errors, but p95 was 567.99 ms and missed the 300 ms target. After fixing repeated client/TLS setup, Notebook 09 used the same image with no errors and p95 496.01 ms, which still missed the target. Original results are preserved in `reports/history/08-initial/` and `reports/history/09-initial/`.
+For a fresh checkout, first check that `python3 --version` is 3.13.11, then run:
 
-The serving path now caches native-library discovery and transforms each batch once. All 5,454 prepared profiles matched the earlier predictions exactly. Notebook 10 passed its 15 tests, Docker smoke, and batch 100. Its 200 requests at concurrency 10 had no errors: mean 130.33 ms, p95 274.54 ms, below the 300 ms local target. This is one local workload result, not Azure performance. The saved model and data are unchanged. The old bundle source snapshot matches the study's frozen hash. If training is rerun later, rerun 03 before 04 to record the changed source; the hash guard remains enabled. See `reports/09-review.md`.
+```bash
+bash scripts/setup_wsl.sh
+source ~/.venvs/mlop-pj/bin/activate
+python -m pip install -r requirements-cloud.txt
+```
 
-Notebook 11's corrected user report passed at 13:03 UTC on 11 October 2026. Southeast Asia was listed, all service region checks passed, and VM quota showed 6 total cores and 4 DSv2 cores available. Microsoft.App was not registered; only the ml CLI extension was installed. The saved notebook still shows the earlier error, so save the latest output. VM quota does not prove Azure ML or Container Apps quota.
+Raw data and model binaries are kept out of Git. Azure Blob is private; a reviewer needs scoped access or an agreed local copy. With Azure access and the cloud packages installed:
 
-Notebook 12 hit an install timeout and slow follow-up checks. The CLI now finds containerapp 1.3.0b5. Setup reads extension metadata with az version and checks core Azure state without loading unrelated extensions. A separate read-only check completed in 2.83 seconds with no errors; Microsoft.App was still Registering. All 25 tests passed in WSL. Save a fresh user status result. Notebook 13 now has a saved user result matching the price check. The short demo estimate is 91.90 THB, using an assumed 40 THB/USD and a 60 THB reserve for unpriced services. This is not a bill or spending cap. Permissions, service quotas, omitted charges, billing exchange rate, and cleanup timing remain open. No paid cloud resources have been created by these steps.
+```bash
+az login
+python -m dvc remote add --local --force azure azure://mlop-data/dvc
+python -m dvc remote modify --local azure account_name stmloppj492ea24d
+python -m dvc pull data/raw.dvc -r azure
+```
 
-`dvc.yaml` and `scripts/reproduce.py` define audit, prepare, study, and bundle stages. Running `dvc repro` later will rerun affected stages and update outputs; it has not been run yet. It does not create cloud resources. A remote data store and fresh-clone reproduction still need setup and verification.
+In a separate fresh checkout, reproduce the local stages with `python scripts/reproduce.py all`. This runs training and writes reports and model files. It does not deploy cloud resources. Cloud notebooks 18-22 reuse the saved model and shared scripts. Read docs/FINAL_STEPS.md before running final checks.
 
-The user's saved 12 status has no errors and finds both CLI extensions; Microsoft.App is still Registering. The saved 13 run completed and estimates 91.90 THB under its stated assumptions. Notebook 14 is prepared. A separate assistant read-only check found the requested control-plane actions, 20 Azure ML dedicated regional cores, 6 AML DSv2 cores, and one available Container Apps environment slot. The three new access/quota tests passed. These are not a user run of 14 or a deployed system. Container Apps environment CPU quota, policies, data access, and full costs remain open.
+After cloud cleanup, the private DVC remote will be gone. Download the public UCI ZIP from `source_url` in reports/data-source.json, extract google_review_ratings.csv into data/raw/, and check it with `python scripts/reproduce.py audit` before reproducing. The audit rejects a different raw SHA-256. Record which data-access option was tested for submission.
 
-Write new project text and comments in short, simple English. Keep code correct and easy to read.
+For the serving environment, install requirements-service.lock.txt and httpx==0.28.1. Run the cloud-free synthetic check with `python -m unittest tests.test_contract_ci`. Tests that use the saved real model need the artifact first; CI fetches it with `python -m cloudlayer.ci_fetch` after Azure login and project variable setup.
 
-User run 14 completed with no failed checks, all requested control-plane actions available, sufficient AML training quota, and one Container Apps environment slot. 15 and 16 are prepared with no run results. The platform template includes eight service/storage resources and three scoped workspace identity roles. Preview runs before deployment; file changes, old previews, unrelated groups, and delete/modify previews stop the deploy step. No paid platform deployment has been run by the assistant. Final app CPU quota and full costs still need checks. See `infra/README.md`.
+The API accepts exactly 24 finite ratings in [0,5], with 1-100 profiles per batch. Use the feature names in reports/bundle-manifest.json. Invalid input returns 422. An uncertain profile returns 200 with a null segment.
 
-Six project files were moved from the student course folder with matching hashes. Teacher references, old proposals, and lab files are preserved. MLOP-PJ has its own Git repository. The local .gitignore ignores itself; historical copies are a separate issue. Do not auto-commit or push.
+## Delivery
 
-Current step: the saved 15 run was blocked by the allowed-region policy. Config now uses centralindia. Separate assistant validation passed; the revised plan is 88.89 THB under the same assumptions. Rerun both code cells in 15 to refresh 13/14 reports and save a new preview. Earlier outputs remain as historical results. Do not run 16 until the preview passes. See reports/15-review.md.
+Keep real dashboard and alert screenshots, both CI links, model lineage, load/cold reports, cost calculation, and the model card. Prepare the 8-minute demo and 5-minute Q&A described in the course brief. Check the exported model card fits one page.
 
-## Continue after 17
+The 15-slide deck uses the supplied example template and saved results. Read docs/PRESENTATION.md for timing and the live API demo. The presentation PDF is in output/pdf/MLOP-PJ_Presentation.pdf; the exported model card is one A4 page.
 
-Use `notebooks/18_live_api.ipynb` to start. Continue with 19_training_registry, 20_monitoring_recovery, 21_cicd, and 22_delivery. The five notebooks cover the API, managed training, monitoring and recovery, CI/CD, and delivery checks in separate main parts. Read `docs/RUN_FINISH.md` and `docs/GITHUB_SETUP.md`. Saved local results and the completed Blob upload stay unchanged. Cloud runs, GitHub runs, and billing evidence still need real results.
+Read docs/SUBMISSION_CHECKLIST.md for the course requirements, our own targets, and optional screenshots. The current reported cost is provisional; cloud cleanup is still required after the demo.
+
+Save evidence before cleanup. The project cleanup reminder is 13 October 2026 at 21:15 Bangkok time; it does not delete anything automatically. Deleting the project group removes the API, cloud data, registry, training, and monitoring. Run the cleanup command in docs/FINAL_STEPS.md only when these resources are no longer needed.

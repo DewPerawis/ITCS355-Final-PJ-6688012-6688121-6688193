@@ -134,6 +134,110 @@ class RecoveryTests(unittest.TestCase):
         cloud.az.assert_not_called()
 
 
+class ColdStartTests(unittest.TestCase):
+    def fixture(self):
+        template = {"scale": {"minReplicas": 0}, "containers": [{"image": "registry.test/model@sha256:test"}]}
+        app = {"properties": {"latestRevisionName": "api--latest", "template": template}}
+        revision = {"name": "api--latest", "properties": {"active": True, "trafficWeight": 100, "template": template}}
+        return app, {"value": [revision]}
+
+    def test_express_revision_does_not_need_latest_ready_name(self):
+        from cloudlayer.finish_serve import cold_revision
+        app, page = self.fixture()
+        self.assertEqual(cold_revision(app, page)["name"], "api--latest")
+
+    def test_stale_image_or_multiple_revisions_do_not_prove_cold_state(self):
+        from copy import deepcopy
+        from cloudlayer.finish_serve import cold_revision
+        app, page = self.fixture()
+        changed = deepcopy(page)
+        changed["value"][0]["properties"]["template"]["containers"][0]["image"] = "other-image"
+        for response in [changed, {"value": page["value"] * 2}, {"value": []}, {"value": page["value"], "nextLink": "next"}]:
+            with self.subTest(response=response), self.assertRaises(ValueError):
+                cold_revision(app, response)
+
+    def test_missing_replica_list_does_not_send_a_warming_request(self):
+        from unittest.mock import Mock
+        from cloudlayer.finish_serve import cold
+        app, page = self.fixture()
+        app["tags"] = {"project": "test"}
+        cloud = Mock()
+        cloud.tags = {"project": "test"}
+        cloud.app = "api"
+        cloud.get.side_effect = [app, page, {}]
+        with patch("cloudlayer.finish_serve.Session") as session, patch("cloudlayer.finish_serve.read", return_value={"model_version": "test"}), patch("cloudlayer.finish_serve.http_call") as request:
+            session.return_value.__enter__.return_value = cloud
+            with self.assertRaises(ValueError):
+                cold({})
+            request.assert_not_called()
+
+    def test_zero_replicas_need_the_expected_model_response(self):
+        from unittest.mock import Mock
+        from cloudlayer.finish_serve import cold
+        for version in ["test", "wrong-model"]:
+            app, page = self.fixture()
+            app["tags"] = {"project": "test"}
+            app["properties"].update(provisioningState="Succeeded", configuration={"ingress": {"fqdn": "api.test"}})
+            page["value"][0]["properties"].update(provisioningState="Provisioned", runningState="ScaledToZero", replicas=0)
+            cloud = Mock()
+            cloud.tags = {"project": "test"}
+            cloud.app = "api"
+            cloud.get.side_effect = [app, page, {"value": []}]
+            report = {}
+            with self.subTest(version=version), patch("cloudlayer.finish_serve.Session") as session, patch("cloudlayer.finish_serve.read", return_value={"model_version": "test"}), patch("cloudlayer.finish_serve.http_call", return_value=(200, {"model_version": version}, 1200)) as request:
+                session.return_value.__enter__.return_value = cloud
+                if version == "test":
+                    cold(report)
+                    self.assertTrue(report["cold_start_measured"])
+                    self.assertEqual(report["first_request_ms"], 1200)
+                else:
+                    with self.assertRaises(ValueError):
+                        cold(report)
+                    self.assertFalse(report["cold_start_measured"])
+                request.assert_called_once_with("https://api.test", "/ready", timeout=120)
+
+
+class DeliveryWindowTests(unittest.TestCase):
+    def test_billing_and_predictions_keep_the_deployment_day_after_midnight(self):
+        from datetime import datetime, timezone
+        from unittest.mock import Mock
+        from cloudlayer.finish_delivery import delivery
+        now = datetime(2026, 10, 12, 1, tzinfo=timezone.utc)
+        cloud = Mock()
+        cloud.account = {"id": "test"}
+        cloud.group = "project"
+        cloud.app = "api-test"
+        cloud.plan = {"suffix": "test"}
+        cloud.az.return_value = {"properties": {"columns": [{"name": "PreTaxCost"}, {"name": "Currency"}], "rows": [[10, "USD"]]}}
+        inputs = {"reports/azure-cost-plan.json": {"planned_total_thb": 10, "assumptions": {"app_requests": 1000}},
+                  "reports/azure-platform-deploy.json": {"checked_at": "2026-10-11T14:00:00+00:00"}}
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "tmp").mkdir()
+            (root / "docs").mkdir()
+            with (patch("cloudlayer.finish_delivery.ROOT", root),
+                  patch("cloudlayer.finish_delivery.read", side_effect=inputs.__getitem__),
+                  patch("cloudlayer.finish_delivery.model_card"),
+                  patch("cloudlayer.finish_delivery.command", return_value="PASSED"),
+                  patch("cloudlayer.finish_delivery.optional", return_value={}),
+                  patch("cloudlayer.finish_delivery.write") as saved,
+                  patch("cloudlayer.finish_delivery.datetime") as clock,
+                  patch("cloudlayer.finish_delivery.Session") as session,
+                  patch("cloudlayer.finish_delivery.log_query", return_value={"tables": [{"rows": [[200]]}]}) as logs):
+                clock.now.return_value = now
+                clock.fromisoformat.side_effect = datetime.fromisoformat
+                session.return_value.__enter__.return_value = cloud
+                delivery({"checked_at": now.isoformat()})
+                window = json.loads((root / "tmp/cost-query.json").read_text())["timePeriod"]
+                self.assertEqual(window, {"from": "2026-10-11T00:00:00+00:00", "to": now.isoformat()})
+                self.assertEqual(logs.call_args.args[2], window["from"] + "/" + window["to"])
+                self.assertIn(window["from"], logs.call_args.args[1])
+                self.assertIn(window["to"], logs.call_args.args[1])
+                cost = next(call.args[1] for call in saved.call_args_list if call.args[0] == "reports/cost-per-1000.json")
+                self.assertEqual(cost["actual_cost_per_1000_predictions"], 50)
+                self.assertEqual(cost["billing_currency"], "USD")
+
+
 class AlertEvidenceTests(unittest.TestCase):
     def test_full_rule_id_and_named_rule_match_owned_alerts(self):
         from cloudlayer.finish_monitor import matching_alerts
@@ -191,6 +295,44 @@ class RegistryVersionTests(unittest.TestCase):
 
 
 class GitHubEvidenceTests(unittest.TestCase):
+    def test_saved_runs_accept_docs_but_reject_changed_source_or_bundle_metadata(self):
+        import subprocess
+        from cloudlayer.finish_ci import same_ci_source
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+
+            def git(args, label="test"):
+                return subprocess.run(args, cwd=root, capture_output=True, text=True, check=True).stdout
+
+            git(["git", "init", "-b", "main"])
+            git(["git", "config", "user.name", "Test Student"])
+            git(["git", "config", "user.email", "student@example.invalid"])
+            (root / "service").mkdir()
+            (root / "reports").mkdir()
+            (root / "service/app.py").write_text("version = 1\n")
+            (root / "reports/bundle-manifest.json").write_text('{"version": 1}\n')
+            git(["git", "add", "."])
+            git(["git", "commit", "-m", "source"])
+            tested = git(["git", "rev-parse", "HEAD"]).strip()
+            (root / "README.md").write_text("Saved results\n")
+            git(["git", "add", "README.md"])
+            git(["git", "commit", "-m", "docs"])
+            docs = git(["git", "rev-parse", "HEAD"]).strip()
+            with patch("cloudlayer.finish_ci.command", side_effect=git):
+                self.assertTrue(same_ci_source(tested, docs))
+            (root / "reports/bundle-manifest.json").write_text('{"version": 2}\n')
+            git(["git", "add", "reports/bundle-manifest.json"])
+            git(["git", "commit", "-m", "changed bundle"])
+            changed = git(["git", "rev-parse", "HEAD"]).strip()
+            with patch("cloudlayer.finish_ci.command", side_effect=git):
+                self.assertFalse(same_ci_source(tested, changed))
+            (root / "service/app.py").write_text("version = 2\n")
+            git(["git", "add", "service/app.py"])
+            git(["git", "commit", "-m", "changed service"])
+            changed = git(["git", "rev-parse", "HEAD"]).strip()
+            with patch("cloudlayer.finish_ci.command", side_effect=git):
+                self.assertFalse(same_ci_source(docs, changed))
+
     def test_oidc_subject_matches_verified_ids_and_staging(self):
         from cloudlayer.finish_ci import REPOSITORY, staging_subject
         repository = {"full_name": REPOSITORY, "id": 456, "owner": {"login": REPOSITORY.split("/")[0], "id": 123}}

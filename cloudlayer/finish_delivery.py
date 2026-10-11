@@ -1,4 +1,5 @@
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -31,14 +32,14 @@ def model_card():
 
 **Operations.** The bundle includes preprocessing, feature order, centers, mapping, thresholds, and versions. Hash and golden checks gate startup. A semantic canary detects mapping regressions; the staging failure is restored and covered by a regression test. Logs contain derived counts, status, latency, and model version, not full profiles.
 
-**Lineage.** Bundle SHA-256: {model['artifact_sha256']}. Cloud registry/run/image and deployment evidence are recorded in reports/finish-training-registry.json, finish-assets.json, and finish-deploy.json. Only completed runs support those claims.
+**Lineage.** Bundle SHA-256: {model['artifact_sha256']}. Cloud registry evidence: reports/finish-training-registry.json. Latest CI image and deployment: reports/ci-deploy-result.json. Initial build/deploy: reports/finish-assets.json and reports/finish-deploy.json. Only completed runs support those claims.
 '''
     (ROOT / "docs/MODEL_CARD.md").write_text(text)
 
 
 def delivery(report):
     model_card()
-    audit = command(["python", "scripts/portability_audit.py"], "portability-audit")
+    audit = command([sys.executable, "scripts/portability_audit.py"], "portability-audit")
     report["portability_passed"] = "PASSED" in audit
     plan = read("reports/azure-cost-plan.json")
     cost = {"basis": "Short-demo planning estimate; not the actual bill", "planned_total_thb": plan["planned_total_thb"],
@@ -49,7 +50,8 @@ def delivery(report):
                        "Do not claim the planned figure as the actual bill or a spending cap."]}
     with Session() as cloud:
         now = datetime.now(timezone.utc)
-        start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        start = datetime.fromisoformat(read("reports/azure-platform-deploy.json")["checked_at"]).astimezone(timezone.utc)
+        start = start.replace(hour=0, minute=0, second=0, microsecond=0)
         body = {"type": "ActualCost", "timeframe": "Custom", "timePeriod": {"from": start.isoformat(), "to": now.isoformat()},
                 "dataset": {"granularity": "None", "aggregation": {"totalCost": {"name": "PreTaxCost", "function": "Sum"}},
                             "filter": {"dimensions": {"name": "ResourceGroupName", "operator": "In", "values": [cloud.group]}}}}
@@ -68,19 +70,19 @@ def delivery(report):
                 cost_columns = [i for i, name in enumerate(names) if name in {"PreTaxCost", "totalCost", "Cost"}]
                 if len(currencies) == 1 and len(cost_columns) == 1:
                     reported = sum(float(r[cost_columns[0]]) for r in rows)
-                    query = ("ContainerAppConsoleLogs_CL | where TimeGenerated >= datetime(" + start.isoformat() + ") "
+                    query = ("ContainerAppConsoleLogs_CL | where TimeGenerated between (datetime(" + start.isoformat() + ") .. datetime(" + now.isoformat() + ")) "
                              f"| where ContainerAppName_s in ('{cloud.app}', 'failure-{cloud.plan['suffix']}') "
                              "| extend j=parse_json(Log_s) | where tostring(j.event)=='prediction_batch' "
                              "| summarize Predictions=sum(toint(j.count))")
-                    logs = log_query(cloud, query, "P1D")
+                    logs = log_query(cloud, query, start.isoformat() + "/" + now.isoformat())
                     tables = logs.get("tables", [])
                     count = int(tables[0]["rows"][0][0] or 0) if tables and tables[0].get("rows") else 0
                     cost.update(reported_pretax_cost=reported, billing_currency=next(iter(currencies)),
                                 observed_predictions=count, billing_from_utc=start.isoformat(), billing_to_utc=now.isoformat(),
                                 actual_cost_ready=reported > 0 and count > 0,
                                 actual_cost_per_1000_predictions=reported / count * 1000 if reported > 0 and count > 0 else None,
-                                actual_basis="Same UTC-day project Resource Group reported PreTaxCost divided by observed valid API profile count.",
-                                actual_limits="Billing and telemetry may lag. This is provisional; free grants, billing currency and missing logs must be reviewed.")
+                                actual_basis="Project Resource Group reported PreTaxCost divided by observed valid API profile count over the same deployment-to-query UTC window.",
+                                actual_limits="Billing and telemetry may lag. Reported cost may include only part of the usage so far. This is provisional; free grants, billing currency and missing logs must be reviewed. It is not a final invoice or the before-credit planning budget.")
         except RuntimeError as error:
             cost["billing_pending_reason"] = str(error)
     write("reports/cost-per-1000.json", cost)

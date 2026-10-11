@@ -1,0 +1,37 @@
+{
+  "passed": true,
+  "transport": "real HTTP",
+  "url": "https://travel-style-492ea24d.icymushroom-08e3ded0.centralindia.azurecontainerapps.io",
+  "status_codes": [
+    200,
+    200,
+    200,
+    422,
+    200
+  ],
+  "model_version": "abfd88e893ca",
+  "golden_predictions_match": true,
+  "batch_100_passed": true,
+  "checked_at": "2026-10-11T19:56:12.064788+00:00",
+  "sample_status": 200,
+  "sample_response": {
+    "request_id": "617fbf01-ebdd-4f6d-ad7f-9c2c463f54ef",
+    "model_version": "abfd88e893ca",
+    "mapping_status": "provisional; review the cluster profiles",
+    "predictions": [
+      {
+        "cluster_id": 0,
+        "segment": "Segment 1",
+        "distance": 4.143480490277737,
+        "uncertain": false,
+        "model_version": "abfd88e893ca",
+        "status": "ok"
+      }
+    ]
+  },
+  "canary_status": 200,
+  "canary_response": {
+    "passed": true,
+    "model_version": "abfd88e893ca"
+  }
+}

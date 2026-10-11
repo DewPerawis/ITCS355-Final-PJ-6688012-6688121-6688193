@@ -222,24 +222,53 @@ def failure(report):
         report["next"] = "Refresh telemetry and check that the alert fired. Both apps scale to zero when idle."
 
 
+def cold_revision(app, page):
+    if page.get("nextLink") or not isinstance(page.get("value"), list):
+        raise ValueError("Cannot verify all app revisions.")
+    properties = app["properties"]
+    if properties["template"]["scale"].get("minReplicas") != 0:
+        raise ValueError("Cold measurement needs minReplicas=0.")
+    active = [row for row in page["value"] if row["properties"].get("active") is True]
+    if len(active) != 1:
+        raise ValueError("Cold measurement needs exactly one active revision.")
+    revision = active[0]
+    expected = properties.get("latestReadyRevisionName") or properties.get("latestRevisionName")
+    value = revision["properties"]
+    current_image = properties["template"]["containers"][0]["image"]
+    if (revision["name"] != expected or value.get("trafficWeight") != 100
+            or value.get("template", {}).get("containers", [{}])[0].get("image") != current_image):
+        raise ValueError("The active revision does not match the current serving image and traffic.")
+    return revision
+
+
 def cold(report):
-    deployed = read("reports/finish-deploy.json")
+    model_version = read("reports/bundle-manifest.json")["model_version"]
     with Session() as cloud:
         started = time.perf_counter()
-        while time.perf_counter() - started < 180:
+        report["cold_start_measured"] = False
+        while time.perf_counter() - started < 600:
             app = cloud.get("Microsoft.App/containerApps/" + cloud.app, "2025-07-01")
-            revision = app["properties"].get("latestReadyRevisionName")
-            if not revision:
-                raise ValueError("No ready revision exists.")
-            replicas = cloud.get("Microsoft.App/containerApps/" + cloud.app + "/revisions/" + revision + "/replicas", "2025-07-01")
-            if not replicas.get("value"):
+            if (app.get("tags") or {}).get("project") != cloud.tags["project"]:
+                raise ValueError("The app belongs to another project.")
+            page = cloud.get("Microsoft.App/containerApps/" + cloud.app + "/revisions", "2025-07-01")
+            revision = cold_revision(app, page)
+            state = revision["properties"]
+            replicas = cloud.get("Microsoft.App/containerApps/" + cloud.app + "/revisions/" + revision["name"] + "/replicas", "2025-07-01")
+            if replicas.get("nextLink") or not isinstance(replicas.get("value"), list):
+                raise ValueError("Replica response is incomplete; do not assume zero replicas.")
+            if (app["properties"].get("provisioningState") == "Succeeded"
+                    and state.get("provisioningState") == "Provisioned"
+                    and state.get("runningState") == "ScaledToZero"
+                    and state.get("replicas") == 0 and not replicas["value"]):
                 report["zero_replicas_observed_at"] = datetime.now(timezone.utc).isoformat()
-                status, _, elapsed = http_call(deployed["url"], "/ready", timeout=120)
-                if status != 200:
+                url = "https://" + app["properties"]["configuration"]["ingress"]["fqdn"]
+                report.update(revision=revision["name"], image_uri=state["template"]["containers"][0]["image"], url=url)
+                status, body, elapsed = http_call(url, "/ready", timeout=120)
+                if status != 200 or body.get("model_version") != model_version:
                     raise ValueError("First request after zero replicas did not become ready.")
-                report.update(cold_start_measured=True, first_request_ms=elapsed,
+                report.update(cold_start_measured=True, first_request_ms=elapsed, model_version=model_version,
                               scope="WSL HTTPS readiness request after ARM reported zero replicas; includes network and scale activation.")
                 return
-            time.sleep(5)
+            time.sleep(15)
         report.update(cold_start_measured=False, pending=True,
                       next="The app still has a replica. Stop browser/API traffic and rerun this cell later.")

@@ -1,7 +1,12 @@
 {
-  "checked_at": "2026-10-11T18:24:37.849953+00:00",
+  "checked_at": "2026-10-11T19:33:58.542218+00:00",
   "phase": "ci-evidence",
-  "errors": [
-    "RuntimeError: github-runs failed. Details are in the local tmp log."
-  ]
+  "errors": [],
+  "workflow_published": true,
+  "ci_success_run": "https://github.com/DewPerawis/MLOP-PJ/actions/runs/38166188586",
+  "tests_blocked_deploy_runs": [
+    "https://github.com/DewPerawis/MLOP-PJ/actions/runs/38166197980"
+  ],
+  "ci_evidence_ready": true,
+  "pending": false
 }

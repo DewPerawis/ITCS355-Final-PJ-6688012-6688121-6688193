@@ -1,0 +1,43 @@
+{
+  "checked_at": "2026-10-11T19:05:18.685091+00:00",
+  "runs": [
+    {
+      "id": 38166188586,
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "1e0bd12478d61abf05b55b79887b7bbe84ad6bc6",
+      "html_url": "https://github.com/DewPerawis/MLOP-PJ/actions/runs/38166188586",
+      "jobs": [
+        {
+          "name": "tests",
+          "conclusion": "success"
+        },
+        {
+          "name": "deploy",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 38166197980,
+      "event": "workflow_dispatch",
+      "status": "completed",
+      "conclusion": "failure",
+      "head_sha": "1e0bd12478d61abf05b55b79887b7bbe84ad6bc6",
+      "html_url": "https://github.com/DewPerawis/MLOP-PJ/actions/runs/38166197980",
+      "jobs": [
+        {
+          "name": "tests",
+          "conclusion": "failure"
+        },
+        {
+          "name": "deploy",
+          "conclusion": "skipped"
+        }
+      ]
+    }
+  ],
+  "intentional_test_failure_verified": true,
+  "same_commit_verified": true
+}

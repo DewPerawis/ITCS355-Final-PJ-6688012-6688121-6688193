@@ -1,0 +1,19 @@
+{
+  "columns": [
+    {
+      "name": "PreTaxCost",
+      "type": "Number"
+    },
+    {
+      "name": "Currency",
+      "type": "String"
+    }
+  ],
+  "nextLink": null,
+  "rows": [
+    [
+      0.0012035014,
+      "USD"
+    ]
+  ]
+}

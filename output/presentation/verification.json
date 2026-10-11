@@ -1,0 +1,13 @@
+{
+  "slide_count": 15,
+  "pdf_pages": 15,
+  "model_card_pages": 1,
+  "template_unchanged": true,
+  "template_headers_preserved": true,
+  "old_content_and_embedded_objects_removed": true,
+  "talk_seconds": 480,
+  "qa_seconds": 300,
+  "api_smoke_passed": true,
+  "text_overflow_candidates": 0,
+  "scope": "Presentation checks; not final repository CI or actual billing verification."
+}

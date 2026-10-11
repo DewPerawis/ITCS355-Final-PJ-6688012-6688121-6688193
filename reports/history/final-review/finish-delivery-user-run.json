@@ -1,0 +1,27 @@
+{
+  "checked_at": "2026-10-11T19:34:15.091325+00:00",
+  "phase": "delivery",
+  "errors": [],
+  "portability_passed": true,
+  "checks": {
+    "versioned_data_remote": true,
+    "managed_training_registry": true,
+    "deployed_inference": true,
+    "ci_cd_evidence": true,
+    "dashboard": true,
+    "actual_alert_event": true,
+    "failure_and_recovery": true,
+    "controlled_input_drift_evidence": true,
+    "cost_documented": true,
+    "actual_cost_available": false,
+    "model_card": true,
+    "portability": true
+  },
+  "open_items": [
+    "actual_cost_available"
+  ],
+  "required_evidence_complete": false,
+  "latency_target_met": false,
+  "cold_start_measured": true,
+  "cleanup_verified": false
+}

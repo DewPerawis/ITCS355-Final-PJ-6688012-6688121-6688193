@@ -1,0 +1,72 @@
+{
+  "checked_at": "2026-10-11T20:37:50.443291+00:00",
+  "dashboard_exists": true,
+  "display_name": "MLOP Travel Style",
+  "resource_id": "/subscriptions/b175b91e-058e-4a22-8e96-39e6e432b006/resourcegroups/rg-mlop-pj-492ea24d/providers/microsoft.insights/workbooks/dd2f5d4a-05a6-5adf-99ce-60413187f444",
+  "query_count": 3,
+  "workbook": {
+    "version": "Notebook/1.0",
+    "isLocked": false,
+    "fallbackResourceIds": [
+      "/subscriptions/b175b91e-058e-4a22-8e96-39e6e432b006/resourceGroups/rg-mlop-pj-492ea24d/providers/Microsoft.OperationalInsights/workspaces/log-mlop-pj-492ea24d"
+    ],
+    "items": [
+      {
+        "type": 1,
+        "name": "intro",
+        "content": {
+          "json": "# Travel Style API\nServer latency, requests, errors, model version, and uncertainty. Client latency is reported separately."
+        }
+      },
+      {
+        "type": 3,
+        "name": "requests",
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "ContainerAppConsoleLogs_CL | where ContainerAppName_s in ('travel-style-492ea24d', 'failure-492ea24d') | extend j=parse_json(Log_s) | where isnotempty(j.path) | summarize Requests=count(), Errors=countif(toint(j.status)>=500), MeanMs=avg(todouble(j.duration_ms)), P95Ms=percentile(todouble(j.duration_ms),95) by bin(TimeGenerated, 1m), Model=tostring(j.model_version)",
+          "size": 0,
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces",
+          "crossComponentResources": [
+            "/subscriptions/b175b91e-058e-4a22-8e96-39e6e432b006/resourceGroups/rg-mlop-pj-492ea24d/providers/Microsoft.OperationalInsights/workspaces/log-mlop-pj-492ea24d"
+          ],
+          "visualization": "table",
+          "title": "requests"
+        }
+      },
+      {
+        "type": 3,
+        "name": "profiles",
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "ContainerAppConsoleLogs_CL | where ContainerAppName_s in ('travel-style-492ea24d', 'failure-492ea24d') | extend j=parse_json(Log_s) | where tostring(j.event)=='prediction_batch' | summarize Predictions=sum(toint(j.count)), Uncertain=sum(toint(j.uncertain_count)) by bin(TimeGenerated,1m)",
+          "size": 0,
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces",
+          "crossComponentResources": [
+            "/subscriptions/b175b91e-058e-4a22-8e96-39e6e432b006/resourceGroups/rg-mlop-pj-492ea24d/providers/Microsoft.OperationalInsights/workspaces/log-mlop-pj-492ea24d"
+          ],
+          "visualization": "table",
+          "title": "profiles"
+        }
+      },
+      {
+        "type": 3,
+        "name": "failure",
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "ContainerAppConsoleLogs_CL | where ContainerAppName_s in ('travel-style-492ea24d', 'failure-492ea24d') | where Log_s contains 'semantic_canary_failed'",
+          "size": 0,
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces",
+          "crossComponentResources": [
+            "/subscriptions/b175b91e-058e-4a22-8e96-39e6e432b006/resourceGroups/rg-mlop-pj-492ea24d/providers/Microsoft.OperationalInsights/workspaces/log-mlop-pj-492ea24d"
+          ],
+          "visualization": "table",
+          "title": "failure"
+        }
+      }
+    ]
+  },
+  "scope": "Read-only ARM export of the actual Azure workbook; not a Portal screenshot."
+}

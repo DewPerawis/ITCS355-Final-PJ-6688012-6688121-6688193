@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-11T18:17:04.051821+00:00",
+  "checked_at": "2026-10-11T19:29:14.411267+00:00",
   "phase": "training-registry",
   "errors": [],
   "job_name": "train-20261011-164656",
@@ -8,5 +8,5 @@
   "registered_name": "travel-style",
   "registered_version": "1",
   "fresh_fit_equivalent": true,
-  "registration_reused": false
+  "registration_reused": true
 }

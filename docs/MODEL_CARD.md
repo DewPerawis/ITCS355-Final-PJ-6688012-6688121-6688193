@@ -16,4 +16,4 @@
 
 **Operations.** The bundle includes preprocessing, feature order, centers, mapping, thresholds, and versions. Hash and golden checks gate startup. A semantic canary detects mapping regressions; the staging failure is restored and covered by a regression test. Logs contain derived counts, status, latency, and model version, not full profiles.
 
-**Lineage.** Bundle SHA-256: 71f3ba41b4b964f5beb31e3d6e13b835b1dd2538aa663741d8837301be9dff13. Cloud registry/run/image and deployment evidence are recorded in reports/finish-training-registry.json, finish-assets.json, and finish-deploy.json. Only completed runs support those claims.
+**Lineage.** Bundle SHA-256: 71f3ba41b4b964f5beb31e3d6e13b835b1dd2538aa663741d8837301be9dff13. Cloud registry evidence: reports/finish-training-registry.json. Latest CI image and deployment: reports/ci-deploy-result.json. Initial build/deploy: reports/finish-assets.json and reports/finish-deploy.json. Only completed runs support those claims.

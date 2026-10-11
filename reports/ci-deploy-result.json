@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "transport": "real HTTP",
+  "url": "https://travel-style-492ea24d.icymushroom-08e3ded0.centralindia.azurecontainerapps.io",
+  "status_codes": [
+    200,
+    200,
+    200,
+    422,
+    200
+  ],
+  "model_version": "abfd88e893ca",
+  "golden_predictions_match": true,
+  "batch_100_passed": true,
+  "image_uri": "acrmloppj492ea24d.azurecr.io/travel-style@sha256:b55cd10aba3f8bb899f3cdec62cbc1815b5869ce22fc5676ebd06642382758a4",
+  "git_sha": "1e0bd12478d61abf05b55b79887b7bbe84ad6bc6",
+  "github_run": "https://github.com/DewPerawis/MLOP-PJ/actions/runs/38166188586",
+  "checked_at": "2026-10-11T19:04:43.118965+00:00",
+  "live_image_verified": true,
+  "live_canary_passed": true
+}

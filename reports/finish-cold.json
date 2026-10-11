@@ -1,7 +1,13 @@
 {
-  "checked_at": "2026-10-11T16:41:32.734116+00:00",
+  "checked_at": "2026-10-11T19:34:01.943397+00:00",
   "phase": "cold",
-  "errors": [
-    "ValueError: No ready revision exists."
-  ]
+  "errors": [],
+  "cold_start_measured": true,
+  "zero_replicas_observed_at": "2026-10-11T19:34:10.519196+00:00",
+  "revision": "travel-style-492ea24d--latest",
+  "image_uri": "acrmloppj492ea24d.azurecr.io/travel-style@sha256:b55cd10aba3f8bb899f3cdec62cbc1815b5869ce22fc5676ebd06642382758a4",
+  "url": "https://travel-style-492ea24d.icymushroom-08e3ded0.centralindia.azurecontainerapps.io",
+  "first_request_ms": 3819.595852008206,
+  "model_version": "abfd88e893ca",
+  "scope": "WSL HTTPS readiness request after ARM reported zero replicas; includes network and scale activation."
 }

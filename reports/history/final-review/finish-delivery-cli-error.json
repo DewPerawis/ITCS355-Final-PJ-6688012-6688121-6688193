@@ -1,0 +1,7 @@
+{
+  "checked_at": "2026-10-11T20:31:38.060978+00:00",
+  "phase": "delivery",
+  "errors": [
+    "PermissionError: [Errno 13] Permission denied: 'python'"
+  ]
+}

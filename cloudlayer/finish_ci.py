@@ -9,6 +9,25 @@ from cloudlayer.session import ROOT, Session, command, read
 
 
 REPOSITORY = "DewPerawis/MLOP-PJ"
+CI_INPUTS = [".github", ".dockerignore", ".gitattributes", "Dockerfile", "dvc.yaml", "data/raw.dvc",
+             "src", "service", "monitoring", "cloudlayer", "scripts", "tests", "configs",
+             "requirements-local.txt", "requirements-local.lock.txt", "requirements-cloud.txt",
+             "requirements-service.lock.txt", "requirements-notebook.txt", "requirements-notebook.lock.txt",
+             "reports/bundle-manifest.json", "reports/golden-profiles.json", "reports/azure-blob-upload.json",
+             "reports/azure-platform-deploy.json", "reports/serving-recheck/docker-image.json"]
+
+
+def same_ci_source(tested, head):
+    if not all(re.fullmatch(r"[0-9a-f]{40}", value) for value in [tested, head]):
+        raise ValueError("Expected full Git commit IDs.")
+    if tested == head:
+        return True
+    try:
+        ancestor = command(["git", "merge-base", tested, head], "ci-source-ancestor").strip()
+        changes = command(["git", "diff", "--name-only", tested, head, "--", *CI_INPUTS], "ci-source-diff")
+    except RuntimeError:
+        return False
+    return ancestor == tested and not changes.strip()
 
 
 def github_command(args, label):
@@ -143,15 +162,35 @@ def check_runs(report):
         return
     report["workflow_published"] = True
     workflow_id = workflows[0]["id"]
-    runs = github_json(["gh", "api", f"repos/{REPOSITORY}/actions/workflows/{workflow_id}/runs?per_page=30"], "github-runs")["workflow_runs"]
     head = command(["git", "rev-parse", "HEAD"], "git-head").strip()
-    good = [r for r in runs if r["head_sha"] == head and r["conclusion"] == "success"]
-    failed = [r for r in runs if r["head_sha"] == head and r["conclusion"] == "failure"]
-    blocked = []
-    for run in failed:
-        jobs = github_json(["gh", "api", f'repos/{REPOSITORY}/actions/runs/{run["id"]}/jobs'], "github-jobs")["jobs"]
-        if any(j["name"] == "tests" and j["conclusion"] == "failure" for j in jobs) and any(
-                j["name"] == "deploy" and j["conclusion"] == "skipped" for j in jobs):
-            blocked.append(run["html_url"])
-    report.update(ci_success_run=good[0]["html_url"] if good else None,
-                  tests_blocked_deploy_runs=blocked, ci_evidence_ready=bool(good and blocked), pending=not bool(good and blocked))
+    dirty = command(["git", "status", "--porcelain", "--untracked-files=all", "--", *CI_INPUTS], "ci-source-status")
+    if dirty.strip():
+        report.update(ci_evidence_ready=False, pending=True,
+                      next="Review and commit the changed CI inputs before checking runs. Saved runs do not cover uncommitted source.")
+        return
+    runs = github_json(["gh", "api", f"repos/{REPOSITORY}/actions/workflows/{workflow_id}/runs?per_page=30"], "github-runs")["workflow_runs"]
+    good = [r for r in runs if r["conclusion"] == "success" and r.get("event") != "pull_request"]
+    for success in good:
+        tested = success["head_sha"]
+        failed = [r for r in runs if r["head_sha"] == tested and r["conclusion"] == "failure"
+                  and r.get("event") == "workflow_dispatch"]
+        if not failed or not same_ci_source(tested, head):
+            continue
+        jobs = github_json(["gh", "api", f'repos/{REPOSITORY}/actions/runs/{success["id"]}/jobs'], "github-success-jobs")["jobs"]
+        if not all(any(j["name"] == name and j["conclusion"] == "success" for j in jobs) for name in ["tests", "deploy"]):
+            continue
+        for failure in failed:
+            jobs = github_json(["gh", "api", f'repos/{REPOSITORY}/actions/runs/{failure["id"]}/jobs'], "github-failure-jobs")["jobs"]
+            if not (any(j["name"] == "tests" and j["conclusion"] == "failure" for j in jobs) and any(
+                    j["name"] == "deploy" and j["conclusion"] == "skipped" for j in jobs)):
+                continue
+            log = github_command(["gh", "run", "view", str(failure["id"]), "--repo", REPOSITORY, "--log-failed"], "github-deliberate-failure")
+            if "Deliberate CI test failure: the deployment job must be skipped." not in log:
+                continue
+            report.update(ci_success_run=success["html_url"], tests_blocked_deploy_runs=[failure["html_url"]],
+                          tested_source_commit=tested, repository_head=head, source_matches_head=True,
+                          intentional_test_failure_verified=True, ci_evidence_ready=True, pending=False,
+                          next="Both runs passed the evidence checks. Documentation-only commits keep this evidence valid while CI inputs stay unchanged.")
+            return
+    report.update(ci_success_run=None, tests_blocked_deploy_runs=[], ci_evidence_ready=False, pending=True,
+                  next="Run normal and demo_failure workflows for the reviewed source, then retry ci-evidence.")
