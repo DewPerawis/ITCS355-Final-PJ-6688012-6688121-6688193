@@ -191,6 +191,19 @@ class RegistryVersionTests(unittest.TestCase):
 
 
 class GitHubEvidenceTests(unittest.TestCase):
+    def test_oidc_subject_matches_verified_ids_and_staging(self):
+        from cloudlayer.finish_ci import REPOSITORY, staging_subject
+        repository = {"full_name": REPOSITORY, "id": 456, "owner": {"login": REPOSITORY.split("/")[0], "id": 123}}
+        owner, name = REPOSITORY.split("/")
+        for immutable in [False, True]:
+            prefix = f"repo:{owner}@123/{name}@456" if immutable else "repo:" + REPOSITORY
+            settings = {"use_default": True, "use_immutable_subject": immutable, "sub_claim_prefix": prefix}
+            self.assertEqual(staging_subject(repository, settings), prefix + ":environment:staging")
+            with self.assertRaises(ValueError):
+                staging_subject(repository, dict(settings, sub_claim_prefix=prefix + "-other"))
+            with self.assertRaises(ValueError):
+                staging_subject(repository, dict(settings, use_default=False))
+
     def test_colored_json_is_read_without_changing_parent_environment(self):
         import os
         from cloudlayer.finish_ci import github_json

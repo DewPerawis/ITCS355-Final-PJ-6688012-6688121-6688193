@@ -32,6 +32,19 @@ def github_json(args, label):
     return value
 
 
+def staging_subject(repository, settings):
+    if repository.get("full_name") != REPOSITORY or settings.get("use_default") is not True:
+        raise ValueError("Review the repository identity and custom OIDC template first.")
+    owner, name = REPOSITORY.split("/")
+    if repository["owner"]["login"] != owner:
+        raise ValueError("GitHub repository owner differs from the project.")
+    prefix = (f"repo:{owner}@{repository['owner']['id']}/{name}@{repository['id']}"
+              if settings.get("use_immutable_subject") else "repo:" + REPOSITORY)
+    if settings.get("sub_claim_prefix") != prefix:
+        raise ValueError("GitHub OIDC prefix differs from the verified repository IDs.")
+    return prefix + ":environment:staging"
+
+
 def checked_role_id(value, name, scope, actions):
     permissions = value.get("permissions", [])
     if (value.get("roleName") != name or value.get("roleType") != "CustomRole"
@@ -66,6 +79,9 @@ def configure(report):
     deployed = read("reports/finish-deploy.json")
     if deployed["errors"] or not deployed.get("api_ready"):
         raise ValueError("Deploy the API first.")
+    repository = github_json(["gh", "api", "repos/" + REPOSITORY], "github-repository")
+    settings = github_json(["gh", "api", "repos/" + REPOSITORY + "/actions/oidc/customization/sub"], "github-oidc")
+    subject = staging_subject(repository, settings)
     with Session() as cloud:
         name = "id-ci-" + cloud.plan["suffix"]
         identities = cloud.az(["identity", "list", "--resource-group", cloud.group])
@@ -79,7 +95,7 @@ def configure(report):
                                  "--location", cloud.region, "--tags", *[f"{k}={v}" for k, v in cloud.tags.items()]])
         cloud.az(["identity", "federated-credential", "create", "--name", "github-staging", "--identity-name", name,
                   "--resource-group", cloud.group, "--issuer", "https://token.actions.githubusercontent.com",
-                  "--subject", "repo:" + REPOSITORY + ":environment:staging",
+                  "--subject", subject,
                   "--audiences", "api://AzureADTokenExchange", "--query", "{name:name}"])
         registry = cloud.get("Microsoft.ContainerRegistry/registries/" + cloud.registry, "2023-07-01")
         storage = cloud.get("Microsoft.Storage/storageAccounts/" + cloud.storage, "2023-05-01")
@@ -108,7 +124,7 @@ def configure(report):
                      "AZURE_SUBSCRIPTION_ID": cloud.account["id"], "STORAGE_ACCOUNT": cloud.storage,
                      "CONTAINER_REGISTRY": cloud.host}
         (ROOT / "tmp/github-variables.json").write_text(json.dumps(variables, indent=2))
-        report.update(ci_identity_configured=True, repository=REPOSITORY,
+        report.update(ci_identity_configured=True, repository=REPOSITORY, oidc_subject=subject,
                       variables_file="tmp/github-variables.json", workflow_file=".github/workflows/ci.yml",
                       github_variables_configured=False,
                       next="Set repository variables, create the staging environment, and push reviewed files. Run normal and demo_failure workflows. No commit or push was performed by this script.")
