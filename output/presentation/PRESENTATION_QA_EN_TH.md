@@ -374,7 +374,7 @@
 
 **English answer:** I would check whether the issue is connectivity, readiness, or invalid input. An expected 422 is correct behaviour. For a real failure, I would show the response and saved evidence, clearly stating that the live check did not succeed in that run.
 
-**เปิดหลักฐาน:** คู่มือ `PROJECT_SUMMARY_TH.md` → 7.4; `output/presentation/evidence/api-demo.json`
+**เปิดหลักฐาน:** คู่มือ `PROJECT_SUMMARY_TH.md` → 7.8; `output/presentation/evidence/api-demo.json`
 
 ### Q46. What did each team member actually do, and did you use AI tools?
 

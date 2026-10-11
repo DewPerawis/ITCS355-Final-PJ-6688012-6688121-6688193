@@ -234,7 +234,7 @@ Azure alert ตรวจ event นี้และมีหลักฐานว�
 
 ## 6. อ่านสไลด์ทีละหน้า
 
-อธิบายตาม `MLOP-PJ_Presentation.pptx` และ `slide_sources.json` เวลารวม 480 วินาที สคริปต์ไทยด้านล่างใช้ซ้อมความเข้าใจ สามารถพูดอังกฤษโดยปรับจาก Q&A ได้ ไม่จำเป็นต้องอ่านทุกย่อหน้า
+อธิบายตาม `6688012_6688121_6688193_Presentation.pptx` และ `slide_sources.json` เวลารวม 480 วินาที สคริปต์ไทยด้านล่างใช้ซ้อมความเข้าใจ สามารถพูดอังกฤษโดยปรับจาก Q&A ได้ ไม่จำเป็นต้องอ่านทุกย่อหน้า
 
 ### Slide 1 — Travel Style Segmentation & Drift Monitoring (15 วินาที)
 
@@ -438,201 +438,145 @@ Azure alert ตรวจ event นี้และมีหลักฐานว�
 
 หลัง slide นี้เผื่อ Q&A อีก 5 นาที ไม่รวมอยู่ใน 8 นาทีของ talk
 
-## 7. Live demo: ทำตามนี้ทีละเซลล์
+## 7. Live demo: ใช้ไฟล์ที่เตรียมไว้โดยเฉพาะ
 
-### 7.1 เตรียมก่อนขึ้นนำเสนอ
+ไฟล์หลักคือ **`output/presentation/LIVE_DEMO.ipynb`** เปิดไฟล์นี้แล้วทำตามเซลล์ A–J ได้เลย ไม่ต้องคัดลอกโค้ดไปต่อใน Notebook 22 อีกแล้ว Helper คือ `demo_support.py` ในโฟลเดอร์เดียวกัน เก็บสองไฟล์นี้ไว้ด้วยกันพร้อม reports ของโปรเจกต์ ไม่ย้าย Notebook ออกไปเปิดเดี่ยว ๆ นอก repo
 
-1. เปิด VS Code ใน **WSL** ที่โฟลเดอร์ `MLOP-PJ` เช่นเดียวกับที่ใช้ทำงาน ไม่ต้องเปลี่ยนไป Windows Python
-2. เปิด `notebooks/22_delivery.ipynb` แล้วเลือก kernel **MLOP-PJ (WSL)** หรือ Python ที่ `~/.venvs/mlop-pj/bin/python`
-3. เพิ่ม code cells สำหรับ demo ที่ท้าย Notebook คัดลอกทีละส่วนจากด้านล่าง ไม่ต้องแก้เซลล์เดิม และไม่ต้องกด Run All เพราะเซลล์เดิมมี phase checks ที่ไม่จำเป็นต่อ demo
-4. ลองรัน setup, ready และ preflight ด้านล่างหนึ่งรอบก่อนนำเสนอ จากนั้นคง kernel นี้ไว้และยุบผล preflight ตอนพูดจริง
-5. เปิด Actions สองลิงก์ใน browser และ login GitHub ล่วงหน้า Repository เป็น private จึงอาจเปิดไม่ได้ถ้ายังไม่ login
-6. แอปต้องยังไม่ถูก cleanup ถ้าลบ resource group แล้ว Azure URL จะใช้ไม่ได้ ต้องใช้ local demo หรือ saved evidence พร้อมบอกขอบเขตตามจริง
+Notebook และหน้าผลลัพธ์ใช้ภาษาอังกฤษสั้น ๆ ส่วนคู่มือไทยนี้บอกว่าควรทำและพูดอะไร เซลล์ A/B เตรียมก่อนขึ้นเวที; C–F ใช้แสดงบริการจริง; G/H เปิดหลักฐาน CI และ failure; I ใช้ตอบ input ใหม่; J ปิด session
 
-เซลล์ demo ส่ง HTTPS requests ไป API จริงและใช้ fixture/report ที่มีอยู่ ไม่ submit training, build image, deploy หรือ inject fault ใหม่ การเขียนคู่มือนี้ยังไม่ได้รันเซลล์เหล่านี้กับ cloud รอบใหม่ ผลที่แสดงในสไลด์เป็น saved evidence; เมื่อคุณรัน demo ผลบนหน้าจอจะเป็นผลสดในรอบนั้น
+มีภาพหน้าตาตัวอย่างใน `output/presentation/DEMO_PREVIEW.png` ภาพนี้ใช้ saved evidence เพื่อแสดง layout ไม่ใช่ผล live ขณะเปิดภาพ ส่วน Notebook จะเรียก API ใหม่เมื่อรัน
 
-### Cell A — Setup: โหลด URL และตัวอย่างข้อมูล
+### 7.1 อาจารย์บังคับ visualization หรือหน้าเว็บไหม
 
-```python
-import json
-import sys
-from pathlib import Path
+สิ่งที่ถามในแชทหมายถึง **visualization** คือภาพ/หน้าจอช่วยอธิบาย ไม่ใช่ virtualization ที่เกี่ยวกับ VM/container
 
-ROOT = next(
-    p for p in (Path.cwd(), *Path.cwd().parents)
-    if (p / "reports/golden-profiles.json").is_file()
-)
-assert Path(sys.prefix).name == "mlop-pj", "Select the project WSL kernel."
-if str(ROOT) not in sys.path:
-    sys.path.insert(0, str(ROOT))
+จาก Capstone Brief อาจารย์ต้องการ **live demo**, monitoring dashboard, failure ที่อธิบายได้ และเตรียมรับ unexpected input [3] ไม่พบข้อกำหนดว่าต้องสร้างหน้าเว็บ demo หรือ frontend แยก หากมีคำสั่งเพิ่มเติมนอกเอกสารนี้ต้องตรวจอีกครั้ง
 
-from scripts.http_check import http_call, check_predictions, smoke
+สำหรับงานเราใช้ Notebook แสดงกราฟคะแนนและการ์ดผลจาก API จริง คนดูเห็นว่า “ส่งข้อมูลอะไร → ได้กลุ่มอะไร → ข้อมูลผิดถูกปฏิเสธอย่างไร” ส่วน Azure dashboard เป็นอีกส่วนหนึ่งที่ใช้ดูระบบ ไม่ควรใช้การ์ด prediction นี้แทนหลักฐาน monitoring dashboard
 
-fixture = json.loads((ROOT / "reports/golden-profiles.json").read_text())
-deploy = json.loads((ROOT / "reports/ci-deploy-result.json").read_text())
-url = deploy["url"]
-profile = fixture["profiles"][0].copy()
+เราเลือกวิธีนี้เพราะใช้ environment เดิม ดูผลทีละขั้นได้ และไม่เพิ่มการ deploy frontend อีกระบบ Docker/Container Apps เป็นส่วนที่ทำอยู่แล้ว ส่วนการ์ดและกราฟใน Notebook เป็นตัวช่วยนำเสนอ
 
-print("Python:", sys.executable)
-print("API:", url)
-print("Expected model:", fixture["model_version"])
-print("Profile fields:", len(profile))
+### 7.2 หลังปิดเครื่องแล้วเปิดใหม่ ต้องทำอะไร
+
+**Cloud mode ไม่ต้องเปิด local server ค้างไว้ตอนปิดเครื่อง** แอปอยู่บน Azure ไม่ใช่บน laptop การปิด laptop ไม่ได้สั่งลบ Azure resources และ env/files ในเครื่องยังอยู่หลังเปิดใหม่ แต่ตัวแปร Python และ kernel session เดิมจะไม่อยู่
+
+หลังเปิดใหม่ ให้ทำดังนี้:
+
+1. เปิด **WSL terminal** แล้วเข้าโฟลเดอร์โปรเจกต์ด้วยคำสั่งด้านล่าง ชุดนี้ใช้กับเครื่องเดิมที่มี environment แล้ว ไม่ใช่คำสั่งติดตั้งใหม่
+2. เปิด VS Code ใน WSL แล้วเปิด `output/presentation/LIVE_DEMO.ipynb`
+3. เลือก kernel **MLOP-PJ (WSL)** หรือ interpreter `~/.venvs/mlop-pj/bin/python`
+4. รัน **A** เพื่อโหลดไฟล์และเลือก mode จากนั้นรัน **B** เพื่อเตรียม/check API
+5. ต้องเห็นการ์ด **READY FOR DEMO** ก่อนใช้เซลล์บนเวที
+
+```bash
+cd /mnt/c/Users/SN23341J001185/Documents/MyWork/ICT/ICTYear4_1/MLop/public_teaching_mlaiops/course/MLOP-PJ
+source ~/.venvs/mlop-pj/bin/activate
+code .
 ```
 
-**กำลังทำอะไร:** หารากโปรเจกต์ โหลด URL จาก deployment report และโหลดตัวอย่าง profile ที่บันทึกผลอ้างอิงไว้ ไม่ train ใหม่ และไม่พิมพ์ URL ยาวเอง
+ถ้าเปิด VS Code ใน WSL ที่ project นี้อยู่แล้ว เลือก kernel แล้วทำข้อ 4 ได้เลย การ activate ใน terminal ไม่ได้เลือก kernel ใน Notebook ให้อัตโนมัติ หากเลือก kernel ผิด A จะหยุดให้แก้
 
-**ผลที่ต้องเห็น:** Python ของ WSL environment, Azure API URL, model version `abfd88e893ca` และ Profile fields = 24 ถ้า assertion เรื่อง kernel ไม่ผ่าน ให้เลือก kernel ให้ถูก ไม่ลบ assertion เพื่อฝืนรัน
+**ไม่ต้องทำใหม่หลัง reboot:** ดาวน์โหลดข้อมูล, train, DVC push/pull, Docker build, Azure deploy และ GitHub CI ถ้าข้อมูล/โค้ด/environment เดิมยังอยู่ ขั้นตอนเหล่านี้เป็นการสร้างระบบ ไม่ใช่ startup ของการนำเสนอ
 
-ถ้าอาจารย์อยากดู input ให้รัน `print(json.dumps(profile, indent=2))` จะเห็นตัวเลขครบ 24 fields ตัวอย่างนี้เป็น golden fixture ไม่ใช่ข้อมูลที่สร้างจากผู้ใช้สดตอนนำเสนอ
+Cloud mode ใช้ URL/fixture/manifest จากไฟล์ใน repo และส่ง HTTPS requests ไม่ต้องเปิด Docker Desktop หรือ `az login` เพื่อเรียก API เพราะ coursework endpoint ปัจจุบันเป็น public HTTPS ส่วนการเปิด Portal ต้อง login Azure และการเปิด private Actions ต้อง login GitHub ตามปกติ
 
-### Cell B — Ready: API พร้อมใช้โมเดลหรือยัง
+**เงื่อนไขที่ยังจำเป็น:** อินเทอร์เน็ตใช้งานได้ Azure resources ยังไม่ cleanup/ถูกหยุดหรือเปลี่ยนโดยผู้อื่น และไฟล์/environment เดิมยังอยู่ Notebook ไม่สร้าง Azure ที่ถูกลบไปแล้วกลับมาเอง จึงไม่รับประกันว่าจะรัน cloud ได้เพียงเพราะเปิดเครื่องสำเร็จ
 
-```python
-status, body, elapsed = http_call(url, "/ready", timeout=60)
-print("HTTP:", status)
-print(json.dumps(body, indent=2))
-assert status == 200, "The API is not ready. Read the response."
-assert body["model_version"] == fixture["model_version"]
-```
+### 7.3 เตรียมก่อนพูด 5–10 นาที
 
-**ผลที่ต้องเห็น:** HTTP 200, `status = ready` และ model version ตรง fixture การรันครั้งแรกอาจช้าจาก scale-to-zero ให้ลองก่อนขึ้นเวทีเพื่อไม่เสียเวลาใน demo 90 วินาที ผลครั้งนี้ไม่ใช่การวัด cold start แบบยืนยัน zero replicas
-
-**พูด:** “บริการพร้อมใช้ และรายงาน model version ที่เราตรวจไว้ครับ”
-
-**Preflight ก่อน talk เท่านั้น:** หลัง ready ผ่าน ใช้เซลล์นี้เช็คทั้งชุดหนึ่งรอบ แล้วตอน talk แสดงผลทีละเซลล์ C–E จะอธิบายง่ายกว่า
-
-```python
-checks = smoke(url, fixture)
-print(json.dumps(checks, indent=2))
-```
-
-ต้องได้ `passed = true`, `status_codes = [200, 200, 200, 422, 200]`, `golden_predictions_match = true`, `batch_100_passed = true` ตัว smoke เปรียบเทียบผลหลาย field ไม่ใช่ดู HTTP 200 อย่างเดียว
-
-### Cell C — Valid profile: ส่งข้อมูลถูกต้องหนึ่ง profile
-
-```python
-status, body, elapsed = http_call(
-    url, "/predict", {"profiles": [profile]}, timeout=60
-)
-print("HTTP:", status)
-print(json.dumps(body, indent=2))
-assert status == 200
-check_predictions(body, [fixture["expected"][0]], fixture["model_version"])
-```
-
-**ผลที่ต้องเห็น:** HTTP 200 และ predictions หนึ่งรายการ สำหรับ fixture นี้ผลที่บันทึกไว้คือ Segment 1, cluster 0, distance ประมาณ 4.1435, uncertain false และ version abfd88e893ca ส่วน request ID เปลี่ยนได้ตาม request ใหม่ ไม่ใช่ข้อผิดพลาด
-
-**ชี้และพูด:** “เราได้รับชื่อกลุ่ม ระยะทาง และ version กลับมาจริง สำหรับตัวอย่างนี้ไม่ถูก flagged ว่า uncertain ผลยังตรงกับ golden result ที่ใช้ตรวจ regression ครับ”
-
-ไม่ต้องอ่านค่าทุกช่องของ JSON และอย่าเรียก uncertain false ว่า confidence 100%
-
-### Cell D — Missing fields: ข้อมูลผิดต้องได้ 422
-
-```python
-status, body, elapsed = http_call(
-    url, "/predict", {"profiles": [{"Category 1": 2}]}, timeout=60
-)
-print("HTTP:", status)
-print(json.dumps(body, indent=2))
-assert status == 422
-```
-
-**กำลังทำอะไร:** จงใจส่งแค่หนึ่งหมวด ทั้งที่ต้องมี 24 หมวด จึงคาดหวัง 422 พร้อมรายละเอียดการปฏิเสธ เช่นให้ส่ง 24 named rating columns
-
-**พูด:** “ข้อมูลนี้ขาด fields บริการจึงตอบ 422 โดยไม่ฝืนทำนายและไม่ทำให้ตัวแอปล่มครับ”
-
-อย่าตกใจเมื่อเห็น 422 หรือแก้ input นี้ให้ครบก่อนแสดง เพราะการปฏิเสธ input ผิดคือสิ่งที่ต้องพิสูจน์ในเซลล์นี้
-
-### Cell E — Batch 100: หลาย profiles ในหนึ่ง request
-
-```python
-status, body, elapsed = http_call(
-    url, "/predict", {"profiles": [profile] * 100}, timeout=60
-)
-print("HTTP:", status)
-print("Returned predictions:", len(body.get("predictions", [])))
-print("Model:", body.get("model_version"))
-assert status == 200
-check_predictions(
-    body, [fixture["expected"][0]] * 100, fixture["model_version"]
-)
-print("Batch check passed.")
-```
-
-**ผลที่ต้องเห็น:** HTTP 200, Returned predictions = 100 และ Batch check passed เราทำซ้ำ profile เดิมเพื่อเช็คขอบเขต batch และผลที่คาดหวัง ไม่ใช่ผู้ใช้จริง 100 คนที่เก็บใหม่
-
-**พูด:** “หนึ่ง request รองรับได้สูงสุด 100 profiles และในกรณีนี้ผลตอบกลับทั้ง 100 รายการถูกตรวจเทียบกับผลที่คาดไว้ครับ”
-
-อย่าเอาเวลาของ batch นี้ไปบอกว่าเป็น warm p95 เพราะการวัด p95 เดิมใช้ batch size 1 และหลาย requests
-
-### Cell F — Canary: เตรียมไว้ตอบ Q&A
-
-```python
-status, body, elapsed = http_call(url, "/canary", timeout=60)
-print("HTTP:", status)
-print(json.dumps(body, indent=2))
-assert status == 200 and body.get("passed") is True
-```
-
-**กำลังทำอะไร:** ให้บริการตรวจ golden profiles ภายในแอปเอง ผลปกติต้องได้ 200 และ passed true ถ้าเวลาพอใช้ใน slide 9 หรือเปิดเมื่อถูกถามว่า “health ต่างจาก canary อย่างไร” ไม่ต้อง inject mapping ผิดเพื่อแสดง 503 ซ้ำ
-
-### ถ้าอาจารย์ส่ง input ที่เราไม่ได้เตรียม
-
-ใช้ `profile` สำเนาตัวอย่างเดิมแล้วเปลี่ยนตัวเลขในช่องที่อาจารย์ต้องการ หากยังครบ 24 ช่อง ค่าเป็นตัวเลข finite และอยู่ใน 0–5 บริการควรรับได้ แต่กลุ่มหรือ uncertainty อาจเปลี่ยน จึงไม่เทียบกับ golden result เดิมหลังเปลี่ยน input
-
-```python
-custom_profile = profile.copy()
-custom_profile["Category 1"] = 2.5
-status, body, elapsed = http_call(
-    url, "/predict", {"profiles": [custom_profile]}, timeout=60
-)
-print("HTTP:", status)
-print(json.dumps(body, indent=2))
-```
-
-ตัวอย่างข้างบนคือข้อมูลใหม่ที่ดัดแปลง ไม่ได้มี saved expected segment ล่วงหน้า ถ้า uncertain true แล้ว segment null แต่ HTTP 200 ถือว่าเป็นพฤติกรรมที่ออกแบบไว้สำหรับ valid input ที่ไกลจากกลุ่ม
-
-หากต้องการทดสอบคะแนนเกินช่วง ใช้สำเนาอีกชุดตั้ง `Category 1 = 6` แล้วคาดหวัง 422 หรือส่ง `[profile] * 101` เพื่อทดสอบ batch เกินขอบเขต การทดสอบเหล่านี้ไม่ต้องเปลี่ยนโมเดล/config บน cloud
-
-### 7.2 ลำดับบนเวทีให้ทัน 90 วินาที
-
-| เวลาคร่าว ๆ | สิ่งที่ทำ | สิ่งที่พูด |
+| เซลล์ | ทำอะไร | ผลที่ต้องเห็น |
 |---|---|---|
-| 0–10 วินาที | เปลี่ยนจาก slide 6 ไป Notebook ที่ setup/ready แล้ว | เรียก Azure API จริง ใช้ profile ครบ 24 ช่อง |
-| 10–40 วินาที | รัน C และชี้ prediction | ชื่อกลุ่ม distance uncertainty version |
-| 40–60 วินาที | รัน D | Missing fields ถูกปฏิเสธด้วย 422 |
-| 60–80 วินาที | รัน E | รองรับ batch 100 และตรวจผลครบ |
-| 80–90 วินาที | กลับ slide 7 | ต่อด้วย gate ที่ป้องกันโค้ดผิดถูก deploy |
+| A — Setup and mode | หา root โหลด fixtures/reports เลือก cloud หรือ local | DEMO SETUP และ mode/model ที่กำลังใช้ |
+| B — Prepare API | รอ ready ตรวจ health/canary ผล golden ทั้งห้า invalid input และ batch 100 | READY FOR DEMO สีเขียว |
 
-เวลาเป็นแผนซ้อม ไม่ใช่ผลวัดหรือการรับประกัน ถ้าจะให้คนพูดกับคนกดคนละคน ต้องตกลงกับทีมก่อน ไม่ได้กำหนดผู้พูดจากชื่อสมาชิกเอง
+ค่าเริ่มต้นใน A คือ `MODE = "cloud"` สำหรับแสดง Azure จริง B อาจใช้เวลารอ cold activation ตอนเรียกครั้งแรก จึงรันก่อนขึ้นเวที มีเวลารอ/retry ก่อนหยุด ไม่ต้องอ่าน traceback ระหว่างพูดถ้ายังเตรียมไม่ผ่าน
 
-### 7.3 หน้าอื่นที่ควรเปิดเตรียมไว้
+การเตรียมนี้ทำ requests จำนวนเล็กน้อย และหนึ่ง batch มี 100 profiles ไม่ train/deploy/inject fault ใหม่ ไม่ทำ load benchmark 200 requests และไม่วัด cold-start ใหม่แบบยืนยัน replicas
 
-**Actions:** เปิดสองลิงก์นี้แล้วขยาย jobs tests/deploy ไม่ต้องกด Run workflow ใหม่
+จากนั้นเปิดสอง GitHub Actions links ด้านล่างใน browser และ login ไว้ เปิดสไลด์/Notebook พร้อมสลับหน้าจอ ก่อนพูดให้ยุบโค้ดและยุบผลของเซลล์ A/B เหลือผล C–F ที่คนดูต้องเข้าใจ ขยาย font/zoom ให้ห้องอ่านได้
 
-- [Normal run: tests/deploy success](https://github.com/DewPerawis/MLOP-PJ/actions/runs/38173375457)
-- [Intentional failure: tests failure/deploy skipped](https://github.com/DewPerawis/MLOP-PJ/actions/runs/38173380800)
+**ถ้าต้องปิดเครื่องหลังซ้อม:** ปิดได้ แต่ก่อนนำเสนอจริงต้องเปิดใหม่แล้วรัน A/B อีกครั้ง ถ้าแค่ kernel restart หรือเปลี่ยน MODE ก็ต้องเริ่ม A/B ใหม่เช่นกัน ค่า Python บนหน้าจอเก่าไม่ได้แปลว่า session ใหม่พร้อมแล้ว
 
-**Failure/alert evidence:** เปิด reports/finish-failure.json กับ finish-alert.json แล้วชี้ `failure_detected`, `recovered`, `previous_errors`, `alert_fired` และ monitorCondition Resolved บอกว่านี่เป็นหลักฐานเหตุการณ์ที่บันทึกไว้ ไม่ใช่กำลังทดลอง fault สด
+**ไม่ต้องรัน request loop หรือ heartbeat ทิ้งไว้:** scale-to-zero อาจเกิดเมื่อ idle ถ้าปล่อยนานก่อนพูด ให้ลอง B อีกครั้งใกล้เวลา demo เพื่อยืนยันว่าบริการพร้อม การ warm-up ไม่รับประกันว่า latency/cold delay จะหายตลอดเวลา
 
-**Dashboard:** หากจะเปิด Portal ให้ login ล่วงหน้า ไป resource group ของโปรเจกต์ แล้วหา Workbook **MLOP Travel Style** หากเมนูต่างจากที่คุ้น ให้ค้น Workbooks หรือชื่อ resource แทนการเสียเวลาหาเมนูบนเวที ส่วน `reports/dashboard-workbook.json` เป็น export ที่เก็บ queries/config จริง ไม่ใช่ภาพหน้าจอ
+### 7.4 ลำดับแสดงบนเวที: C–F ประมาณ 90 วินาที
 
-**Cost:** เปิด reports/cost-per-1000.json ชี้ numerator, denominator, currency และ actual_limits อย่าส่ง query billing ใหม่ระหว่างพูด เพราะค่าขึ้นกับเวลาที่ provider รายงานและอาจใช้เวลารอ
+Notebook แสดงอังกฤษสั้น ๆ คุณใช้ประโยคไทยด้านล่างเพื่อซ้อมความเข้าใจ แล้วปรับเป็นอังกฤษได้ตามภาษานำเสนอของทีม
 
-### 7.4 ถ้า demo ไม่ผ่าน ให้แยกปัญหาก่อน
+| เวลาโดยประมาณ | เซลล์ที่รัน | คนดูจะเห็น | ตัวอย่างสิ่งที่พูด |
+|---|---|---|---|
+| 0–20 วินาที | C — Input | กราฟหกหมวดจากทั้งหมด 24 พร้อมรายการเต็มที่กดขยายได้ | “นี่เป็น profile ตัวอย่าง เราส่งคะแนน 24 หมวด ไม่ใช่แค่หกหมวดที่โชว์ครับ” |
+| 20–45 วินาที | D — Prediction | การ์ด segment, uncertainty, distance และ model version พร้อมป้าย mode | “API จัด profile นี้เป็นกลุ่ม และรายงาน version ที่ใช้ ระยะทางไม่ใช่เปอร์เซ็นต์ความมั่นใจครับ” |
+| 45–65 วินาที | E — Invalid input | INVALID INPUT: SAFELY REJECTED และ HTTP 422 | “ตอนนี้ส่งคะแนนไม่ครบ บริการปฏิเสธอย่างมีเหตุผลแทนการฝืนทำนายครับ” |
+| 65–85 วินาที | F — Batch | ส่ง 100 ตรวจผล 100 และ HTTP 200 | “หนึ่ง request รับได้สูงสุด 100 profiles และตรวจว่าผลครบและตรง expected ครับ” |
+| 85–90 วินาที | กลับ slide 7 | สไลด์ CI gate | “ต่อไปเราตรวจว่าการแก้โค้ดที่ไม่ผ่าน tests จะไม่ถูก deploy ครับ” |
 
-| สิ่งที่เห็น | หมายถึงอะไร / ทำอย่างไร |
+เซลล์ C ใช้ `CASE = 0` จากตัวอย่างที่บันทึกไว้ เปลี่ยนเป็น 1–4 เพื่อเลือก profile กลุ่มอื่นได้ สำหรับ CASE 0 saved expected คือ Segment 1, cluster 0, distance ประมาณ 4.1435 และ uncertain false โดย D เทียบผลจริงกับ golden reference ด้วย
+
+กราฟ C แสดง Category 1–6 เพื่อให้อ่านง่าย ยังส่งทั้งหมด 24 ช่องไป API ปุ่ม Show all 24 ratings ใช้เปิดรายการครบได้ ศูนย์ยังมีความหมายไม่แน่ชัด ห้ามพูดว่าคะแนนศูนย์ยืนยันว่าไม่ชอบ
+
+**422 ใน E เป็นผลที่ต้องการ:** จึงแสดงการ์ดเขียวว่า safely rejected มันไม่ได้ทำให้แอปล่ม ส่วน valid แต่ uncertain จะได้ 200 และไม่มี segment name ตามการออกแบบ
+
+Batch F ใช้ profile เดิมซ้ำ 100 ครั้งเพื่อเช็ค contract ไม่ใช่ตัวแทนข้อมูลผู้ใช้ใหม่ 100 คน และไม่ใช่ผลทดสอบ throughput/p95
+
+### 7.5 CI, failure และ input ใหม่ระหว่าง Q&A
+
+**G — CI evidence:** แสดง saved results ว่ารอบปกติ tests/deploy success และ deliberate failure tests failure/deploy skipped กดลิงก์เพื่อเปิด jobs จริง ไม่เริ่ม workflow ใหม่บนเวที
+
+- [Normal run](https://github.com/DewPerawis/MLOP-PJ/actions/runs/38173375457)
+- [Intentional test failure](https://github.com/DewPerawis/MLOP-PJ/actions/runs/38173380800)
+
+**H — Failure/recovery evidence:** แสดง saved staging incident ว่า wrong mapping ทำให้ canary 503 มี actual alert แล้วหลัง restore/restart ได้ canary 200 เวลารวม 7 นาที 16.4 วินาที รวม recovery ครั้งแรกที่ไม่ผ่าน เป็นเหตุการณ์ที่บันทึกไว้ ไม่ใช่กำลัง inject fault สดหรือ auto rollback
+
+ใช้ G ตอน slide 7 และ H ตอน slide 10 หากต้องการเปิดหลักฐาน ไม่ต้องเอามารวมในช่วง C–F ทั้งหมดจนเกิน 90 วินาที
+
+**I — Custom input:** เปลี่ยนค่าที่บรรทัด `custom_profile["Category 1"] = 2.5` หรือหมวดที่อาจารย์เลือก แล้วรันใหม่ เก็บ fields ครบ 24 ช่อง ค่า finite 0–5 โค้ดจะใช้ข้อมูลที่ดัดแปลงจริง ไม่แสดงผล golden เก่าทับ ตัวอย่างนี้ไม่มี expected segment ล่วงหน้า จึงไม่เทียบกับ label ของ CASE เดิม
+
+ถ้าต้องการ invalid เพิ่ม ลองค่ามากกว่า 5 ใน I เช่น 6 จะได้การ์ด INPUT REJECTED/HTTP 422 ไม่ใช่ชื่อกลุ่ม หากต้องการ input หลายหมวด ให้แก้สำเนา `custom_profile` ตามโจทย์ ไม่เปลี่ยน fixture file หรือ model
+
+**Dashboard/cost:** การ์ดใน Notebook ไม่แทน Azure monitoring เปิด Workbook MLOP Travel Style และรายงาน alert ที่เก็บไว้ตามสะดวก ส่วน cost ใช้ reports/cost-per-1000.json กับ docs/COST_REPORT.md ไม่ส่ง billing query ใหม่ระหว่างพูด
+
+### 7.6 ถ้า Cloud ใช้ไม่ได้: Local mode ที่เลือกเอง
+
+เปลี่ยน A เป็น `MODE = "local"` แล้วรัน A/B ใหม่ B จะเปิด **real local HTTP API** ด้วย bundle และ runtime เดิมบน laptop โดยเลือก loopback port ให้อัตโนมัติ คุณจึงไม่ต้องเปิด terminal server แยกหรือ Docker ค้างไว้
+
+เงื่อนไข Local mode คือมี `models/artifacts/abfd88e893ca/bundle.joblib` และ packages เดิมที่เข้ากันได้ การปิดเครื่องไม่ได้ลบไฟล์ bundle แต่ fresh clone จะไม่มี binary นี้โดยอัตโนมัติ ถ้ายังมี cloud ต้องจัดเตรียม/ตรวจ bundle ก่อน cleanup ไม่ควรรอไปดาวน์โหลดบนเวที
+
+Local B เริ่ม process ของตัวเอง และ J หยุดเฉพาะ process นั้น ไม่ฆ่า server ของงานอื่น Keep kernel/session นี้ไว้ขณะ demo ปิดหรือ restart kernel แล้วให้เตรียม A/B ใหม่
+
+ผลทุกการ์ดระบุ **LIVE LOCAL API — NOT AZURE** ต้องพูดว่ากำลังใช้ local fallback ไม่อ้างว่าเป็น cloud live demo หรือใช้ค่า latency local แทนผล cloud ในสไลด์
+
+ถ้าทั้งสอง mode ใช้ไม่ได้ ให้เปิด `output/presentation/evidence/api-demo.json` เป็น saved real HTTP evidence และบอกตรง ๆ ว่ารอบนี้ live demo ไม่สำเร็จ ไม่ใช้ข้อมูลเก่ามาแสดงเป็น prediction สด
+
+### 7.7 หลัง demo / สิ่งที่ต้องเปิดค้างไว้
+
+| สิ่งที่เปิด | Cloud mode | Local mode |
+|---|---|---|
+| Notebook/kernel | เปิดไว้ระหว่าง demo | เปิดไว้ระหว่าง demo เพื่อควบคุม local process |
+| Docker Desktop / local terminal server | ไม่ต้องใช้ | ไม่ต้องใช้ เพราะ B เปิด local server ให้ |
+| อินเทอร์เน็ต | ต้องใช้เพื่อเรียก Azure และเปิด Actions/Portal | Local prediction ใช้ได้โดยไม่ต้องต่อ Azure; Actions/Portal ยังต้องมี internet |
+| Azure resources | ต้องยังมีอยู่ก่อนจบ cloud demo | ไม่ต้องใช้สำหรับ local prediction แต่ local modeไม่แทน cloud evidence |
+
+รัน **J** เมื่อเลิกใช้ Notebook เพื่อล้าง session/หยุด local process ที่สร้างเอง J ไม่ลบ Azure resources เมื่อ final demo เสร็จและเก็บหลักฐานแล้วจึงทำ cloud cleanup ตาม `docs/FINAL_STEPS.md` และตรวจ cleanup_verified=true
+
+อย่ากด Run All ระหว่างพูด เพราะจะรวม preparation, optional input และ stop cell J จน session ปิด เมื่อ kernel ใหม่ให้ใช้ A/B แล้วค่อย C–F ตามลำดับ
+
+### 7.8 ถ้า demo ไม่ผ่าน ให้แยกปัญหา
+
+| สิ่งที่เห็น | ควรทำอะไร |
 |---|---|
-| ModuleNotFoundError | รัน A ก่อน และตรวจ kernel/project path ไม่ต้องติดตั้ง package สุ่ม |
-| Kernel assertion ไม่ผ่าน | เลือก project WSL kernel ไม่ใช้ base environment |
-| Timeout / URL เปิดไม่ได้ | ตรวจ network และว่า resources ยังอยู่; ลอง ready ก่อนเวที หากยังไม่ได้ให้ใช้ saved evidence และบอกว่ารอบนี้ live connection ไม่สำเร็จ |
-| `/ready` เป็น 503 | บริการยังไม่พร้อมใช้ bundle; อ่าน response/log ไม่บอกว่าผ่านเพราะ health เป็น 200 |
-| Valid fixture ได้ 422 | ตรวจ JSON ว่ามี profiles list และครบชื่อ 24 ช่อง; ลอง C เดิมโดยไม่แก้ fixture |
-| D ได้ 422 | เป็นผลที่ตั้งใจให้เกิด ไม่ใช่เหตุให้หยุดทั้งหมด |
-| Canary 503 หรือ golden mismatch | เป็นปัญหา correctness ต้องเก็บผลและตรวจ version/mapping ไม่ลบ assertion เพื่อให้ดูผ่าน |
-| Request ID เปลี่ยน | ปกติ เพราะแต่ละ request มี ID ใหม่ |
+| A หา root ไม่เจอ | เปิดไฟล์จาก repo ที่มี reports ไม่ใช่สำเนา Notebook เดี่ยว ๆ |
+| Kernel assertion ไม่ผ่าน | เลือก MLOP-PJ WSL interpreter ไม่ใช้ base/Windows Python |
+| ModuleNotFoundError: demo_support | ตรวจว่ามี helper ใน output/presentation แล้วเริ่ม A ใหม่ |
+| READY FOR DEMO ยังไม่ขึ้น | รอผล B ก่อนพูด หาก PREPARATION STOPPED ให้แก้ mode/network/runtime ก่อนแสดง |
+| Cloud timeout/URL ไม่ได้ | ตรวจอินเทอร์เน็ตและว่า resources ยังอยู่; เลือก local fallback เองถ้าพร้อม |
+| Local bundle missing | Local mode ไม่มีไฟล์โมเดล; เตรียม bundle ก่อนวันนำเสนอ หรือใช้ cloud ที่ยังอยู่ |
+| Local process stopped | เปิด log ชื่อ demo-api-… ใน tmp ที่ข้อความ error ชี้ ตรวจ package/runtime ไม่ติดตั้งสุ่ม |
+| E ได้ 422 | เป็น expected result; อธิบายว่าข้อมูลขาดช่องถูกปฏิเสธ |
+| Canary/golden mismatch | เก็บ error แล้วตรวจ version/mapping ไม่ลบ assertion หรือเรียกว่าผ่าน |
+| Running C–I หลัง J | เริ่ม A/B ใหม่เพราะปิด session ไปแล้ว |
 
-กรณี cloud ล่มจริง ให้เปิด `output/presentation/evidence/api-demo.json` แล้วบอกชัดว่าเป็น saved real HTTP evidence **ไม่ใช่ live result** ภาพหรือไฟล์ที่บันทึกไว้ช่วยอธิบายได้ แต่ไม่แทนผล live demo ที่สำเร็จในรอบนำเสนอ
+ไฟล์ LIVE_DEMO ที่ส่งให้ยังไม่มี saved execution outputs เพื่อไม่ให้ผลครั้งก่อนดูเหมือนผลสด การตรวจของผู้ช่วยทำใน fresh WSL process แยก ทดสอบจริงทั้ง cloud/local, profiles ทั้งห้า, invalid, batch และ restart/stop local process ผ่าน แต่ไม่ได้ปิด/เปิด laptop จริง ไม่มี train/deploy/fault injection/cleanup ในการตรวจนี้
 
 ## 8. อะไรเป็น requirement และอะไรยังต้องทำหลัง demo
 
@@ -673,7 +617,7 @@ Lab 5 Task 5 ต้องใช้ actual billing [4] และ rubric ของ
 
 ไฟล์ภายในต่อไปนี้อ้างจากราก `MLOP-PJ` ตัวเลขระบบมาจาก reports ไม่ได้มาจากเอกสารวิธีใช้ของ library
 
-- `output/presentation/MLOP-PJ_Presentation.pptx`, `slide_sources.json`, `slide_guide.md`: ลำดับหน้าและเนื้อหาสไลด์จริง
+- `output/presentation/6688012_6688121_6688193_Presentation.pptx`, `slide_sources.json`, `slide_guide.md`: ลำดับหน้าและเนื้อหาสไลด์จริง
 - `src/data.py`, `train.py`, `bundle.py`, `service/app.py`, `runtime.py`: วิธีเตรียมข้อมูล ฝึก และตอบ request
 - `scripts/train_selected.py`, `http_check.py`, `cloudlayer/finish_build.py`, `finish_monitor.py`, `finish_ci.py`: training/cloud evidence/monitoring/CI
 - `reports/data-audit.json`, `prepared-data.json`, `selection.json`, `bundle-manifest.json`, `azure-training-proof.json`, `finish-training-registry.json`: ข้อมูลและโมเดล

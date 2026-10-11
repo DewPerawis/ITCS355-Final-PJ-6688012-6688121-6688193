@@ -1,0 +1,12 @@
+{
+  "notebook_code_cells": 10,
+  "setup_from_notebooks_directory": "passed",
+  "local_real_http": "passed",
+  "five_golden_profiles": "passed",
+  "missing_and_out_of_range_inputs": "passed",
+  "batch_100": "passed",
+  "local_restart_and_owned_process_cleanup": "passed",
+  "cloud_real_http": "passed",
+  "display_mode_labels": "passed",
+  "scope": "Fresh processes tested; no physical laptop reboot was performed. No train, deploy, fault injection or Azure cleanup was run."
+}

@@ -1,6 +1,6 @@
 # Presentation
 
-Open `output/presentation/MLOP-PJ_Presentation.pptx`. It has 15 slides, short speaker notes, and an 8-minute plan. Keep 5 more minutes for questions. The PDF is in `output/pdf/MLOP-PJ_Presentation.pdf`.
+Open `output/presentation/6688012_6688121_6688193_Presentation.pptx`. It has 15 slides, short speaker notes, and an 8-minute plan. Keep 5 more minutes for questions. The PDF is in `output/presentation/6688012_6688121_6688193_Presentation.pdf`.
 
 | Slides | Topic | Time |
 |---|---|---|
@@ -13,28 +13,18 @@ Open `output/presentation/MLOP-PJ_Presentation.pptx`. It has 15 slides, short sp
 
 ## Live demo
 
-Use the project WSL kernel in Notebook 22. Add one temporary cell and run this before presenting. It makes a few API requests; it does not retrain or change cloud configuration.
+Open `output/presentation/LIVE_DEMO.ipynb` in VS Code WSL with the MLOP-PJ kernel. Read section 7 of `output/presentation/PROJECT_SUMMARY_TH.md` for the full Thai guide.
 
-```python
-import json
-import sys
-from pathlib import Path
+After reopening the laptop or restarting the kernel:
 
-ROOT = next(p for p in (Path.cwd(), *Path.cwd().parents)
-            if (p / "reports/golden-profiles.json").is_file())
-if str(ROOT) not in sys.path:
-    sys.path.insert(0, str(ROOT))
-from scripts.http_check import http_call, smoke
+1. Run A with `MODE = "cloud"`, then B. Wait for READY FOR DEMO.
+2. On stage, run C (input), D (prediction), E (expected 422), and F (batch 100). The output cards call the real API and show the mode.
+3. Use G for saved CI links and H for the saved staging incident. I accepts modified input during Q&A.
+4. Use J to stop the local demo process. Cloud cleanup is a separate final step.
 
-fixture = json.loads((ROOT / "reports/golden-profiles.json").read_text())
-url = json.loads((ROOT / "reports/ci-deploy-result.json").read_text())["url"]
-print("Ready:", http_call(url, "/ready", timeout=60)[:2])
-print("Checks:", smoke(url, fixture))
-print("Prediction:", http_call(url, "/predict", {"profiles": [fixture["profiles"][0]]})[:2])
-print("Missing fields:", http_call(url, "/predict", {"profiles": [{"Category 1": 2}]})[:2])
-```
+Cloud mode needs internet and existing Azure resources, but no local server, Docker, Azure login or retraining. Local fallback is explicit: change MODE to local, then rerun A/B. It needs the existing bundle and matching API packages; B starts the local server. Keep the kernel open while presenting.
 
-Show the segment, version, and uncertainty flag. Then show the 422 validation error and the successful batch check. Open the two Actions links on slide 7. Show the saved incident on slide 10; do not inject another fault during a short talk.
+Do not run all cells on stage: that includes preparation, optional inputs and the stop cell. Collapse code and read the result cards. Local results and saved evidence must be labelled honestly.
 
 ## Evidence and limits
 
