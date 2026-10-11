@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "transport": "real HTTP",
+  "url": "https://travel-style-492ea24d.icymushroom-08e3ded0.centralindia.azurecontainerapps.io",
+  "status_codes": [
+    200,
+    200,
+    200,
+    422,
+    200
+  ],
+  "model_version": "abfd88e893ca",
+  "golden_predictions_match": true,
+  "batch_100_passed": true
+}

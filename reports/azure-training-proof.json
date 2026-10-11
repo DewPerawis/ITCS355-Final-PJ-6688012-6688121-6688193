@@ -1,0 +1,17 @@
+{
+  "training_rows": 3817,
+  "profiles_sha256": "dd202f838ece1c4c2be3859d7e774afbf9cdfcfa6b999c8caa2adfd8725c79b1",
+  "model_version": "abfd88e893ca",
+  "canonical_sha256": "71f3ba41b4b964f5beb31e3d6e13b835b1dd2538aa663741d8837301be9dff13",
+  "retrained_pipeline_sha256": "23ab419c06b757ae53ec5ee52a7e1dd3c5e574053c207befa523b4a44edcae6e",
+  "fresh_fit_equivalent": true,
+  "canonical_export": true,
+  "export_reason": "Preserve the tested bundle bytes after checking fresh-fit equivalence.",
+  "packages": {
+    "numpy": "2.2.6",
+    "pandas": "2.2.3",
+    "scikit-learn": "1.6.1",
+    "joblib": "1.6.0",
+    "scipy": "1.18.1"
+  }
+}

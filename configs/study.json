@@ -1,0 +1,10 @@
+{
+  "k_values": [3, 4, 5, 6, 7, 8],
+  "seeds": [42, 43, 44],
+  "zero_policies": ["keep_zero", "zero_as_missing"],
+  "n_init": 10,
+  "min_validation_cluster_fraction": 0.02,
+  "min_stability_ari": 0.8,
+  "bundle_seed": 42,
+  "distance_quantile": 0.95
+}

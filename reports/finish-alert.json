@@ -1,0 +1,17 @@
+{
+  "checked_at": "2026-10-11T18:24:29.012235+00:00",
+  "phase": "alert",
+  "errors": [],
+  "alerts": [
+    {
+      "alertRule": "/subscriptions/b175b91e-058e-4a22-8e96-39e6e432b006/resourceGroups/rg-mlop-pj-492ea24d/providers/microsoft.insights/scheduledqueryrules/mlop-semantic-failure",
+      "monitorCondition": "Resolved",
+      "alertState": "New",
+      "startDateTime": "2026-10-11T16:56:39.5744343Z",
+      "lastModifiedDateTime": "2026-10-11T17:21:41.138289Z"
+    }
+  ],
+  "alert_fired": true,
+  "pending": false,
+  "next": "Actual alert evidence found. Save the alert screenshot and continue to CI/CD."
+}

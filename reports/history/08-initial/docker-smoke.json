@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "transport": "real HTTP",
+  "url": "http://127.0.0.1:49821",
+  "status_codes": [
+    200,
+    200,
+    200,
+    422,
+    200
+  ],
+  "model_version": "abfd88e893ca",
+  "golden_predictions_match": true,
+  "batch_100_passed": true,
+  "image_id": "sha256:136feea52ca376b6bc36ab8545f8c1293b4572309c82815fcbe7afba7b7dfb04",
+  "startup_to_ready_ms": 4911.551551005687,
+  "startup_scope": "local Docker run to ready, including polling; not Azure cold start"
+}

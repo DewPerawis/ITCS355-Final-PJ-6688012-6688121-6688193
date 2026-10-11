@@ -1,0 +1,21 @@
+{
+  "checked_at": "2026-10-11T13:22:32.233366+00:00",
+  "changes": [
+    "register_Microsoft.App"
+  ],
+  "errors": [
+    {
+      "step": "install_containerapp_extension",
+      "code": "CLIError"
+    }
+  ],
+  "checks_failed": [],
+  "resources_created": false,
+  "status_only": false,
+  "setup_ready": false,
+  "extensions": [
+    "ml"
+  ],
+  "provider_state": "Registering",
+  "next": "Read status again if Registering; stop on errors."
+}

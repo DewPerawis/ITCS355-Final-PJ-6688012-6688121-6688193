@@ -1,0 +1,12 @@
+{
+  "checked_at": "2026-10-11T17:58:57.539547+00:00",
+  "phase": "ci-setup",
+  "errors": [],
+  "custom_role_id": "da267c74-3e3c-4cd3-9d92-d4bc00419a0a",
+  "ci_identity_configured": true,
+  "repository": "DewPerawis/MLOP-PJ",
+  "variables_file": "tmp/github-variables.json",
+  "workflow_file": ".github/workflows/ci.yml",
+  "github_variables_configured": false,
+  "next": "Set repository variables, create the staging environment, and push reviewed files. Run normal and demo_failure workflows. No commit or push was performed by this script."
+}

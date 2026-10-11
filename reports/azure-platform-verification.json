@@ -1,0 +1,35 @@
+{
+  "checked_at": "2026-10-11T15:16:24.576464+00:00",
+  "resources_changed": false,
+  "platform_verified": true,
+  "checks_failed": [],
+  "resource_group": "rg-mlop-pj-492ea24d",
+  "region": "centralindia",
+  "suffix": "492ea24d",
+  "project_tag": "mlop-pj-6688012",
+  "budget_thb_before_credits": 150,
+  "cleanup_by_utc": "2026-10-13T14:15:40.612068+00:00",
+  "checks": {
+    "storage": true,
+    "registry": true,
+    "logs": true,
+    "vault": true,
+    "insights": true,
+    "environment": true,
+    "workspace": true,
+    "workspace_identity": true,
+    "workspace_links": true,
+    "identity_datastores": true,
+    "storage_shared_keys_disabled": true,
+    "registry_admin_disabled": true,
+    "consumption_environment": true,
+    "private_data_container": true,
+    "storage_workspace_role": true,
+    "vault_workspace_role": true,
+    "registry_workspace_role": true
+  },
+  "deployment_state": "Failed",
+  "limits": [
+    "Configuration and assigned roles are checked; data-plane operations and role propagation still need testing."
+  ]
+}

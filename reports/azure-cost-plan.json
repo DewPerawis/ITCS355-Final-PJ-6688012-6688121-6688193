@@ -1,0 +1,91 @@
+{
+  "checked_at": "2026-10-11T14:47:47.626559+00:00",
+  "region": "centralindia",
+  "source": "https://prices.azure.com/api/retail/prices",
+  "assumptions": {
+    "planning_thb_per_usd": 40,
+    "exchange_rate_note": "Planning assumption, not a live exchange rate or Azure billing rate.",
+    "registry_days": 2,
+    "training_vm_hours": 1,
+    "app_active_hours": 2,
+    "app_cpu": 1,
+    "app_memory_gib": 2,
+    "app_requests": 10000,
+    "other_services_reserve_thb": 60,
+    "scope": "One short demo: Basic ACR, Linux DS2 v2 training, one Consumption app replica. No Dedicated profiles or private endpoints.",
+    "cleanup": "Scale the app to zero between tests, use zero idle training nodes, and remove paid resources within 48 hours after the demo. Cleanup is a separate user-run step."
+  },
+  "rates": {
+    "acr": {
+      "meterName": "Basic Registry Unit",
+      "unitOfMeasure": "1/Day",
+      "retailPrice": 0.1666,
+      "currencyCode": "USD",
+      "productName": "Container Registry",
+      "skuName": "Basic",
+      "armRegionName": "centralindia",
+      "effectiveStartDate": "2018-01-01T00:00:00Z"
+    },
+    "vm": {
+      "meterName": "DS2 v2",
+      "unitOfMeasure": "1 Hour",
+      "retailPrice": 0.169,
+      "currencyCode": "USD",
+      "productName": "Virtual Machines DSv2 Series",
+      "skuName": "DS2 v2",
+      "armRegionName": "centralindia",
+      "effectiveStartDate": "2025-05-01T00:00:00Z"
+    },
+    "cpu": {
+      "meterName": "Standard vCPU Active Usage",
+      "unitOfMeasure": "1 Second",
+      "retailPrice": 2.4e-05,
+      "currencyCode": "USD",
+      "productName": "Azure Container Apps",
+      "skuName": "Standard",
+      "armRegionName": "centralindia",
+      "effectiveStartDate": "2022-06-01T00:00:00Z"
+    },
+    "memory": {
+      "meterName": "Standard Memory Active Usage",
+      "unitOfMeasure": "1 GiB Second",
+      "retailPrice": 3e-06,
+      "currencyCode": "USD",
+      "productName": "Azure Container Apps",
+      "skuName": "Standard",
+      "armRegionName": "centralindia",
+      "effectiveStartDate": "2022-06-01T00:00:00Z"
+    },
+    "requests": {
+      "meterName": "Standard Requests",
+      "unitOfMeasure": "1M",
+      "retailPrice": 0.4,
+      "currencyCode": "USD",
+      "productName": "Azure Container Apps",
+      "skuName": "Standard",
+      "armRegionName": "centralindia",
+      "effectiveStartDate": "2022-06-01T00:00:00Z"
+    }
+  },
+  "gross_usd_by_service": {
+    "acr_basic": 0.3332,
+    "training_linux_vm": 0.169,
+    "app_active_cpu": 0.1728,
+    "app_active_memory": 0.0432,
+    "app_requests": 0.004
+  },
+  "priced_subtotal_thb": 28.89,
+  "unpriced_services_reserve_thb": 60,
+  "planned_total_thb": 88.89,
+  "budget_thb_before_credits": 150,
+  "within_planning_budget": true,
+  "credits_and_free_grants_applied": false,
+  "deploy_ready": false,
+  "limits": [
+    "This is a plan, not a bill or a spending cap.",
+    "Storage, logs, alerts, disks, network, and taxes are not priced; the reserve is an assumption.",
+    "Extra runtime or retained resources can exceed this plan.",
+    "Azure billing currency and exchange rate may differ.",
+    "Permissions and Azure ML/Container Apps quota still need review."
+  ]
+}

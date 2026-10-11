@@ -1,0 +1,13 @@
+{
+  "checked_at": "2026-10-11T16:26:31.745143+00:00",
+  "phase": "assets",
+  "errors": [],
+  "local_tests_passed": true,
+  "dvc_fresh_pull_passed": true,
+  "model_version": "abfd88e893ca",
+  "artifact_sha256": "71f3ba41b4b964f5beb31e3d6e13b835b1dd2538aa663741d8837301be9dff13",
+  "source_sha256": "77ea7d031dd98b7c1fcf66be162c3e1f6508dad7a6432b192dc35a85d46aedeb",
+  "local_image": "mlop-pj-api:finish-abfd88e893ca-77ea7d031dd9",
+  "image_uri": "acrmloppj492ea24d.azurecr.io/travel-style@sha256:05d1819321f472b39fe1035cb9cee68fc7432a9ad2be4b56afdc8c85af562fcc",
+  "assets_ready": true
+}

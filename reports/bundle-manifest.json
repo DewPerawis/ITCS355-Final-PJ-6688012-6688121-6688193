@@ -1,0 +1,74 @@
+{
+  "model_version": "abfd88e893ca",
+  "artifact": "models/artifacts/abfd88e893ca/bundle.joblib",
+  "artifact_sha256": "71f3ba41b4b964f5beb31e3d6e13b835b1dd2538aa663741d8837301be9dff13",
+  "raw_sha256": "c07e7751f429ebe6225a77a32e61770dbb7197fd253f667e0434424adbaf7a33",
+  "selection_sha256": "abfd88e893ca347aa2e3fdf90e3f427c1d61615554966d182cf3ac583280a64e",
+  "features": [
+    "Category 1",
+    "Category 2",
+    "Category 3",
+    "Category 4",
+    "Category 5",
+    "Category 6",
+    "Category 7",
+    "Category 8",
+    "Category 9",
+    "Category 10",
+    "Category 11",
+    "Category 12",
+    "Category 13",
+    "Category 14",
+    "Category 15",
+    "Category 16",
+    "Category 17",
+    "Category 18",
+    "Category 19",
+    "Category 20",
+    "Category 21",
+    "Category 22",
+    "Category 23",
+    "Category 24"
+  ],
+  "zero_policy": "keep_zero",
+  "k": 5,
+  "mapping": {
+    "0": "Segment 1",
+    "1": "Segment 2",
+    "2": "Segment 3",
+    "3": "Segment 4",
+    "4": "Segment 5"
+  },
+  "mapping_status": "provisional; review the cluster profiles",
+  "thresholds": {
+    "0": 5.055547158848768,
+    "1": 5.240513311188469,
+    "2": 5.361835703346011,
+    "3": 5.250727235253614,
+    "4": 6.2988360522744165
+  },
+  "threshold_rule": "per-cluster training distance 95% quantile; not a probability",
+  "validation_uncertain_fraction": 0.0587515299877601,
+  "test_metrics": {
+    "silhouette": 0.14451545819379666,
+    "davies_bouldin": 1.9913609603315208,
+    "min_cluster_fraction": 0.042682926829268296,
+    "cluster_counts": [
+      281,
+      86,
+      278,
+      35,
+      140
+    ]
+  },
+  "reload_check_passed": true,
+  "python": "3.13.11",
+  "packages": {
+    "numpy": "2.2.6",
+    "pandas": "2.2.3",
+    "scikit-learn": "1.6.1",
+    "joblib": "1.6.0"
+  },
+  "registry_uploaded": false,
+  "deployed": false
+}

@@ -1,0 +1,15 @@
+{
+  "check": "pip dry-run with the existing notebook constraints",
+  "performed_by": "assistant",
+  "packages_installed_by_this_check": false,
+  "resolver_passed": true,
+  "training_package_changes": false,
+  "planned_new_packages": 130,
+  "top_level_versions": {
+    "mlflow": "3.17.0",
+    "dvc": "3.67.1",
+    "fastapi": "0.143.0",
+    "uvicorn": "0.54.0",
+    "httpx": "0.28.1"
+  }
+}

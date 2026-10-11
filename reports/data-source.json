@@ -1,0 +1,11 @@
+{
+  "dataset": "Travel Review Ratings",
+  "doi": "10.24432/C5C31Q",
+  "license": "CC BY 4.0",
+  "source_url": "https://archive.ics.uci.edu/static/public/485/tarvel%2Breview%2Bratings.zip",
+  "raw_file": "data/raw/google_review_ratings.csv",
+  "bytes": 637001,
+  "sha256": "c07e7751f429ebe6225a77a32e61770dbb7197fd253f667e0434424adbaf7a33",
+  "downloaded_at": "2026-10-11T10:57:43.818895+00:00",
+  "checked_at": "2026-10-11T10:57:43.852887+00:00"
+}

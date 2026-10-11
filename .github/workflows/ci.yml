@@ -1,0 +1,75 @@
+name: Test and deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      demo_failure:
+        description: Fail a test to demonstrate the deployment gate
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mlop-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    env:
+      DEMO_FAIL: ${{ inputs.demo_failure || 'false' }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.13.11'
+      - run: python -m pip install -r requirements-service.lock.txt httpx==0.28.1
+      - run: python scripts/portability_audit.py
+      - run: python -m unittest tests.test_contract_ci tests.test_blob_sync tests.test_platform_verify tests.test_platform_preview tests.test_platform_deploy tests.test_access_check tests.test_preflight tests.test_cost_plan tests.test_runtime.RuntimeTests.test_changed_artifact_is_rejected_before_loading
+
+  deploy:
+    needs: tests
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    environment: staging
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      STORAGE_ACCOUNT: ${{ vars.STORAGE_ACCOUNT }}
+      CONTAINER_REGISTRY: ${{ vars.CONTAINER_REGISTRY }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.13.11'
+      - uses: Azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      - run: python -m pip install -r requirements-service.lock.txt httpx==0.28.1
+      - run: python -m cloudlayer.ci_fetch
+      - run: python -m unittest tests.test_api tests.test_runtime
+      - name: Build and push an immutable image
+        shell: bash
+        run: |
+          MODEL_VERSION=$(python -c 'import json; print(json.load(open("reports/bundle-manifest.json"))["model_version"])')
+          BASE_IMAGE=$(python -c 'import json; print(json.load(open("reports/serving-recheck/docker-image.json"))["base_image"])')
+          ACR_NAME=${CONTAINER_REGISTRY%%.*}
+          az acr login --name "$ACR_NAME"
+          IMAGE_TAG="$CONTAINER_REGISTRY/travel-style:ci-$GITHUB_SHA"
+          docker build --build-arg "PYTHON_IMAGE=$BASE_IMAGE" --build-arg "MODEL_VERSION=$MODEL_VERSION" --label "org.opencontainers.image.revision=$GITHUB_SHA" -t "$IMAGE_TAG" .
+          docker push "$IMAGE_TAG"
+          IMAGE_DIGEST=$(az acr repository show --name "$ACR_NAME" --image "travel-style:ci-$GITHUB_SHA" --query digest -o tsv)
+          echo "IMAGE_URI=$CONTAINER_REGISTRY/travel-style@$IMAGE_DIGEST" >> "$GITHUB_ENV"
+      - run: python -m cloudlayer.ci_deploy
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: deployment-evidence
+          path: reports/ci-deploy-result.json

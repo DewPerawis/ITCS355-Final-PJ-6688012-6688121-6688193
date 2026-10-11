@@ -1,0 +1,72 @@
+{
+  "checked_at": "2026-10-11T14:47:46.640953+00:00",
+  "resource_group_created": false,
+  "paid_resources_created": false,
+  "validation_passed": true,
+  "preview_ready": true,
+  "errors": [],
+  "resource_group": "rg-mlop-pj-492ea24d",
+  "region": "centralindia",
+  "suffix": "492ea24d",
+  "project_tag": "mlop-pj-6688012",
+  "budget_thb_before_credits": 150,
+  "allowed_regions": [
+    "centralindia",
+    "indiasouthcentral",
+    "indonesiacentral",
+    "japanwest",
+    "malaysiawest"
+  ],
+  "group_reused": true,
+  "resource_group_location": "southeastasia",
+  "cleanup_by_utc": "2026-10-13T14:15:40.612068+00:00",
+  "template_sha256": "6ac9e777785bb30d65491ef9bf7078e99cba7217705064820153bb1f137ae8c5",
+  "parameters_sha256": "53685a0d3af0b45a0792db6a8662ed7f5211367e450e93b9bf8929661dd35d32",
+  "changes": [
+    {
+      "change": "Create",
+      "resource": "Microsoft.App/managedEnvironments/cae-mlop-pj-492ea24d"
+    },
+    {
+      "change": "Create",
+      "resource": "Microsoft.ContainerRegistry/registries/acrmloppj492ea24d"
+    },
+    {
+      "change": "Create",
+      "resource": "Microsoft.ContainerRegistry/registries/acrmloppj492ea24d/providers/Microsoft.Authorization/roleAssignments/1f2ee09a-5a78-5863-818d-5cb24a752c03"
+    },
+    {
+      "change": "Create",
+      "resource": "Microsoft.Insights/components/ai-mlop-pj-492ea24d"
+    },
+    {
+      "change": "Create",
+      "resource": "Microsoft.KeyVault/vaults/kv-mlop-pj-492ea24d"
+    },
+    {
+      "change": "Create",
+      "resource": "Microsoft.KeyVault/vaults/kv-mlop-pj-492ea24d/providers/Microsoft.Authorization/roleAssignments/2adc23dc-cece-54be-82ec-a6b989ff3977"
+    },
+    {
+      "change": "Create",
+      "resource": "Microsoft.MachineLearningServices/workspaces/ml-mlop-pj-492ea24d"
+    },
+    {
+      "change": "Create",
+      "resource": "Microsoft.OperationalInsights/workspaces/log-mlop-pj-492ea24d"
+    },
+    {
+      "change": "Create",
+      "resource": "Microsoft.Storage/storageAccounts/stmloppj492ea24d"
+    },
+    {
+      "change": "Create",
+      "resource": "Microsoft.Storage/storageAccounts/stmloppj492ea24d/blobServices/default/containers/mlop-data"
+    },
+    {
+      "change": "Create",
+      "resource": "Microsoft.Storage/storageAccounts/stmloppj492ea24d/providers/Microsoft.Authorization/roleAssignments/20e8503f-2538-5669-a115-02e71b00484c"
+    }
+  ],
+  "next": "Review the preview before paid deployment. Do not apply if preview_ready is false."
+}

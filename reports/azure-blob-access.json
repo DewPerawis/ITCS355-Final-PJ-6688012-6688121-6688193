@@ -1,0 +1,13 @@
+{
+  "checked_at": "2026-10-11T15:35:15.387876+00:00",
+  "phase": "access",
+  "errors": [],
+  "blob_access_ready": true,
+  "resource_group": "rg-mlop-pj-492ea24d",
+  "region": "centralindia",
+  "suffix": "492ea24d",
+  "project_tag": "mlop-pj-6688012",
+  "budget_thb_before_credits": 150,
+  "user_role_created": true,
+  "role_scope": "project storage account"
+}

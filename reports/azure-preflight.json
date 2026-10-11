@@ -1,0 +1,71 @@
+{
+  "checked_at": "2026-10-11T13:03:44.449738+00:00",
+  "candidate_region": "southeastasia",
+  "budget_thb_before_credits": 150,
+  "resources_created": false,
+  "provider_registration_changed": false,
+  "permissions_reviewed": false,
+  "cost_reviewed": false,
+  "container_apps_quota_reviewed": false,
+  "azure_ml_quota_reviewed": false,
+  "deploy_ready": false,
+  "checks_failed": [],
+  "subscription_enabled": true,
+  "region_listed_for_subscription": true,
+  "providers": {
+    "Microsoft.App": {
+      "registration_state": "NotRegistered",
+      "resource_type": "managedEnvironments",
+      "region_listed": true
+    },
+    "Microsoft.ContainerRegistry": {
+      "registration_state": "Registered",
+      "resource_type": "registries",
+      "region_listed": true
+    },
+    "Microsoft.MachineLearningServices": {
+      "registration_state": "Registered",
+      "resource_type": "workspaces",
+      "region_listed": true
+    },
+    "Microsoft.Storage": {
+      "registration_state": "Registered",
+      "resource_type": "storageAccounts",
+      "region_listed": true
+    },
+    "Microsoft.OperationalInsights": {
+      "registration_state": "Registered",
+      "resource_type": "workspaces",
+      "region_listed": true
+    },
+    "Microsoft.Insights": {
+      "registration_state": "Registered",
+      "resource_type": "components",
+      "region_listed": true
+    },
+    "Microsoft.KeyVault": {
+      "registration_state": "Registered",
+      "resource_type": "vaults",
+      "region_listed": true
+    }
+  },
+  "vm_quota": [
+    {
+      "name": "cores",
+      "limit": 6,
+      "current": 0,
+      "remaining": 6
+    },
+    {
+      "name": "standardDSv2Family",
+      "limit": 4,
+      "current": 0,
+      "remaining": 4
+    }
+  ],
+  "quota_note": "VM quota only; this does not prove Azure ML compute or Container Apps capacity.",
+  "extensions": [
+    "ml"
+  ],
+  "next": "Review missing providers, permissions, service quotas, current prices, and cleanup timing."
+}

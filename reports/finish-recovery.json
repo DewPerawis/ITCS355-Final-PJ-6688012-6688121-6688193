@@ -1,0 +1,14 @@
+{
+  "checked_at": "2026-10-11T17:01:37.398447+00:00",
+  "phase": "recovery",
+  "errors": [],
+  "recovery_started_at": "2026-10-11T17:01:39.423159+00:00",
+  "recovered_at": "2026-10-11T17:02:08.864206+00:00",
+  "recovery_canary_status": 200,
+  "recovered": true,
+  "recovery_url": "https://failure-492ea24d.icymushroom-08e3ded0.centralindia.azurecontainerapps.io",
+  "recovery_method": "Restore configuration, stop/start staging, and confirm semantic canary twice",
+  "failure_app": "failure-492ea24d",
+  "failure_demo_passed": true,
+  "original_detected_at": "2026-10-11T16:54:52.429713+00:00"
+}

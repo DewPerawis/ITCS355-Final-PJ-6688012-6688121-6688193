@@ -1,0 +1,27 @@
+{
+  "created_at": "2026-10-11T12:24:15.769889+00:00",
+  "base_image": "python@sha256:70729b46c69b4f1e97c4822c1af3df53a1476cf5ddc6c087c0c10bc3a5678c2f",
+  "image_tag": "mlop-pj-api:abfd88e893ca",
+  "image_id": "sha256:136feea52ca376b6bc36ab8545f8c1293b4572309c82815fcbe7afba7b7dfb04",
+  "size_bytes": 154620585,
+  "architecture": "amd64",
+  "os": "linux",
+  "model_version": "abfd88e893ca",
+  "artifact_sha256": "71f3ba41b4b964f5beb31e3d6e13b835b1dd2538aa663741d8837301be9dff13",
+  "source_sha256": {
+    "src/__init__.py": "3d07550437ce41a13f8a7c7765bd74de30b9c1dd3c01cb06d5f071945980c77d",
+    "src/bundle.py": "eb56060f4da4f900732a8dc91c29567b7f9dc30c1a2a909d3b46d91da628748d",
+    "src/data.py": "137524721db5fed7f06174f1092ca3f4e0544877daddc342b5c9727b3b9727a4",
+    "src/train.py": "96ce6842aced2a4900f71658072d5992fdaf068032c8317154a716931761712b",
+    "service/__init__.py": "e263f4cb7c33898d4b9fb6d993c06365604bfbad8b03184950094b34ccdf27d3",
+    "service/app.py": "fc0762ed0e5bb141d434de27f10c8ca87484d984708fc8abe40671c39112448c",
+    "service/runtime.py": "5e44b76f72f4f02cfb03b538ecb28b3602b69f4a22ce0b9da600905bfea596d1"
+  },
+  "service_lock_sha256": "650ae1526fbd9efa2c18d9c1c3b6f07842d5784bbdff60072d5a1f703240f33e",
+  "reused_image": true,
+  "container_limits": {
+    "cpus": 1,
+    "memory_mb": 512
+  },
+  "cloud_uploaded": false
+}

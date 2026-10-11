@@ -1,0 +1,10 @@
+{
+  "checked_at": "2026-10-11T14:27:37.559229+00:00",
+  "resource_group_created": false,
+  "paid_resources_created": false,
+  "validation_passed": false,
+  "preview_ready": false,
+  "errors": [
+    "ValueError: Finish the permissions and quota checks in 14 first."
+  ]
+}

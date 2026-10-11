@@ -1,0 +1,74 @@
+{
+  "checked_at": "2026-10-11T15:35:40.681721+00:00",
+  "phase": "upload",
+  "errors": [],
+  "data_uploaded": true,
+  "all_hashes_match": true,
+  "resource_group": "rg-mlop-pj-492ea24d",
+  "region": "centralindia",
+  "suffix": "492ea24d",
+  "project_tag": "mlop-pj-6688012",
+  "budget_thb_before_credits": 150,
+  "files": [
+    {
+      "file": "data/raw/google_review_ratings.csv",
+      "bytes": 637001,
+      "sha256": "c07e7751f429ebe6225a77a32e61770dbb7197fd253f667e0434424adbaf7a33",
+      "blob": "snapshots/c07e7751f429ebe6225a77a32e61770dbb7197fd253f667e0434424adbaf7a33/google_review_ratings.csv",
+      "uploaded_now": true,
+      "download_sha256_matches": true
+    },
+    {
+      "file": "models/artifacts/abfd88e893ca/bundle.joblib",
+      "bytes": 20399,
+      "sha256": "71f3ba41b4b964f5beb31e3d6e13b835b1dd2538aa663741d8837301be9dff13",
+      "blob": "snapshots/71f3ba41b4b964f5beb31e3d6e13b835b1dd2538aa663741d8837301be9dff13/bundle.joblib",
+      "uploaded_now": true,
+      "download_sha256_matches": true
+    },
+    {
+      "file": "data/processed/profiles.csv",
+      "bytes": 1096395,
+      "sha256": "dd202f838ece1c4c2be3859d7e774afbf9cdfcfa6b999c8caa2adfd8725c79b1",
+      "blob": "snapshots/dd202f838ece1c4c2be3859d7e774afbf9cdfcfa6b999c8caa2adfd8725c79b1/profiles.csv",
+      "uploaded_now": true,
+      "download_sha256_matches": true
+    },
+    {
+      "file": "configs/data.json",
+      "bytes": 200,
+      "sha256": "2fe7512532fa112e7da420ee20808c0fb1bc31674ec8a3bd35de5be9eac30123",
+      "blob": "snapshots/2fe7512532fa112e7da420ee20808c0fb1bc31674ec8a3bd35de5be9eac30123/data.json",
+      "uploaded_now": true,
+      "download_sha256_matches": true
+    },
+    {
+      "file": "reports/data-source.json",
+      "bytes": 448,
+      "sha256": "d706e73e439799932d15cf3bd21aa300c3d223ed5d31bc8133a43655acc44788",
+      "blob": "snapshots/d706e73e439799932d15cf3bd21aa300c3d223ed5d31bc8133a43655acc44788/data-source.json",
+      "uploaded_now": true,
+      "download_sha256_matches": true
+    },
+    {
+      "file": "reports/bundle-manifest.json",
+      "bytes": 1825,
+      "sha256": "1d9bd39428426c6abf250528df955649dece17c03f154c0ad6b4a42eb0cbee4d",
+      "blob": "snapshots/1d9bd39428426c6abf250528df955649dece17c03f154c0ad6b4a42eb0cbee4d/bundle-manifest.json",
+      "uploaded_now": true,
+      "download_sha256_matches": true
+    },
+    {
+      "file": "data/raw.dvc",
+      "bytes": 101,
+      "sha256": "c4daedad2c0789056894daca63b7e7ff5539d780663c507797db1c2c5b360c24",
+      "blob": "snapshots/c4daedad2c0789056894daca63b7e7ff5539d780663c507797db1c2c5b360c24/raw.dvc",
+      "uploaded_now": true,
+      "download_sha256_matches": true
+    }
+  ],
+  "next": "Configure the DVC Azure remote, then connect Azure ML training and registry.",
+  "limits": [
+    "These are verified Blob snapshots, not a DVC remote push or an Azure ML training run."
+  ]
+}

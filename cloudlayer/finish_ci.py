@@ -1,0 +1,140 @@
+import json
+import os
+from pathlib import Path
+import re
+import time
+from uuid import UUID
+
+from cloudlayer.session import ROOT, Session, command, read
+
+
+REPOSITORY = "DewPerawis/MLOP-PJ"
+
+
+def github_command(args, label):
+    env = dict(os.environ, NO_COLOR="1", CLICOLOR="0", CLICOLOR_FORCE="0", GH_PROMPT_DISABLED="1")
+    for key in ["GH_FORCE_TTY", "FORCE_COLOR", "GH_DEBUG", "DEBUG"]:
+        env.pop(key, None)
+    return command(args, label, env=env)
+
+
+def github_json(args, label):
+    output = github_command(args, label)
+    # Terminal colors are not part of JSON.
+    cleaned = re.sub(r"\x1b\[[0-?]*[ -/]*[@-~]", "", output).strip().lstrip("\ufeff")
+    try:
+        value = json.loads(cleaned)
+    except json.JSONDecodeError as error:
+        raise RuntimeError(f"{label} returned invalid JSON (length {len(output)}, position {error.pos}). "
+                           "Stop and check the GitHub CLI response before retrying.") from None
+    if not isinstance(value, dict):
+        raise RuntimeError(label + " returned an unexpected JSON type; expected an object.")
+    return value
+
+
+def checked_role_id(value, name, scope, actions):
+    permissions = value.get("permissions", [])
+    if (value.get("roleName") != name or value.get("roleType") != "CustomRole"
+            or {s.lower() for s in value.get("assignableScopes", [])} != {scope.lower()}
+            or len(permissions) != 1):
+        raise ValueError("The existing CI role has a different name, type, or scope.")
+    permission = permissions[0]
+    if (set(permission.get("actions", [])) != set(actions)
+            or permission.get("notActions") or permission.get("dataActions") or permission.get("notDataActions")):
+        raise ValueError("The existing CI role permissions differ from the intended limited role.")
+    role_id = str(UUID(value["name"]))
+    subscription = scope.split("/resourceGroups/", 1)[0]
+    expected = subscription + "/providers/Microsoft.Authorization/roleDefinitions/" + role_id
+    if str(value.get("id", "")).lower() != expected.lower():
+        raise ValueError("The CI role ID belongs to a different subscription or definition.")
+    return role_id
+
+
+def assign_custom_role(cloud, principal, scope, role_id, timeout=120):
+    started = time.monotonic()
+    while True:
+        try:
+            cloud.role(principal, scope, role_id)
+            return
+        except RuntimeError as error:
+            if "RoleDefinitionDoesNotExist" not in str(error) or time.monotonic() - started >= timeout:
+                raise
+            time.sleep(5)
+
+
+def configure(report):
+    deployed = read("reports/finish-deploy.json")
+    if deployed["errors"] or not deployed.get("api_ready"):
+        raise ValueError("Deploy the API first.")
+    with Session() as cloud:
+        name = "id-ci-" + cloud.plan["suffix"]
+        identities = cloud.az(["identity", "list", "--resource-group", cloud.group])
+        current = [value for value in identities if value["name"] == name]
+        if current:
+            identity = current[0]
+            if (identity.get("tags") or {}).get("project") != cloud.tags["project"]:
+                raise ValueError("CI identity belongs to another project.")
+        else:
+            identity = cloud.az(["identity", "create", "--name", name, "--resource-group", cloud.group,
+                                 "--location", cloud.region, "--tags", *[f"{k}={v}" for k, v in cloud.tags.items()]])
+        cloud.az(["identity", "federated-credential", "create", "--name", "github-staging", "--identity-name", name,
+                  "--resource-group", cloud.group, "--issuer", "https://token.actions.githubusercontent.com",
+                  "--subject", "repo:" + REPOSITORY + ":environment:staging",
+                  "--audiences", "api://AzureADTokenExchange", "--query", "{name:name}"])
+        registry = cloud.get("Microsoft.ContainerRegistry/registries/" + cloud.registry, "2023-07-01")
+        storage = cloud.get("Microsoft.Storage/storageAccounts/" + cloud.storage, "2023-05-01")
+        cloud.role(identity["principalId"], registry["id"], "8311e382-0749-4cb8-b61a-304f252e45ec")
+        cloud.role(identity["principalId"], storage["id"], "2a2b9908-6ea1-4ae2-8e65-a410df84e7d1")
+        scope = registry["id"].split("/providers/", 1)[0]
+        definition = {"Name": "MLOP CI " + cloud.plan["suffix"], "IsCustom": True,
+                      "Description": "Update project apps and assign their existing pull identity.",
+                      "Actions": ["Microsoft.Resources/subscriptions/resourceGroups/read",
+                                  "Microsoft.App/containerApps/read", "Microsoft.App/containerApps/write",
+                                  "Microsoft.App/managedEnvironments/read",
+                                  "Microsoft.ManagedIdentity/userAssignedIdentities/read",
+                                  "Microsoft.ManagedIdentity/userAssignedIdentities/assign/action"],
+                      "NotActions": [], "DataActions": [], "NotDataActions": [], "AssignableScopes": [scope]}
+        file = ROOT / "tmp/ci-role.json"
+        file.write_text(json.dumps(definition))
+        definitions = cloud.az(["role", "definition", "list", "--name", definition["Name"], "--scope", scope])
+        if len(definitions) > 1:
+            raise ValueError("More than one CI role has the project name. Review definitions before assigning.")
+        value = definitions[0] if definitions else cloud.az([
+            "role", "definition", "create", "--role-definition", "@" + str(file)])
+        role_id = checked_role_id(value, definition["Name"], scope, definition["Actions"])
+        assign_custom_role(cloud, identity["principalId"], scope, role_id)
+        report["custom_role_id"] = role_id
+        variables = {"AZURE_CLIENT_ID": identity["clientId"], "AZURE_TENANT_ID": cloud.account["tenantId"],
+                     "AZURE_SUBSCRIPTION_ID": cloud.account["id"], "STORAGE_ACCOUNT": cloud.storage,
+                     "CONTAINER_REGISTRY": cloud.host}
+        (ROOT / "tmp/github-variables.json").write_text(json.dumps(variables, indent=2))
+        report.update(ci_identity_configured=True, repository=REPOSITORY,
+                      variables_file="tmp/github-variables.json", workflow_file=".github/workflows/ci.yml",
+                      github_variables_configured=False,
+                      next="Set repository variables, create the staging environment, and push reviewed files. Run normal and demo_failure workflows. No commit or push was performed by this script.")
+
+
+def check_runs(report):
+    github_command(["gh", "api", f"repos/{REPOSITORY}", "--jq", ".full_name"], "github-repository-access")
+    page = github_json(["gh", "api", f"repos/{REPOSITORY}/actions/workflows?per_page=100"], "github-workflows")
+    if page.get("total_count", 0) > 100:
+        raise ValueError("Workflow listing needs pagination review.")
+    workflows = [w for w in page["workflows"] if w["path"] == ".github/workflows/ci.yml"]
+    if not workflows or workflows[0].get("state") != "active":
+        report.update(ci_evidence_ready=False, pending=True, workflow_published=bool(workflows),
+                      next="Complete Notebook 21 GitHub settings, commit/push reviewed files, and run normal and demo_failure workflows. Then retry ci-evidence only.")
+        return
+    report["workflow_published"] = True
+    workflow_id = workflows[0]["id"]
+    runs = github_json(["gh", "api", f"repos/{REPOSITORY}/actions/workflows/{workflow_id}/runs?per_page=30"], "github-runs")["workflow_runs"]
+    head = command(["git", "rev-parse", "HEAD"], "git-head").strip()
+    good = [r for r in runs if r["head_sha"] == head and r["conclusion"] == "success"]
+    failed = [r for r in runs if r["head_sha"] == head and r["conclusion"] == "failure"]
+    blocked = []
+    for run in failed:
+        jobs = github_json(["gh", "api", f'repos/{REPOSITORY}/actions/runs/{run["id"]}/jobs'], "github-jobs")["jobs"]
+        if any(j["name"] == "tests" and j["conclusion"] == "failure" for j in jobs) and any(
+                j["name"] == "deploy" and j["conclusion"] == "skipped" for j in jobs):
+            blocked.append(run["html_url"])
+    report.update(ci_success_run=good[0]["html_url"] if good else None,
+                  tests_blocked_deploy_runs=blocked, ci_evidence_ready=bool(good and blocked), pending=not bool(good and blocked))

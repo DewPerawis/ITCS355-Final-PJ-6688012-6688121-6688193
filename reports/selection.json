@@ -1,0 +1,45 @@
+{
+  "model_type": "kmeans",
+  "zero_policy": "keep_zero",
+  "k": 5,
+  "mean_silhouette": 0.14482709994043333,
+  "stability_ari": 1.0,
+  "min_cluster_fraction": 0.03916768665850673,
+  "eligible": true,
+  "seed": 42,
+  "n_init": 10,
+  "distance_quantile": 0.95,
+  "ready_for_bundle": true,
+  "gmm_comparison": {
+    "silhouette": 0.09570735065767336,
+    "davies_bouldin": 2.8294283864324576,
+    "min_cluster_fraction": 0.07588739290085679,
+    "cluster_counts": [
+      230,
+      76,
+      127,
+      62,
+      322
+    ],
+    "converged": true
+  },
+  "raw_sha256": "c07e7751f429ebe6225a77a32e61770dbb7197fd253f667e0434424adbaf7a33",
+  "prepared_report_sha256": "6f36c51741fe748574cb5c21cc220305d2c9c59f635c3f462002f9e23fdc4816",
+  "study_config_sha256": "545d94ee317c2298a36c459b1cdec86b3cdf6d18da1591d4f61eaa76922eb9b5",
+  "code_sha256": {
+    "src/data.py": "137524721db5fed7f06174f1092ca3f4e0544877daddc342b5c9727b3b9727a4",
+    "src/train.py": "96ce6842aced2a4900f71658072d5992fdaf068032c8317154a716931761712b",
+    "src/bundle.py": "eb56060f4da4f900732a8dc91c29567b7f9dc30c1a2a909d3b46d91da628748d"
+  },
+  "selection_rule": "ARI >= 0.8 and each validation cluster >= 2%; then highest mean silhouette",
+  "python": "3.13.11",
+  "packages": {
+    "numpy": "2.2.6",
+    "pandas": "2.2.3",
+    "scikit-learn": "1.6.1",
+    "joblib": "1.6.0",
+    "scipy": "1.18.1"
+  },
+  "test_used_for_selection": false,
+  "zero_meaning": "unknown; this is a representation comparison"
+}

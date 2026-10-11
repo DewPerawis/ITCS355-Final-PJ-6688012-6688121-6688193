@@ -1,0 +1,11 @@
+{
+  "checked_at": "2026-10-11T17:01:19.085638+00:00",
+  "phase": "monitor",
+  "errors": [],
+  "monitor_ready": true,
+  "dashboard_created": true,
+  "dashboard_name": "MLOP Travel Style",
+  "alert_created": true,
+  "email_notifications_configured": false,
+  "next": "Run the failure cell, then refresh evidence to confirm an actual fired alert."
+}

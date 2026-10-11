@@ -1,0 +1,144 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 30B 0.1s
+#1 transferring dockerfile: 935B 0.2s done
+#1 DONE 0.3s
+
+#2 [internal] load metadata for docker.io/library/python@sha256:70729b46c69b4f1e97c4822c1af3df53a1476cf5ddc6c087c0c10bc3a5678c2f
+#2 DONE 1.7s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 33B 0.0s
+#3 transferring context: 337B 0.2s done
+#3 DONE 0.2s
+
+#4 [internal] load build context
+#4 ...
+
+#5 [1/8] FROM docker.io/library/python@sha256:70729b46c69b4f1e97c4822c1af3df53a1476cf5ddc6c087c0c10bc3a5678c2f
+#5 resolve docker.io/library/python@sha256:70729b46c69b4f1e97c4822c1af3df53a1476cf5ddc6c087c0c10bc3a5678c2f 0.1s done
+#5 DONE 0.3s
+
+#4 [internal] load build context
+#4 transferring context: 111.51kB 0.4s done
+#4 DONE 0.5s
+
+#6 [2/8] WORKDIR /app
+#6 DONE 0.3s
+
+#7 [3/8] COPY requirements-service.lock.txt .
+#7 DONE 0.1s
+
+#8 [4/8] RUN python -m pip install --no-cache-dir --only-binary=:all: -r requirements-service.lock.txt
+#8 3.185 Collecting annotated-doc==0.0.5 (from -r requirements-service.lock.txt (line 2))
+#8 3.284   Downloading annotated_doc-0.0.5-py3-none-any.whl.metadata (6.5 kB)
+#8 3.305 Collecting annotated-types==0.8.0 (from -r requirements-service.lock.txt (line 3))
+#8 3.320   Downloading annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+#8 3.355 Collecting anyio==4.15.1 (from -r requirements-service.lock.txt (line 4))
+#8 3.368   Downloading anyio-4.15.1-py3-none-any.whl.metadata (4.7 kB)
+#8 3.394 Collecting click==8.5.0 (from -r requirements-service.lock.txt (line 5))
+#8 3.408   Downloading click-8.5.0-py3-none-any.whl.metadata (2.6 kB)
+#8 3.430 Collecting cloudpickle==3.1.2 (from -r requirements-service.lock.txt (line 6))
+#8 3.444   Downloading cloudpickle-3.1.2-py3-none-any.whl.metadata (7.1 kB)
+#8 3.509 Collecting fastapi==0.143.0 (from -r requirements-service.lock.txt (line 7))
+#8 3.527   Downloading fastapi-0.143.0-py3-none-any.whl.metadata (26 kB)
+#8 3.555 Collecting h11==0.16.0 (from -r requirements-service.lock.txt (line 8))
+#8 3.569   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#8 3.592 Collecting idna==3.20 (from -r requirements-service.lock.txt (line 9))
+#8 3.607   Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+#8 3.638 Collecting joblib==1.6.0 (from -r requirements-service.lock.txt (line 10))
+#8 3.652   Downloading joblib-1.6.0-py3-none-any.whl.metadata (6.5 kB)
+#8 3.969 Collecting numpy==2.2.6 (from -r requirements-service.lock.txt (line 11))
+#8 3.983   Downloading numpy-2.2.6-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (62 kB)
+#8 4.033 Collecting opentelemetry-api==1.45.1 (from -r requirements-service.lock.txt (line 12))
+#8 4.046   Downloading opentelemetry_api-1.45.1-py3-none-any.whl.metadata (1.4 kB)
+#8 4.225 Collecting pandas==2.2.3 (from -r requirements-service.lock.txt (line 13))
+#8 4.242   Downloading pandas-2.2.3-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (89 kB)
+#8 4.441 Collecting pydantic==2.14.0 (from -r requirements-service.lock.txt (line 14))
+#8 4.453   Downloading pydantic-2.14.0-py3-none-any.whl.metadata (131 kB)
+#8 5.586 Collecting pydantic-core==2.50.0 (from -r requirements-service.lock.txt (line 15))
+#8 5.603   Downloading pydantic_core-2.50.0-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.5 kB)
+#8 5.625 Collecting python-dateutil==2.9.0.post0 (from -r requirements-service.lock.txt (line 16))
+#8 5.638   Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+#8 5.691 Collecting pytz==2026.5 (from -r requirements-service.lock.txt (line 17))
+#8 5.704   Downloading pytz-2026.5-py2.py3-none-any.whl.metadata (22 kB)
+#8 5.835 Collecting scikit-learn==1.6.1 (from -r requirements-service.lock.txt (line 18))
+#8 5.850   Downloading scikit_learn-1.6.1-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (18 kB)
+#8 6.038 Collecting scipy==1.18.1 (from -r requirements-service.lock.txt (line 19))
+#8 6.053   Downloading scipy-1.18.1-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)
+#8 6.093 Collecting six==1.17.0 (from -r requirements-service.lock.txt (line 20))
+#8 6.106   Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+#8 6.140 Collecting starlette==1.7.0 (from -r requirements-service.lock.txt (line 21))
+#8 6.153   Downloading starlette-1.7.0-py3-none-any.whl.metadata (6.6 kB)
+#8 6.172 Collecting threadpoolctl==3.7.0 (from -r requirements-service.lock.txt (line 22))
+#8 6.185   Downloading threadpoolctl-3.7.0-py3-none-any.whl.metadata (24 kB)
+#8 6.215 Collecting typing-extensions==4.16.0 (from -r requirements-service.lock.txt (line 23))
+#8 6.227   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+#8 6.244 Collecting typing-inspection==0.4.4 (from -r requirements-service.lock.txt (line 24))
+#8 6.257   Downloading typing_inspection-0.4.4-py3-none-any.whl.metadata (2.6 kB)
+#8 6.292 Collecting tzdata==2026.5 (from -r requirements-service.lock.txt (line 25))
+#8 6.311   Downloading tzdata-2026.5-py2.py3-none-any.whl.metadata (1.4 kB)
+#8 6.345 Collecting uvicorn==0.54.0 (from -r requirements-service.lock.txt (line 26))
+#8 6.357   Downloading uvicorn-0.54.0-py3-none-any.whl.metadata (6.6 kB)
+#8 6.438 Downloading annotated_doc-0.0.5-py3-none-any.whl (5.3 kB)
+#8 6.452 Downloading annotated_types-0.8.0-py3-none-any.whl (13 kB)
+#8 6.471 Downloading anyio-4.15.1-py3-none-any.whl (132 kB)
+#8 6.493 Downloading click-8.5.0-py3-none-any.whl (125 kB)
+#8 6.516 Downloading cloudpickle-3.1.2-py3-none-any.whl (22 kB)
+#8 6.531 Downloading fastapi-0.143.0-py3-none-any.whl (144 kB)
+#8 6.559 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#8 6.578 Downloading idna-3.20-py3-none-any.whl (69 kB)
+#8 6.595 Downloading joblib-1.6.0-py3-none-any.whl (306 kB)
+#8 6.635 Downloading numpy-2.2.6-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (16.5 MB)
+#8 8.249    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.5/16.5 MB 10.3 MB/s  0:00:01
+#8 8.271 Downloading opentelemetry_api-1.45.1-py3-none-any.whl (60 kB)
+#8 8.292 Downloading pandas-2.2.3-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (12.7 MB)
+#8 9.369    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12.7/12.7 MB 11.9 MB/s  0:00:01
+#8 9.380 Downloading pydantic-2.14.0-py3-none-any.whl (487 kB)
+#8 9.442 Downloading pydantic_core-2.50.0-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.2 MB)
+#8 9.624    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.2/2.2 MB 12.1 MB/s  0:00:00
+#8 9.636 Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+#8 9.672 Downloading pytz-2026.5-py2.py3-none-any.whl (506 kB)
+#8 9.732 Downloading scikit_learn-1.6.1-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (13.2 MB)
+#8 10.85    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 13.2/13.2 MB 11.8 MB/s  0:00:01
+#8 10.86 Downloading scipy-1.18.1-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (35.3 MB)
+#8 13.87    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.3/35.3 MB 11.7 MB/s  0:00:03
+#8 13.89 Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
+#8 13.90 Downloading starlette-1.7.0-py3-none-any.whl (78 kB)
+#8 13.92 Downloading threadpoolctl-3.7.0-py3-none-any.whl (26 kB)
+#8 13.93 Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+#8 13.95 Downloading typing_inspection-0.4.4-py3-none-any.whl (14 kB)
+#8 13.97 Downloading tzdata-2026.5-py2.py3-none-any.whl (347 kB)
+#8 14.00 Downloading uvicorn-0.54.0-py3-none-any.whl (87 kB)
+#8 14.61 Installing collected packages: pytz, tzdata, typing-extensions, threadpoolctl, six, numpy, idna, h11, cloudpickle, click, annotated-types, annotated-doc, uvicorn, typing-inspection, scipy, python-dateutil, pydantic-core, opentelemetry-api, joblib, anyio, starlette, scikit-learn, pydantic, pandas, fastapi
+#8 39.91 
+#8 39.91 Successfully installed annotated-doc-0.0.5 annotated-types-0.8.0 anyio-4.15.1 click-8.5.0 cloudpickle-3.1.2 fastapi-0.143.0 h11-0.16.0 idna-3.20 joblib-1.6.0 numpy-2.2.6 opentelemetry-api-1.45.1 pandas-2.2.3 pydantic-2.14.0 pydantic-core-2.50.0 python-dateutil-2.9.0.post0 pytz-2026.5 scikit-learn-1.6.1 scipy-1.18.1 six-1.17.0 starlette-1.7.0 threadpoolctl-3.7.0 typing-extensions-4.16.0 typing-inspection-0.4.4 tzdata-2026.5 uvicorn-0.54.0
+#8 39.91 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#8 DONE 40.4s
+
+#9 [5/8] COPY src/ src/
+#9 DONE 0.2s
+
+#10 [6/8] COPY service/ service/
+#10 DONE 0.1s
+
+#11 [7/8] COPY reports/bundle-manifest.json reports/golden-profiles.json reports/
+#11 DONE 0.1s
+
+#12 [8/8] COPY models/artifacts/abfd88e893ca/bundle.joblib models/artifacts/abfd88e893ca/bundle.joblib
+#12 DONE 0.1s
+
+#13 exporting to image
+#13 exporting layers
+#13 exporting layers 23.2s done
+#13 exporting manifest sha256:f8d7ffbbd2ffcf9c8e62af19ebd1efb14e974e19d8ddacb1da877900335aaf98 0.0s done
+#13 exporting config sha256:93159952307172e88ebc58b08b0940ab9976a72d1901d370b164f58d6dadb841 0.0s done
+#13 exporting attestation manifest sha256:841f17dcdaf1f472b7e1f864c44e9a2b26001c821e62de035623965264c24de7
+#13 exporting attestation manifest sha256:841f17dcdaf1f472b7e1f864c44e9a2b26001c821e62de035623965264c24de7 0.1s done
+#13 exporting manifest list sha256:136feea52ca376b6bc36ab8545f8c1293b4572309c82815fcbe7afba7b7dfb04 0.0s done
+#13 naming to docker.io/library/mlop-pj-api:abfd88e893ca
+#13 naming to docker.io/library/mlop-pj-api:abfd88e893ca 0.0s done
+#13 unpacking to docker.io/library/mlop-pj-api:abfd88e893ca
+#13 unpacking to docker.io/library/mlop-pj-api:abfd88e893ca 5.3s done
+#13 DONE 28.8s

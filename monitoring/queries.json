@@ -1,0 +1,5 @@
+{
+  "requests": "ContainerAppConsoleLogs_CL | where ContainerAppName_s in ('travel-style-492ea24d', 'failure-492ea24d') | extend j=parse_json(Log_s) | where isnotempty(j.path) | summarize Requests=count(), Errors=countif(toint(j.status)>=500), MeanMs=avg(todouble(j.duration_ms)), P95Ms=percentile(todouble(j.duration_ms),95) by bin(TimeGenerated, 1m), Model=tostring(j.model_version)",
+  "profiles": "ContainerAppConsoleLogs_CL | where ContainerAppName_s in ('travel-style-492ea24d', 'failure-492ea24d') | extend j=parse_json(Log_s) | where tostring(j.event)=='prediction_batch' | summarize Predictions=sum(toint(j.count)), Uncertain=sum(toint(j.uncertain_count)) by bin(TimeGenerated,1m)",
+  "failure": "ContainerAppConsoleLogs_CL | where ContainerAppName_s in ('travel-style-492ea24d', 'failure-492ea24d') | where Log_s contains 'semantic_canary_failed'"
+}

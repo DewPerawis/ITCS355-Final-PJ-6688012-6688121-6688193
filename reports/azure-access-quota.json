@@ -1,0 +1,88 @@
+{
+  "checked_at": "2026-10-11T14:47:47.871875+00:00",
+  "region": "centralindia",
+  "checks_failed": [],
+  "resources_created": false,
+  "deploy_ready": false,
+  "control_plane_actions": {
+    "Microsoft.Resources/subscriptions/resourceGroups/write": true,
+    "Microsoft.Storage/storageAccounts/write": true,
+    "Microsoft.ContainerRegistry/registries/write": true,
+    "Microsoft.App/managedEnvironments/write": true,
+    "Microsoft.App/containerApps/write": true,
+    "Microsoft.MachineLearningServices/workspaces/write": true,
+    "Microsoft.OperationalInsights/workspaces/write": true,
+    "Microsoft.Insights/components/write": true,
+    "Microsoft.KeyVault/vaults/write": true,
+    "Microsoft.Authorization/roleAssignments/write": true
+  },
+  "azure_ml_quota": [
+    {
+      "name": "TotalClusters",
+      "description": "Total Clusters",
+      "limit": 200,
+      "current": 0,
+      "remaining": 200
+    },
+    {
+      "name": "TotalDedicatedCores",
+      "description": "Total Cluster Dedicated Regional vCPUs",
+      "limit": 20,
+      "current": 0,
+      "remaining": 20
+    },
+    {
+      "name": "standardDSv2Family",
+      "description": "Standard DSv2 Family Cluster Dedicated vCPUs",
+      "limit": 6,
+      "current": 0,
+      "remaining": 6
+    }
+  ],
+  "container_apps_quota": [
+    {
+      "name": "ManagedEnvironmentCount",
+      "description": "Managed Environment Count",
+      "limit": 1,
+      "current": 0,
+      "remaining": 1
+    },
+    {
+      "name": "SubscriptionDedicatedNCA100Gpus",
+      "description": "Subscription Dedicated NCA 100 Gpus",
+      "limit": 0,
+      "current": 0,
+      "remaining": 0
+    },
+    {
+      "name": "SessionPools",
+      "description": "Session Pools",
+      "limit": 1,
+      "current": 0,
+      "remaining": 1
+    },
+    {
+      "name": "ExpressEnvironmentCount",
+      "description": "Express Environment Count",
+      "limit": 450,
+      "current": 0,
+      "remaining": 450
+    },
+    {
+      "name": "SandboxCores",
+      "description": "Sandbox Cores",
+      "limit": 1,
+      "current": 0,
+      "remaining": 1
+    }
+  ],
+  "training_quota_available": true,
+  "container_apps_environment_slot_available": true,
+  "limits": [
+    "Control-plane permissions do not prove data access or bypass policies and locks.",
+    "Listed quota does not guarantee VM capacity.",
+    "Container Apps environment CPU quota must be checked after creating the environment.",
+    "The cost plan has unpriced services and assumed exchange rate/reserve."
+  ],
+  "next": "Review this report, then prepare a small resource group and Azure setup."
+}

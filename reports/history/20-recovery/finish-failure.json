@@ -1,0 +1,15 @@
+{
+  "checked_at": "2026-10-11T16:54:15.924979+00:00",
+  "phase": "failure",
+  "errors": [
+    "ValueError: Staging recovery check failed."
+  ],
+  "failure_app": "failure-492ea24d",
+  "failure_started_at": "2026-10-11T16:54:22.170331+00:00",
+  "detected_at": "2026-10-11T16:54:52.429713+00:00",
+  "observed_canary_status": 503,
+  "failure_detected": true,
+  "recovered_at": "2026-10-11T16:54:59.952629+00:00",
+  "recovery_canary_status": 503,
+  "recovered": false
+}

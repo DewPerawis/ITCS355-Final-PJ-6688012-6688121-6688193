@@ -1,0 +1,20 @@
+{
+  "raw_sha256": "c07e7751f429ebe6225a77a32e61770dbb7197fd253f667e0434424adbaf7a33",
+  "rows": 5456,
+  "valid_rows": 5454,
+  "invalid_rows": [
+    {
+      "csv_line": 1349,
+      "reason": "unexpected extra value"
+    },
+    {
+      "csv_line": 2714,
+      "reason": "unexpected extra value"
+    }
+  ],
+  "feature_count": 24,
+  "zero_values": 5314,
+  "duplicate_profiles": 3,
+  "zero_policy": "not decided",
+  "cleaned_dataset_saved": false
+}

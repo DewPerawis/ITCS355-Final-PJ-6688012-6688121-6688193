@@ -1,0 +1,14 @@
+{
+  "checked_at": "2026-10-11T18:41:27.660777+00:00",
+  "repository": "DewPerawis/MLOP-PJ",
+  "apply": true,
+  "variable_names": [
+    "AZURE_CLIENT_ID",
+    "AZURE_SUBSCRIPTION_ID",
+    "AZURE_TENANT_ID",
+    "CONTAINER_REGISTRY",
+    "STORAGE_ACCOUNT"
+  ],
+  "github_settings_configured": true,
+  "next": "Review/commit/push project files, then run normal and demo_failure workflows. No commit, push, or workflow dispatch is performed here."
+}

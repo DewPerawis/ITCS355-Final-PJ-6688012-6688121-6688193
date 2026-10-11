@@ -1,0 +1,18 @@
+{
+  "tracking_uri": "sqlite:////mnt/c/Users/SN23341J001185/Documents/MyWork/ICT/ICTYear4_1/MLop/public_teaching_mlaiops/course/MLOP-PJ/mlflow.db",
+  "registry_scope": "local SQLite, not Azure ML",
+  "run_id": "c269d7a94aa744ff8e6b76707bd8383a",
+  "registered_name": "travel-style-segmentation",
+  "registered_version": 1,
+  "model_uri": "models:/travel-style-segmentation/1",
+  "bundle_version": "abfd88e893ca",
+  "bundle_sha256": "71f3ba41b4b964f5beb31e3d6e13b835b1dd2538aa663741d8837301be9dff13",
+  "raw_sha256": "c07e7751f429ebe6225a77a32e61770dbb7197fd253f667e0434424adbaf7a33",
+  "dvc_pointer_sha256": "c4daedad2c0789056894daca63b7e7ff5539d780663c507797db1c2c5b360c24",
+  "dvc_status_clean": true,
+  "registry_reload_passed": true,
+  "training_repeated": false,
+  "cloud_uploaded": false,
+  "git_head": "03d9633d7be06133c72c3a94c0da33cec7e429cb",
+  "git_dirty": true
+}

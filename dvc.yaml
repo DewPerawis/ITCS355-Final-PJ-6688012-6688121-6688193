@@ -1,0 +1,60 @@
+stages:
+  audit:
+    cmd: python scripts/reproduce.py audit
+    deps:
+      - scripts/reproduce.py
+      - src/data.py
+      - configs/data.json
+      - data/raw/google_review_ratings.csv
+    outs:
+      - reports/data-audit.json:
+          cache: false
+  prepare:
+    cmd: python scripts/reproduce.py prepare
+    deps:
+      - scripts/reproduce.py
+      - src/data.py
+      - configs/data.json
+      - data/raw/google_review_ratings.csv
+      - reports/data-audit.json
+    outs:
+      - data/processed/profiles.csv
+      - data/processed/quarantine.csv
+      - reports/prepared-data.json:
+          cache: false
+  study:
+    cmd: python scripts/reproduce.py study
+    deps:
+      - scripts/reproduce.py
+      - src/data.py
+      - src/train.py
+      - src/bundle.py
+      - configs/study.json
+      - requirements-notebook.lock.txt
+      - data/processed/profiles.csv
+      - reports/prepared-data.json
+    outs:
+      - reports/study-runs.csv:
+          cache: false
+      - reports/study-summary.csv:
+          cache: false
+      - reports/selection.json:
+          cache: false
+  bundle:
+    cmd: python scripts/reproduce.py bundle
+    deps:
+      - scripts/reproduce.py
+      - src/data.py
+      - src/train.py
+      - src/bundle.py
+      - reports/selection.json
+      - reports/prepared-data.json
+      - data/processed/profiles.csv
+    outs:
+      - models/artifacts
+      - reports/bundle-manifest.json:
+          cache: false
+      - reports/golden-profiles.json:
+          cache: false
+      - reports/cluster-profiles.csv:
+          cache: false

@@ -1,0 +1,12 @@
+test_duplicate_groups_and_split_are_repeatable (test_workflow.DataTests.test_duplicate_groups_and_split_are_repeatable) ... ok
+test_numeric_errors_are_not_repaired (test_workflow.DataTests.test_numeric_errors_are_not_repaired) ... ok
+test_preparation_checks_hash_and_excludes_ids (test_workflow.DataTests.test_preparation_checks_hash_and_excludes_ids) ... ok
+test_quarantine_preserves_bad_row_and_zeros (test_workflow.DataTests.test_quarantine_preserves_bad_row_and_zeros) ... ok
+test_imputer_and_scaler_fit_only_training_data (test_workflow.ModelTests.test_imputer_and_scaler_fit_only_training_data) ... ok
+test_predict_rejects_bad_contract_and_accepts_named_order (test_workflow.ModelTests.test_predict_rejects_bad_contract_and_accepts_named_order) ... ok
+test_study_ignores_test_data_and_bundle_reload_matches (test_workflow.ModelTests.test_study_ignores_test_data_and_bundle_reload_matches) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.477s
+
+OK

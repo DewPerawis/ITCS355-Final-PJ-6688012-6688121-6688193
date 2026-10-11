@@ -1,0 +1,21 @@
+{
+  "checked_at": "2026-10-11T16:40:24.859167+00:00",
+  "phase": "deploy",
+  "errors": [],
+  "cloud_writes_started": true,
+  "url": "https://travel-style-492ea24d.icymushroom-08e3ded0.centralindia.azurecontainerapps.io",
+  "image_uri": "acrmloppj492ea24d.azurecr.io/travel-style@sha256:05d1819321f472b39fe1035cb9cee68fc7432a9ad2be4b56afdc8c85af562fcc",
+  "app_name": "travel-style-492ea24d",
+  "deployment_to_ready_seconds": 24.637418190999597,
+  "first_ready_request_ms": 815.5300119979074,
+  "first_request_scope": "First successful readiness request after deployment; not an isolated scale-from-zero benchmark.",
+  "api_ready": true,
+  "smoke_passed": true,
+  "canary_passed": true,
+  "p95_ms": 813.7695736459136,
+  "latency_target_met": false,
+  "limits": [
+    "Client latency includes internet routing; the 300 ms target remains open if latency_target_met is false.",
+    "The staging demo endpoint is public. Do not submit private profiles."
+  ]
+}

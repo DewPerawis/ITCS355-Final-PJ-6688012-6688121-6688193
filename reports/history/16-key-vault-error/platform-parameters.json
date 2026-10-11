@@ -1,0 +1,17 @@
+{
+  "parameters": {
+    "location": {
+      "value": "centralindia"
+    },
+    "suffix": {
+      "value": "492ea24d"
+    },
+    "tags": {
+      "value": {
+        "project": "mlop-pj-6688012",
+        "purpose": "course-demo",
+        "removeAfter": "2026-10-13T14:15:40.612068+00:00"
+      }
+    }
+  }
+}

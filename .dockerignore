@@ -1,0 +1,15 @@
+# Send only the service and its saved bundle to Docker.
+**
+!Dockerfile
+!requirements-service.lock.txt
+!src/
+!src/*.py
+!service/
+!service/*.py
+!reports/
+!reports/bundle-manifest.json
+!reports/golden-profiles.json
+!models/
+!models/artifacts/
+!models/artifacts/*/
+!models/artifacts/*/bundle.joblib

@@ -1,0 +1,9 @@
+{
+  "checked_at": "2026-10-11T17:02:09.577344+00:00",
+  "phase": "alert",
+  "errors": [],
+  "alerts": [],
+  "alert_fired": false,
+  "pending": true,
+  "next": "An actual alert event is required. Rerun after log ingestion and alert evaluation if pending."
+}

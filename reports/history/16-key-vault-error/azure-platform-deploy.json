@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-10-11T14:49:32.426787+00:00",
+  "apply_started": true,
+  "paid_resources_may_exist": true,
+  "platform_created": false,
+  "errors": [
+    "RuntimeError: Azure CLI failed: DeploymentFailed, BadRequest"
+  ],
+  "resource_group": "rg-mlop-pj-492ea24d",
+  "region": "centralindia",
+  "suffix": "492ea24d",
+  "project_tag": "mlop-pj-6688012",
+  "budget_thb_before_credits": 150,
+  "cleanup_by_utc": "2026-10-13T14:15:40.612068+00:00",
+  "next": "Deployment may be partial or still running. Check the project group before retrying; do not assume zero cost."
+}

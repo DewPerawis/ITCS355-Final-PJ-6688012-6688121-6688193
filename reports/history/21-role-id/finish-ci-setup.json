@@ -1,0 +1,7 @@
+{
+  "checked_at": "2026-10-11T17:18:43.350874+00:00",
+  "phase": "ci-setup",
+  "errors": [
+    "RuntimeError: Azure CLI failed: RoleDefinitionDoesNotExist"
+  ]
+}

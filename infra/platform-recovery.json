@@ -1,0 +1,116 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "type": "string"
+    },
+    "suffix": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 8
+    },
+    "tags": {
+      "type": "object"
+    }
+  },
+  "variables": {
+    "storage": "[concat('stmloppj', parameters('suffix'))]",
+    "acr": "[concat('acrmloppj', parameters('suffix'))]",
+    "logs": "[concat('log-mlop-pj-', parameters('suffix'))]",
+    "vault": "[concat('kv-mlop-pj-', parameters('suffix'))]",
+    "insights": "[concat('ai-mlop-pj-', parameters('suffix'))]",
+    "workspace": "[concat('ml-mlop-pj-', parameters('suffix'))]",
+    "environment": "[concat('cae-mlop-pj-', parameters('suffix'))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.KeyVault/vaults",
+      "apiVersion": "2023-07-01",
+      "name": "[variables('vault')]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]",
+      "properties": {
+        "tenantId": "[subscription().tenantId]",
+        "sku": {
+          "family": "A",
+          "name": "standard"
+        },
+        "enableRbacAuthorization": true,
+        "enableSoftDelete": true,
+        "softDeleteRetentionInDays": 7,
+        "accessPolicies": []
+      }
+    },
+    {
+      "type": "Microsoft.MachineLearningServices/workspaces",
+      "apiVersion": "2026-03-01",
+      "name": "[variables('workspace')]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]",
+      "properties": {
+        "friendlyName": "MLOP-PJ",
+        "description": "Travel style segmentation coursework",
+        "storageAccount": "[resourceId('Microsoft.Storage/storageAccounts', variables('storage'))]",
+        "keyVault": "[resourceId('Microsoft.KeyVault/vaults', variables('vault'))]",
+        "applicationInsights": "[resourceId('Microsoft.Insights/components', variables('insights'))]",
+        "containerRegistry": "[resourceId('Microsoft.ContainerRegistry/registries', variables('acr'))]",
+        "publicNetworkAccess": "Enabled",
+        "systemDatastoresAuthMode": "Identity"
+      },
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "sku": {
+        "name": "Basic",
+        "tier": "Basic"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', variables('vault'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2022-04-01",
+      "scope": "[resourceId('Microsoft.Storage/storageAccounts', variables('storage'))]",
+      "name": "[guid(resourceId('Microsoft.Storage/storageAccounts', variables('storage')), variables('workspace'), 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.MachineLearningServices/workspaces', variables('workspace'))]"
+      ],
+      "properties": {
+        "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
+        "principalId": "[reference(resourceId('Microsoft.MachineLearningServices/workspaces', variables('workspace')), '2026-03-01', 'Full').identity.principalId]",
+        "principalType": "ServicePrincipal"
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2022-04-01",
+      "scope": "[resourceId('Microsoft.KeyVault/vaults', variables('vault'))]",
+      "name": "[guid(resourceId('Microsoft.KeyVault/vaults', variables('vault')), variables('workspace'), 'b86a8fe4-44ce-4948-aee5-eccb2c155cd7')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', variables('vault'))]",
+        "[resourceId('Microsoft.MachineLearningServices/workspaces', variables('workspace'))]"
+      ],
+      "properties": {
+        "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b86a8fe4-44ce-4948-aee5-eccb2c155cd7')]",
+        "principalId": "[reference(resourceId('Microsoft.MachineLearningServices/workspaces', variables('workspace')), '2026-03-01', 'Full').identity.principalId]",
+        "principalType": "ServicePrincipal"
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2022-04-01",
+      "scope": "[resourceId('Microsoft.ContainerRegistry/registries', variables('acr'))]",
+      "name": "[guid(resourceId('Microsoft.ContainerRegistry/registries', variables('acr')), variables('workspace'), '7f951dda-4ed3-4680-a7ca-43fe172d538d')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.MachineLearningServices/workspaces', variables('workspace'))]"
+      ],
+      "properties": {
+        "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')]",
+        "principalId": "[reference(resourceId('Microsoft.MachineLearningServices/workspaces', variables('workspace')), '2026-03-01', 'Full').identity.principalId]",
+        "principalType": "ServicePrincipal"
+      }
+    }
+  ]
+}

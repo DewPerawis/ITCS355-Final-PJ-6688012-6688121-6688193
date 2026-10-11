@@ -1,0 +1,52 @@
+{
+  "raw_sha256": "c07e7751f429ebe6225a77a32e61770dbb7197fd253f667e0434424adbaf7a33",
+  "accepted_rows": 5454,
+  "quarantined_rows": 2,
+  "split_counts": {
+    "train": 3817,
+    "test": 820,
+    "validation": 817
+  },
+  "unique_profiles": 5451,
+  "cross_split_duplicate_groups": 0,
+  "features": [
+    "Category 1",
+    "Category 2",
+    "Category 3",
+    "Category 4",
+    "Category 5",
+    "Category 6",
+    "Category 7",
+    "Category 8",
+    "Category 9",
+    "Category 10",
+    "Category 11",
+    "Category 12",
+    "Category 13",
+    "Category 14",
+    "Category 15",
+    "Category 16",
+    "Category 17",
+    "Category 18",
+    "Category 19",
+    "Category 20",
+    "Category 21",
+    "Category 22",
+    "Category 23",
+    "Category 24"
+  ],
+  "config": {
+    "seed": 42,
+    "train_fraction": 0.7,
+    "validation_fraction": 0.15,
+    "raw_sha256": "c07e7751f429ebe6225a77a32e61770dbb7197fd253f667e0434424adbaf7a33",
+    "zero_policy": "compare in Notebook 03"
+  },
+  "zero_policy": "unchanged; compare in Notebook 03",
+  "files": {
+    "data/raw/google_review_ratings.csv": "c07e7751f429ebe6225a77a32e61770dbb7197fd253f667e0434424adbaf7a33",
+    "configs/data.json": "2fe7512532fa112e7da420ee20808c0fb1bc31674ec8a3bd35de5be9eac30123",
+    "data/processed/profiles.csv": "dd202f838ece1c4c2be3859d7e774afbf9cdfcfa6b999c8caa2adfd8725c79b1",
+    "data/processed/quarantine.csv": "0ad7d6b49d92c2507e9dafeaebaa4cc48d4e3b26020204ab69d7d7cc74f826e8"
+  }
+}

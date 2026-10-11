@@ -1,0 +1,13 @@
+{
+  "planning_thb_per_usd": 40,
+  "exchange_rate_note": "Planning assumption, not a live exchange rate or Azure billing rate.",
+  "registry_days": 2,
+  "training_vm_hours": 1,
+  "app_active_hours": 2,
+  "app_cpu": 1,
+  "app_memory_gib": 2,
+  "app_requests": 10000,
+  "other_services_reserve_thb": 60,
+  "scope": "One short demo: Basic ACR, Linux DS2 v2 training, one Consumption app replica. No Dedicated profiles or private endpoints.",
+  "cleanup": "Scale the app to zero between tests, use zero idle training nodes, and remove paid resources within 48 hours after the demo. Cleanup is a separate user-run step."
+}

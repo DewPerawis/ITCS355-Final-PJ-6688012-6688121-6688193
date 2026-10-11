@@ -1,0 +1,9 @@
+{
+  "docker_cli": true,
+  "azure_cli": true,
+  "resources_created": false,
+  "docker_ready": true,
+  "docker_server_version": "29.4.0",
+  "azure_logged_in": true,
+  "subscription_enabled": true
+}

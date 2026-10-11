@@ -1,0 +1,9 @@
+{
+  "checked_at": "2026-10-11T16:41:50.894220+00:00",
+  "phase": "training-submit",
+  "errors": [],
+  "job_name": "train-20261011-164656",
+  "image_uri": "acrmloppj492ea24d.azurecr.io/travel-style@sha256:05d1819321f472b39fe1035cb9cee68fc7432a9ad2be4b56afdc8c85af562fcc",
+  "submitted": true,
+  "status": "Starting"
+}

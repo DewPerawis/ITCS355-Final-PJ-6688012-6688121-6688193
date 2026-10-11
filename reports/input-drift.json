@@ -1,0 +1,21 @@
+{
+  "method": "Maximum feature-wise two-sample KS statistic",
+  "reference_rows": 1908,
+  "recent_rows": 200,
+  "calibration_rounds": 100,
+  "threshold": 0.12566457023060795,
+  "normal_score": 0.09936058700209643,
+  "normal_flagged": false,
+  "injected_score": 0.7878930817610064,
+  "injected_detected": true,
+  "injection": "Add 1.5 to the first four feature ratings, clipped to [0,5]",
+  "seed": 42,
+  "limits": [
+    "Controlled input drift demonstration, not observed temporal drift.",
+    "Threshold is calibrated on training windows; the normal holdout may still be flagged.",
+    "The dataset has no timestamps or outcome labels. This does not prove concept drift.",
+    "This offline check is not a live rolling-window monitor."
+  ],
+  "verified": true,
+  "processed_sha256": "dd202f838ece1c4c2be3859d7e774afbf9cdfcfa6b999c8caa2adfd8725c79b1"
+}

@@ -1,0 +1,43 @@
+/home/dew_perawis/.venvs/mlop-pj/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+test_bad_requests_are_422 (test_api.ApiTests.test_bad_requests_are_422) ... {"request_id": "0ed34ed2-96f8-47fb-a6fd-30e7119d4ce1", "path": "/predict", "status": 422, "duration_ms": 25.29460199730238, "model_version": "abfd88e893ca"}
+{"request_id": "bc3d583b-dbf6-451b-b883-8485d80c6372", "path": "/predict", "status": 422, "duration_ms": 8.685601002071053, "model_version": "abfd88e893ca"}
+{"request_id": "cdde348a-ded7-4bfd-ae35-665f28dafd8b", "path": "/predict", "status": 422, "duration_ms": 3.125226001429837, "model_version": "abfd88e893ca"}
+{"request_id": "ed239978-fa7b-4b44-bd49-3000eab6d8df", "path": "/predict", "status": 422, "duration_ms": 2.81051699857926, "model_version": "abfd88e893ca"}
+{"request_id": "f43e66ee-80b1-441c-9a1a-4510a54b29e0", "path": "/predict", "status": 422, "duration_ms": 1.279561998671852, "model_version": "abfd88e893ca"}
+{"request_id": "7822102d-35b3-4f02-89c9-bba1bfa4a49a", "path": "/predict", "status": 422, "duration_ms": 1.1188799981027842, "model_version": "abfd88e893ca"}
+{"request_id": "a7da80b4-acaa-4845-ba42-0f7332099ae4", "path": "/predict", "status": 422, "duration_ms": 3.6723410012200475, "model_version": "abfd88e893ca"}
+{"request_id": "16b70696-80d4-49f8-b425-67ababb7f0b6", "path": "/predict", "status": 422, "duration_ms": 3.4312459974898957, "model_version": "abfd88e893ca"}
+{"request_id": "530216f6-72bf-420a-8c50-2e0019e3a797", "path": "/predict", "status": 422, "duration_ms": 1.3848070011590607, "model_version": "abfd88e893ca"}
+{"request_id": "5231414c-2864-42f6-a9da-75d9bfe3f5d0", "path": "/predict", "status": 422, "duration_ms": 2.9008920027990825, "model_version": "abfd88e893ca"}
+{"request_id": "e7df88b5-5422-425d-ab10-241cd58521f1", "path": "/predict", "status": 422, "duration_ms": 4.088246998435352, "model_version": "abfd88e893ca"}
+{"request_id": "6b70d865-8cab-4f3d-a3e1-c086af4a0898", "path": "/predict", "status": 422, "duration_ms": 2.83855900488561, "model_version": "abfd88e893ca"}
+ok
+test_batch_100_and_current_input (test_api.ApiTests.test_batch_100_and_current_input) ... {"request_id": "72818182-8f06-4496-a466-04f41f1faa10", "path": "/predict", "status": 200, "duration_ms": 16.246601997409016, "model_version": "abfd88e893ca"}
+{"request_id": "1142306f-d57c-49f7-ae24-867a32682b4b", "path": "/predict", "status": 200, "duration_ms": 6.671738003205974, "model_version": "abfd88e893ca"}
+{"request_id": "7e5548d6-2bb4-4b07-8b2e-19c8745a49e9", "path": "/predict", "status": 200, "duration_ms": 7.317846997466404, "model_version": "abfd88e893ca"}
+ok
+test_bundle_loads_once_per_start (test_api.ApiTests.test_bundle_loads_once_per_start) ... {"request_id": "33678bd2-6500-4ae6-b306-d0ad8f6c2825", "path": "/predict", "status": 200, "duration_ms": 13.467860000673681, "model_version": "abfd88e893ca"}
+{"request_id": "5297d827-48d0-44e7-bef7-f64a5b79c09c", "path": "/predict", "status": 200, "duration_ms": 6.584590999409556, "model_version": "abfd88e893ca"}
+{"request_id": "a25a9f43-1b53-4d20-a64d-3163fc1769e0", "path": "/predict", "status": 200, "duration_ms": 7.289881003089249, "model_version": "abfd88e893ca"}
+ok
+test_failed_model_load_keeps_health_but_blocks_readiness (test_api.ApiTests.test_failed_model_load_keeps_health_but_blocks_readiness) ... ok
+test_golden_predictions_and_uncertain_response (test_api.ApiTests.test_golden_predictions_and_uncertain_response) ... {"request_id": "b35a19d2-b6ad-4852-a514-4e72ca701f1c", "path": "/health", "status": 200, "duration_ms": 6.0868469954584725, "model_version": "abfd88e893ca"}
+{"request_id": "22895c42-c490-430a-933c-c23e2cbcd9b0", "path": "/ready", "status": 200, "duration_ms": 5.583172001934145, "model_version": "abfd88e893ca"}
+{"request_id": "4b0bbe7b-8487-4812-9048-7aa246e53290", "path": "/predict", "status": 200, "duration_ms": 17.81675199890742, "model_version": "abfd88e893ca"}
+ok
+test_changed_artifact_is_rejected_before_loading (test_runtime.RuntimeTests.test_changed_artifact_is_rejected_before_loading) ... ok
+test_changed_mapping_is_rejected (test_runtime.RuntimeTests.test_changed_mapping_is_rejected) ... ok
+test_saved_bundle_and_golden_profiles_match (test_runtime.RuntimeTests.test_saved_bundle_and_golden_profiles_match) ... ok
+test_duplicate_groups_and_split_are_repeatable (test_workflow.DataTests.test_duplicate_groups_and_split_are_repeatable) ... ok
+test_numeric_errors_are_not_repaired (test_workflow.DataTests.test_numeric_errors_are_not_repaired) ... ok
+test_preparation_checks_hash_and_excludes_ids (test_workflow.DataTests.test_preparation_checks_hash_and_excludes_ids) ... ok
+test_quarantine_preserves_bad_row_and_zeros (test_workflow.DataTests.test_quarantine_preserves_bad_row_and_zeros) ... ok
+test_imputer_and_scaler_fit_only_training_data (test_workflow.ModelTests.test_imputer_and_scaler_fit_only_training_data) ... ok
+test_predict_rejects_bad_contract_and_accepts_named_order (test_workflow.ModelTests.test_predict_rejects_bad_contract_and_accepts_named_order) ... ok
+test_study_ignores_test_data_and_bundle_reload_matches (test_workflow.ModelTests.test_study_ignores_test_data_and_bundle_reload_matches) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 1.385s
+
+OK

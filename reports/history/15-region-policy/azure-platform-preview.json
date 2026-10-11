@@ -1,0 +1,18 @@
+{
+  "checked_at": "2026-10-11T14:15:38.434541+00:00",
+  "resource_group_created": true,
+  "paid_resources_created": false,
+  "validation_passed": false,
+  "preview_ready": false,
+  "errors": [
+    "RuntimeError: Azure CLI failed: InvalidTemplateDeployment, RequestDisallowedByAzure"
+  ],
+  "resource_group": "rg-mlop-pj-492ea24d",
+  "region": "southeastasia",
+  "suffix": "492ea24d",
+  "project_tag": "mlop-pj-6688012",
+  "budget_thb_before_credits": 150,
+  "cleanup_by_utc": "2026-10-13T14:15:40.612068+00:00",
+  "template_sha256": "6ac9e777785bb30d65491ef9bf7078e99cba7217705064820153bb1f137ae8c5",
+  "parameters_sha256": "414bbd123678419b8b03c071720d4b8d72a3ddd68e05b15b358b0fa7e710b58a"
+}

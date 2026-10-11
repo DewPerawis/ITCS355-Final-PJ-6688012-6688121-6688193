@@ -1,0 +1,34 @@
+{
+  "tables": [
+    {
+      "columns": [
+        {
+          "name": "TimeGenerated",
+          "type": "datetime"
+        },
+        {
+          "name": "Model",
+          "type": "string"
+        },
+        {
+          "name": "Requests",
+          "type": "long"
+        },
+        {
+          "name": "Errors",
+          "type": "long"
+        },
+        {
+          "name": "MeanMs",
+          "type": "real"
+        },
+        {
+          "name": "P95Ms",
+          "type": "real"
+        }
+      ],
+      "name": "PrimaryResult",
+      "rows": []
+    }
+  ]
+}

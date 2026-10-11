@@ -1,0 +1,60 @@
+{
+  "health": {
+    "status": "alive"
+  },
+  "ready": {
+    "status": "ready",
+    "model_version": "abfd88e893ca",
+    "mapping_status": "provisional; review the cluster profiles"
+  },
+  "prediction": {
+    "request_id": "145df6f1-361c-4994-b6db-75feba81efb6",
+    "model_version": "abfd88e893ca",
+    "mapping_status": "provisional; review the cluster profiles",
+    "predictions": [
+      {
+        "cluster_id": 0,
+        "segment": "Segment 1",
+        "distance": 4.143480490277737,
+        "uncertain": false,
+        "model_version": "abfd88e893ca",
+        "status": "ok"
+      },
+      {
+        "cluster_id": 1,
+        "segment": "Segment 2",
+        "distance": 3.6429553680014135,
+        "uncertain": false,
+        "model_version": "abfd88e893ca",
+        "status": "ok"
+      },
+      {
+        "cluster_id": 2,
+        "segment": "Segment 3",
+        "distance": 4.0918361879289185,
+        "uncertain": false,
+        "model_version": "abfd88e893ca",
+        "status": "ok"
+      },
+      {
+        "cluster_id": 3,
+        "segment": null,
+        "distance": 6.934135150935982,
+        "uncertain": true,
+        "model_version": "abfd88e893ca",
+        "status": "uncertain"
+      },
+      {
+        "cluster_id": 4,
+        "segment": "Segment 5",
+        "distance": 5.946169471823037,
+        "uncertain": false,
+        "model_version": "abfd88e893ca",
+        "status": "ok"
+      }
+    ]
+  },
+  "invalid_input_status": 422,
+  "transport": "in-process TestClient",
+  "public_deployment": false
+}

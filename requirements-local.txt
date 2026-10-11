@@ -1,0 +1,6 @@
+# Local tracking, data versioning, and API checks.
+mlflow==3.17.0
+dvc==3.67.1
+fastapi==0.143.0
+uvicorn==0.54.0
+httpx==0.28.1

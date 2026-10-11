@@ -62,3 +62,7 @@ Current/archived proposals, README, migration explanation และ future sourc
 AGENT/AGENTS/CLAUDE, PLAN, historical guides, reference snapshots, migration manifest และ local sync helper ถูก ignore ตามนโยบาย internal working documents เดิม ยังคงเปิดได้ครบในเครื่อง การจัดย้ายไม่ได้ stage/commit/push ไฟล์ใด
 
 Final reproduction ต้องใช้ source/config/artifact-access instructions ที่อยู่ใน repository จริง ไม่พึ่งไฟล์ local-only ถ้าต้องการส่งต่อ PLAN/กติกาให้ทีมผ่าน Git ให้เปลี่ยนนโยบายเฉพาะไฟล์เมื่อผู้ใช้สั่ง โดยตรวจข้อมูลภายในก่อน
+
+## นโยบายที่เปลี่ยนหลังการย้าย — 11 ตุลาคม 2026
+
+ข้อความ shared safety configuration ด้านบนบันทึกการเตรียมวันที่ 10 ตุลาคม ต่อมาผู้ใช้สั่งให้ `.gitignore` ignore ตัวเองและนำฉบับที่เคย commit ออกจาก tracking จึงเปลี่ยนนโยบายปัจจุบันเป็น local-only โดยเพิ่ม `/.gitignore` และเก็บไฟล์ในเครื่อง การถอน index ต้อง commit เพื่อเปลี่ยน snapshot ของ branch และไม่ใช่การลบไฟล์ออกจาก historical commits

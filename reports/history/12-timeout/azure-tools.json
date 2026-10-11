@@ -1,0 +1,21 @@
+{
+  "checked_at": "2026-10-11T13:37:29.599722+00:00",
+  "changes": [],
+  "errors": [
+    {
+      "step": "install_containerapp_extension",
+      "code": "TimeoutExpired"
+    }
+  ],
+  "checks_failed": [
+    "extensions_after",
+    "Microsoft.App_after"
+  ],
+  "resources_created": false,
+  "status_only": false,
+  "setup_ready": false,
+  "requested_containerapp_version": "1.3.0b5",
+  "extensions": null,
+  "provider_state": null,
+  "next": "Read status again if Registering; stop on errors."
+}
