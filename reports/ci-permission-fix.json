@@ -1,0 +1,9 @@
+{
+  "checked_at": "2026-10-11T18:59:59.205923+00:00",
+  "added_action": "Microsoft.App/managedEnvironments/join/action",
+  "scope": "/subscriptions/b175b91e-058e-4a22-8e96-39e6e432b006/resourceGroups/rg-mlop-pj-492ea24d",
+  "custom_role_id": "da267c74-3e3c-4cd3-9d92-d4bc00419a0a",
+  "verified": true,
+  "reason": "Container App updates reference the existing managed environment. CI had read access but lacked join access.",
+  "failed_run": "https://github.com/DewPerawis/MLOP-PJ/actions/runs/38165706298"
+}

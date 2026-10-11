@@ -107,6 +107,7 @@ def configure(report):
                       "Actions": ["Microsoft.Resources/subscriptions/resourceGroups/read",
                                   "Microsoft.App/containerApps/read", "Microsoft.App/containerApps/write",
                                   "Microsoft.App/managedEnvironments/read",
+                                  "Microsoft.App/managedEnvironments/join/action",
                                   "Microsoft.ManagedIdentity/userAssignedIdentities/read",
                                   "Microsoft.ManagedIdentity/userAssignedIdentities/assign/action"],
                       "NotActions": [], "DataActions": [], "NotDataActions": [], "AssignableScopes": [scope]}
