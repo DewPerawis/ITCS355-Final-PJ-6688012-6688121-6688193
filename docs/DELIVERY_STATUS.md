@@ -24,4 +24,4 @@ The cloud latency target was missed, cold activation is one observation, and the
 
 ## Owner submission actions
 
-Instructor access to private repository links and the final LMS upload/status must be confirmed by the owner. After a documentation change, commit/push the reviewed files and rebuild the companion ZIP so it contains the latest documents. These administrative actions are separate from the supplied operational evidence.
+The repository is public. The final LMS upload/status must be confirmed by the owner. After a documentation change, commit/push the reviewed files and rebuild the companion ZIP so it contains the latest documents. These administrative actions are separate from the supplied operational evidence.

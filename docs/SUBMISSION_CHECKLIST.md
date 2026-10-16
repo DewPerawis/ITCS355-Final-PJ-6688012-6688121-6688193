@@ -7,7 +7,7 @@ This checklist maps the capstone requirements to supplied files. Checked items r
 - [x] Automated reproducible training: [stage runner](../scripts/reproduce.py), [pipeline](../dvc.yaml), [selection](../reports/selection.json), and [training proof](../reports/azure-training-proof.json).
 - [x] Registered model and lineage: [registry result](../reports/finish-training-registry.json) and [bundle manifest](../reports/bundle-manifest.json).
 - [x] Deployed inference: [real HTTP and image verification](../reports/ci-deploy-result.json).
-- [x] CI/CD with a failing gate: [workflow](../.github/workflows/ci.yml), [successful run](https://github.com/DewPerawis/MLOP-PJ/actions/runs/38173375457), and [deliberate test failure with skipped deploy](https://github.com/DewPerawis/MLOP-PJ/actions/runs/38173380800).
+- [x] CI/CD with a failing gate: [workflow](../.github/workflows/ci.yml), [successful run](https://github.com/DewPerawis/ITCS355-Final-PJ-6688012-6688121-6688193/actions/runs/38173375457), and [deliberate test failure with skipped deploy](https://github.com/DewPerawis/ITCS355-Final-PJ-6688012-6688121-6688193/actions/runs/38173380800).
 - [x] Dashboard: [workbook](../reports/dashboard-workbook.json), [chart evidence](../reports/dashboard-chart-update.json), and [telemetry](../reports/azure-telemetry.json).
 - [x] Working alert: [actual fired/resolved alert](../reports/finish-alert.json). Email notifications were not configured.
 - [x] Deliberate failure and recovery: [failure](../reports/finish-failure.json), [recovery](../reports/finish-recovery.json), and [regression tests](../tests/test_api.py).
@@ -25,4 +25,4 @@ The brief requires a dashboard and working alert, but does not prescribe Portal 
 
 The repository criteria are R1-R5 at six marks each (30 marks). Demo and defense are separate (15 marks). Source: the instructor's capstone brief and course specification reviewed for this project.
 
-The owner must still ensure the instructor can access the private repository if its links are used, upload the final files, and verify the LMS submission status. These administrative steps are not claimed complete by this checklist.
+The repository is public. The owner must still upload the final files and verify the LMS submission status. These administrative steps are not claimed complete by this checklist.

@@ -14,7 +14,7 @@ Read [README.md](../README.md) for the project overview, checked requirements an
 
 The companion ZIP includes the pinned public CSV and canonical model as well as source and saved evidence. It excludes credentials, caches and Git history. `SUBMISSION_MANIFEST.json` inside the ZIP records its base commit, tested CI commit and file hashes. Git-only checkouts do not include the CSV/model binaries.
 
-Repository: [DewPerawis/MLOP-PJ](https://github.com/DewPerawis/MLOP-PJ). It was private at the final check; history and Actions need reviewer access. The ZIP can be reviewed without GitHub or Azure access.
+Repository: [DewPerawis/ITCS355-Final-PJ-6688012-6688121-6688193](https://github.com/DewPerawis/ITCS355-Final-PJ-6688012-6688121-6688193). The repository is public; no collaborator invitation is needed to inspect its source, history and public Actions evidence. The ZIP can be reviewed without Azure access.
 
 ## Rubric and evidence index
 
@@ -32,8 +32,8 @@ Use [SUBMISSION_CHECKLIST.md](SUBMISSION_CHECKLIST.md) for the individual requir
 
 ## CI and failure evidence
 
-- [Successful tests and deployment](https://github.com/DewPerawis/MLOP-PJ/actions/runs/38173375457)
-- [Deliberate failed test with deployment skipped](https://github.com/DewPerawis/MLOP-PJ/actions/runs/38173380800)
+- [Successful tests and deployment](https://github.com/DewPerawis/ITCS355-Final-PJ-6688012-6688121-6688193/actions/runs/38173375457)
+- [Deliberate failed test with deployment skipped](https://github.com/DewPerawis/ITCS355-Final-PJ-6688012-6688121-6688193/actions/runs/38173380800)
 
 Both use source commit `9fea51ae4e81251ac358a2c62139df591688275d`. Their conclusions and job outcomes were checked on 16 October. The expected failed run proves the CI gate. The separate staging incident swaps segment names, detects a semantic regression and confirms recovery; it is not the same experiment.
 
@@ -57,4 +57,4 @@ Local validation used the existing pinned WSL environment: 59 system/API tests a
 
 Use the repository link plus the companion ZIP in the LMS. The presentation and model-card PDFs can also be attached separately; both are in the ZIP. The LMS screenshot allows online text and files, with 100 MB maximum file size and up to 20 files.
 
-The owner must ensure instructor access to private GitHub links, commit/push any final documentation changes, upload the current ZIP, and check the LMS status. The documentation review does not verify an LMS submission.
+The owner must commit/push any final documentation changes, upload the current ZIP, and check the LMS status. The documentation review does not verify an LMS submission.

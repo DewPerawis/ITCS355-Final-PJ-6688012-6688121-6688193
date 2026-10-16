@@ -1,10 +1,28 @@
 {
-  "checked_at": "2026-10-16T13:16:47.060997+00:00",
-  "repository": "https://github.com/DewPerawis/MLOP-PJ",
-  "visibility": "private",
+  "checked_at": "2026-10-16T13:45:35.484598+00:00",
+  "repository": "https://github.com/DewPerawis/ITCS355-Final-PJ-6688012-6688121-6688193",
+  "visibility": "public",
+  "private": false,
   "description": "ITCS355 MLOps project: travel preference segmentation with reproducible training, Azure deployment, CI/CD, monitoring, and tested failure recovery.",
+  "unauthenticated_readme_access": true,
+  "unauthenticated_ci_run_access": true,
+  "ci_runs": [
+    {
+      "id": 38173375457,
+      "html_url": "https://github.com/DewPerawis/ITCS355-Final-PJ-6688012-6688121-6688193/actions/runs/38173375457",
+      "conclusion": "success",
+      "head_sha": "9fea51ae4e81251ac358a2c62139df591688275d"
+    },
+    {
+      "id": 38173380800,
+      "html_url": "https://github.com/DewPerawis/ITCS355-Final-PJ-6688012-6688121-6688193/actions/runs/38173380800",
+      "conclusion": "failure",
+      "head_sha": "9fea51ae4e81251ac358a2c62139df591688275d"
+    }
+  ],
   "workflow_state": "disabled_manually",
   "resource_group_exists": false,
   "cleanup_verified": true,
-  "scope": "Repository About description updated as requested; workflow and Azure status queried without changes"
+  "azure_status_checked_at": "2026-10-16T13:16:47.060997+00:00",
+  "scope": "Renamed public repository, README and CI runs checked without authentication; workflow state queried with gh. Azure status retained from the earlier verified check."
 }

@@ -15,7 +15,7 @@ The project covers data versioning, reproducible training, model registration, a
 
 **Cloud status:** the project resource group has been deleted and cleanup is verified in [reports/cleanup.json](reports/cleanup.json). The deployment workflow is disabled after the demo; [the final status check](reports/submission-status.json) records both states. The Azure API, private DVC remote, registry and live dashboard are therefore no longer available. Their saved evidence remains in this repository. Local review uses the supplied ZIP and does not need Azure.
 
-The repository was private at the final check. The instructor needs GitHub access to inspect its history and Actions. The companion ZIP includes the source, notebooks, saved reports, public CSV and canonical model so file review does not require GitHub access. Raw data and model binaries are included in the ZIP, not tracked in Git.
+The repository is public. Its source, Git history and Actions evidence can be reviewed without a collaborator invitation. The companion ZIP includes the source, notebooks, saved reports, public CSV and canonical model so file review does not require GitHub access. Raw data and model binaries are included in the ZIP, not tracked in Git.
 
 ## Team
 
@@ -49,17 +49,47 @@ The course brief separates the 30-mark repository assessment from the 15-mark li
 
 ## System
 
-```text
-UCI CSV -> Git/DVC -> preprocessing and training -> MLflow / Azure ML registry
-                                                    |
-GitHub Actions tests -> verified model -> Docker / ACR -> Container Apps API
-                                                            |
-                                            Azure Monitor dashboard and alert
-                                                            |
-                                           staging failure -> recovery check
+```mermaid
+flowchart TB
+    subgraph BUILD["Build: data and model"]
+        direction LR
+        DATA["UCI CSV"] --> VERSION["Versioned data and code<br/>Git / DVC"]
+        VERSION --> TRAIN["Preprocessing and training<br/>K-Means / GMM comparison"]
+        TRAIN --> REGISTRY["Tracked and registered model<br/>MLflow / Azure ML"]
+    end
+
+    subgraph SHIP["Ship: tested deployment"]
+        direction LR
+        CI["GitHub Actions<br/>Tests and model checks"] --> GATE{"Checks pass?"}
+        GATE -->|Yes| IMAGE["Verified bundle and image<br/>Docker / ACR"]
+        IMAGE --> API["Inference API<br/>Azure Container Apps"]
+        GATE -->|No| STOP["Deployment blocked"]
+    end
+
+    subgraph RUN["Operate: monitoring"]
+        direction LR
+        LOGS["Application logs<br/>and metrics"] --> DASH["Monitoring dashboard"]
+        LOGS --> ALERT["Azure Monitor<br/>Working alert"]
+    end
+
+    REGISTRY --> CI
+    API --> LOGS
 ```
 
+The diagram shows the system used during the completed demo. Cloud resources have since been removed; use the local review copy and saved evidence.
+
 Provider integration is kept in `cloudlayer/`. The bundle contains preprocessing, feature order, clustering model, segment mapping, distance thresholds and version metadata. Startup checks verify the artifact hash, environment and golden predictions before readiness succeeds.
+
+### Deliberate failure and recovery
+
+```mermaid
+flowchart LR
+    FAULT["Staging only<br/>Swap segment names"] --> DETECT["Semantic canary<br/>Detect mismatch"]
+    DETECT --> RESTORE["Restore configuration<br/>Restart staging app"]
+    RESTORE --> RECOVER["Confirm recovery<br/>Canary returns 200"]
+    DETECT -.-> ALERT["Saved Azure Monitor<br/>alert event"]
+    RECOVER -.-> TEST["Regression test<br/>Protect the mapping"]
+```
 
 The deliberate staging failure swaps segment names while the API can still return normal prediction responses. A semantic canary detects the mismatch. The team restored the configuration, confirmed recovery, and retained a regression test for the failure.
 
@@ -133,8 +163,8 @@ Measurement files: [local latency](reports/serving-recheck/local-load.json), [in
 
 The verified CI source is `9fea51ae4e81251ac358a2c62139df591688275d`:
 
-- [Successful tests and deployment](https://github.com/DewPerawis/MLOP-PJ/actions/runs/38173375457)
-- [Intentional failed test; deployment skipped](https://github.com/DewPerawis/MLOP-PJ/actions/runs/38173380800)
+- [Successful tests and deployment](https://github.com/DewPerawis/ITCS355-Final-PJ-6688012-6688121-6688193/actions/runs/38173375457)
+- [Intentional failed test; deployment skipped](https://github.com/DewPerawis/ITCS355-Final-PJ-6688012-6688121-6688193/actions/runs/38173380800)
 
 The second run is expected evidence of the deployment gate. It is separate from the staging semantic-failure demo. Later documentation/report changes retain this evidence only while the CI inputs match the tested source. No post-cleanup cloud deployment is needed for documentation updates.
 
