@@ -1,0 +1,59 @@
+{
+  "checked_at": "2026-10-16T12:44:06.091475+00:00",
+  "resource_group": "rg-mlop-pj-492ea24d",
+  "cleanup_verified": true,
+  "resources_before": [
+    {
+      "name": "stmloppj492ea24d",
+      "type": "Microsoft.Storage/storageAccounts"
+    },
+    {
+      "name": "log-mlop-pj-492ea24d",
+      "type": "Microsoft.OperationalInsights/workspaces"
+    },
+    {
+      "name": "kv-mlop-pj-492ea24d",
+      "type": "Microsoft.KeyVault/vaults"
+    },
+    {
+      "name": "acrmloppj492ea24d",
+      "type": "Microsoft.ContainerRegistry/registries"
+    },
+    {
+      "name": "ai-mlop-pj-492ea24d",
+      "type": "Microsoft.Insights/components"
+    },
+    {
+      "name": "cae-mlop-pj-492ea24d",
+      "type": "Microsoft.App/managedEnvironments"
+    },
+    {
+      "name": "ml-mlop-pj-492ea24d",
+      "type": "Microsoft.MachineLearningServices/workspaces"
+    },
+    {
+      "name": "id-api-492ea24d",
+      "type": "Microsoft.ManagedIdentity/userAssignedIdentities"
+    },
+    {
+      "name": "travel-style-492ea24d",
+      "type": "Microsoft.App/containerApps"
+    },
+    {
+      "name": "dd2f5d4a-05a6-5adf-99ce-60413187f444",
+      "type": "Microsoft.Insights/workbooks"
+    },
+    {
+      "name": "mlop-semantic-failure",
+      "type": "Microsoft.Insights/scheduledqueryrules"
+    },
+    {
+      "name": "failure-492ea24d",
+      "type": "Microsoft.App/containerApps"
+    },
+    {
+      "name": "id-ci-492ea24d",
+      "type": "Microsoft.ManagedIdentity/userAssignedIdentities"
+    }
+  ]
+}

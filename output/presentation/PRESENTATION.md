@@ -13,7 +13,7 @@ Open `output/presentation/6688012_6688121_6688193_Presentation.pptx`. It has 15 
 
 ## Live demo
 
-Open `output/presentation/LIVE_DEMO.ipynb` in VS Code WSL with the MLOP-PJ kernel. Read section 7 of `output/presentation/PROJECT_SUMMARY_TH.md` for the full Thai guide.
+Open `output/presentation/LIVE_DEMO.ipynb` in VS Code WSL with the MLOP-PJ kernel. The final review instructions are in `docs/LOCAL_REVIEW.md`. The longer speaking notes are kept locally.
 
 After reopening the laptop or restarting the kernel:
 
@@ -36,4 +36,4 @@ The slides use saved project reports and a real API smoke check. Graphs are draw
 - Keep the planning estimate separate from the provisional reported cost. The reported row may not include all usage yet.
 - The dashboard export is in `reports/dashboard-workbook.json`. Portal screenshots are useful extra evidence. The reminder is 13 October 2026, 21:15 Bangkok; it does not delete resources.
 
-The deck keeps the supplied template's backgrounds, decoration, fonts, and Mahidol logo. Old research text, other institutions, speaker notes, and embedded objects were removed from the new file. The original `example.pptx` was kept unchanged.
+The deck keeps the supplied template's backgrounds, decoration, fonts, and Mahidol logo. Old research text, other institutions, speaker notes, and embedded objects were removed from the new file. The original example template is kept locally.

@@ -4,6 +4,10 @@ ITCS355 project by Perawis Buranasing (6688012), Supitsara Tanasarnsukstid (6688
 
 The service groups 24-category travel-rating profiles with K-Means. It returns a segment, cluster distance, and an uncertainty flag. Segment names are provisional; this is not a personality test.
 
+Start with [the final submission guide](docs/FINAL_SUBMISSION.md) for the grading evidence and [the local review guide](docs/LOCAL_REVIEW.md) to run the submitted ZIP without Azure. The repository is private; GitHub links need reviewer access. The ZIP includes the pinned public dataset and canonical model, but no Git history or credentials.
+
+Proposal responsibilities: Perawis - data, DVC, preprocessing, training, MLflow and registry; Supitsara - API, Docker, deployment, CI/CD and load testing; Atichat - dashboard, drift, alerts, failure demo, cost and model card. These are the submitted role assignments, not a separate audit of individual contributions.
+
 ## System
 
 Blob/DVC -> Azure ML training and registry -> ACR -> Container Apps -> Azure Monitor.
@@ -20,7 +24,7 @@ GitHub Actions tests the code, downloads the verified model, builds an immutable
 | Controlled input drift | reports/input-drift.json |
 | Cost and delivery checks | reports/cost-per-1000.json, docs/DELIVERY_STATUS.md |
 | Model card | docs/MODEL_CARD.md; output/pdf/MODEL_CARD.pdf |
-| Presentation and live demo | output/presentation/MLOP-PJ_Presentation.pptx; docs/PRESENTATION.md |
+| Presentation and live demo | output/presentation/6688012_6688121_6688193_Presentation.pptx; docs/PRESENTATION.md |
 
 The latest verified CI source commit is `9fea51a`. Both required runs use that commit:
 
@@ -41,9 +45,11 @@ A separate connection-pool check measured cloud p95 624.83 ms with zero errors a
 
 The short-demo estimate is 88.89 THB, or 8.89 THB per 1,000 predictions for the assumed 10,000 predictions. Billing now reports a provisional cost row; it may not include all usage yet. Read docs/COST_REPORT.md for the separate calculation and limits.
 
+The read-only check on 16 October reported 1.44540968 USD for the project group and 2,707 logged valid profiles over the same window: 0.53395260 USD per 1,000 profiles. This includes idle cloud time and is still provisional. At that check, 13 resources remained. See reports/billing-submission-check.json and reports/submission-preflight.json; cleanup is pending until separately verified.
+
 ## Run locally
 
-Use WSL and Python 3.13.11. Existing users select `~/.venvs/mlop-pj/bin/python` in VS Code. A fresh checkout can use `bash scripts/setup_wsl.sh` and the dependency files in this repo. The setup script installs packages and may ask for sudo if venv support is missing.
+Use WSL and Python 3.13.11. Existing users select `~/.venvs/mlop-pj/bin/python` in VS Code. For a clean review environment, follow docs/LOCAL_REVIEW.md. The original notebook setup below installs packages and rewrites a notebook lock file; it is not needed for the ZIP review.
 
 For a fresh checkout, first check that `python3 --version` is 3.13.11, then run:
 
@@ -76,6 +82,6 @@ Keep real dashboard and alert screenshots, both CI links, model lineage, load/co
 
 The 15-slide deck uses the supplied example template and saved results. Read docs/PRESENTATION.md for timing and the live API demo. The presentation PDF is in output/pdf/MLOP-PJ_Presentation.pdf; the exported model card is one A4 page.
 
-Read docs/SUBMISSION_CHECKLIST.md for the course requirements, our own targets, and optional screenshots. The current reported cost is provisional; cloud cleanup is still required after the demo.
+Read docs/SUBMISSION_CHECKLIST.md for the course requirements, our own targets, and optional screenshots. The current reported cost is provisional; cloud cleanup is still required after the demo. Saved provider evidence describes the completed runs; it does not imply that cloud services will stay online after submission.
 
 Save evidence before cleanup. The project cleanup reminder is 13 October 2026 at 21:15 Bangkok time; it does not delete anything automatically. Deleting the project group removes the API, cloud data, registry, training, and monitoring. Run the cleanup command in docs/FINAL_STEPS.md only when these resources are no longer needed.

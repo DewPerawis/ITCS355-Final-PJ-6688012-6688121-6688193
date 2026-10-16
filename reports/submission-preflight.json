@@ -1,0 +1,98 @@
+{
+  "checked_at": "2026-10-16T12:25:27.812860+00:00",
+  "scope": "Read-only GitHub and Azure queries; no deployment or cleanup",
+  "repository": "https://github.com/DewPerawis/MLOP-PJ",
+  "visibility": "private",
+  "remote_main": "b8d601e08240e901e6af9c51960f01b28aab9970",
+  "resource_group": "rg-mlop-pj-492ea24d",
+  "resource_group_exists": true,
+  "resources": [
+    {
+      "name": "stmloppj492ea24d",
+      "type": "Microsoft.Storage/storageAccounts"
+    },
+    {
+      "name": "log-mlop-pj-492ea24d",
+      "type": "Microsoft.OperationalInsights/workspaces"
+    },
+    {
+      "name": "kv-mlop-pj-492ea24d",
+      "type": "Microsoft.KeyVault/vaults"
+    },
+    {
+      "name": "acrmloppj492ea24d",
+      "type": "Microsoft.ContainerRegistry/registries"
+    },
+    {
+      "name": "ai-mlop-pj-492ea24d",
+      "type": "Microsoft.Insights/components"
+    },
+    {
+      "name": "cae-mlop-pj-492ea24d",
+      "type": "Microsoft.App/managedEnvironments"
+    },
+    {
+      "name": "ml-mlop-pj-492ea24d",
+      "type": "Microsoft.MachineLearningServices/workspaces"
+    },
+    {
+      "name": "id-api-492ea24d",
+      "type": "Microsoft.ManagedIdentity/userAssignedIdentities"
+    },
+    {
+      "name": "travel-style-492ea24d",
+      "type": "Microsoft.App/containerApps"
+    },
+    {
+      "name": "dd2f5d4a-05a6-5adf-99ce-60413187f444",
+      "type": "Microsoft.Insights/workbooks"
+    },
+    {
+      "name": "mlop-semantic-failure",
+      "type": "Microsoft.Insights/scheduledqueryrules"
+    },
+    {
+      "name": "failure-492ea24d",
+      "type": "Microsoft.App/containerApps"
+    },
+    {
+      "name": "id-ci-492ea24d",
+      "type": "Microsoft.ManagedIdentity/userAssignedIdentities"
+    }
+  ],
+  "cleanup_verified": false,
+  "ci_runs": [
+    {
+      "id": 38173375457,
+      "conclusion": "success",
+      "head_sha": "9fea51ae4e81251ac358a2c62139df591688275d",
+      "html_url": "https://github.com/DewPerawis/MLOP-PJ/actions/runs/38173375457",
+      "jobs": [
+        {
+          "name": "tests",
+          "conclusion": "success"
+        },
+        {
+          "name": "deploy",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 38173380800,
+      "conclusion": "failure",
+      "head_sha": "9fea51ae4e81251ac358a2c62139df591688275d",
+      "html_url": "https://github.com/DewPerawis/MLOP-PJ/actions/runs/38173380800",
+      "jobs": [
+        {
+          "name": "tests",
+          "conclusion": "failure"
+        },
+        {
+          "name": "deploy",
+          "conclusion": "skipped"
+        }
+      ]
+    }
+  ]
+}

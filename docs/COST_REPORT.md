@@ -6,7 +6,15 @@ The short-demo plan totals 88.89 THB before credits. It assumes 10,000 requests 
 
 Estimated cost per 1,000 predictions = 88.89 / 10,000 * 1,000 = 8.89 THB.
 
-## Actual cost
+## Latest reported cost - 16 October 2026
+
+A read-only query at 2026-10-16T12:25:27.812860+00:00 returned 1.44540967899556 USD for the project resource group. The same UTC window, starting 11 October at 00:00, contained 2,707 logged valid profiles across the main and failure apps.
+
+Reported cost per 1,000 predictions = 1.44540967899556 / 2,707 * 1,000 = 0.5339525966 USD.
+
+The raw billing and prediction-query responses are in reports/billing-submission-check.json. This includes idle cloud time after the demo. It is a provisional reported amount, not a final invoice or before-credit cost. At this query, the group still contained 13 resources; cleanup was pending. Do not use the earlier demo-period amount as the latest total.
+
+## Earlier demo-period reported cost
 
 The latest query returned a reported pre-tax cost of 0.0012035014 USD. Logs recorded 841 valid profiles in the same query window. Provisional reported cost per 1,000 predictions = 0.0012035014 / 841 * 1,000 = 0.00143104 USD. See reports/cost-per-1000.json for the exact window and provider response.
 

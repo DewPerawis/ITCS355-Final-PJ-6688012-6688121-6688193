@@ -1,9 +1,9 @@
 {
-  "checked_at": "2026-10-11T20:37:50.443291+00:00",
+  "checked_at": "2026-10-12T05:01:10.426229+00:00",
   "dashboard_exists": true,
   "display_name": "MLOP Travel Style",
   "resource_id": "/subscriptions/b175b91e-058e-4a22-8e96-39e6e432b006/resourcegroups/rg-mlop-pj-492ea24d/providers/microsoft.insights/workbooks/dd2f5d4a-05a6-5adf-99ce-60413187f444",
-  "query_count": 3,
+  "query_count": 6,
   "workbook": {
     "version": "Notebook/1.0",
     "isLocked": false,
@@ -19,6 +19,107 @@
         }
       },
       {
+        "type": 9,
+        "name": "demo-time",
+        "content": {
+          "version": "KqlParameterItem/1.0",
+          "parameters": [
+            {
+              "id": "68b84cf3-7d35-4310-8bbb-cccd382a9523",
+              "version": "KqlParameterItem/1.0",
+              "name": "TimeRange",
+              "label": "Time range",
+              "type": 4,
+              "isRequired": true,
+              "value": {
+                "durationMs": 86400000
+              },
+              "typeSettings": {
+                "selectableValues": [
+                  {
+                    "durationMs": 3600000
+                  },
+                  {
+                    "durationMs": 21600000
+                  },
+                  {
+                    "durationMs": 86400000
+                  },
+                  {
+                    "durationMs": 172800000
+                  },
+                  {
+                    "durationMs": 604800000
+                  }
+                ],
+                "allowCustom": true
+              }
+            }
+          ],
+          "style": "pills",
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces"
+        }
+      },
+      {
+        "type": 1,
+        "name": "demo-chart-note",
+        "content": {
+          "json": "Charts combine the main and staging apps. Server errors are HTTP 5xx; expected 422 responses are not server errors. Latency is measured inside the app, not over client HTTPS. Logs may arrive late. Only observed time bins are shown. The original tables below retain model version and failure details."
+        }
+      },
+      {
+        "type": 3,
+        "name": "demo-request-chart",
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "ContainerAppConsoleLogs_CL | where ContainerAppName_s in ('travel-style-492ea24d', 'failure-492ea24d') | extend j=parse_json(Log_s) | where isnotempty(j.path) | summarize Requests=count(), ServerErrors=countif(toint(j.status)>=500) by bin(TimeGenerated,1m) | order by TimeGenerated asc",
+          "size": 0,
+          "title": "Requests and server errors per minute",
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces",
+          "crossComponentResources": [
+            "/subscriptions/b175b91e-058e-4a22-8e96-39e6e432b006/resourceGroups/rg-mlop-pj-492ea24d/providers/Microsoft.OperationalInsights/workspaces/log-mlop-pj-492ea24d"
+          ],
+          "visualization": "timechart",
+          "timeContextFromParameter": "TimeRange"
+        }
+      },
+      {
+        "type": 3,
+        "name": "demo-latency-chart",
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "ContainerAppConsoleLogs_CL | where ContainerAppName_s in ('travel-style-492ea24d', 'failure-492ea24d') | extend j=parse_json(Log_s) | where isnotempty(j.path) | summarize MeanMs=avg(todouble(j.duration_ms)), P95Ms=percentile(todouble(j.duration_ms),95) by bin(TimeGenerated,1m) | order by TimeGenerated asc",
+          "size": 0,
+          "title": "Application latency (ms): mean and p95",
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces",
+          "crossComponentResources": [
+            "/subscriptions/b175b91e-058e-4a22-8e96-39e6e432b006/resourceGroups/rg-mlop-pj-492ea24d/providers/Microsoft.OperationalInsights/workspaces/log-mlop-pj-492ea24d"
+          ],
+          "visualization": "timechart",
+          "timeContextFromParameter": "TimeRange"
+        }
+      },
+      {
+        "type": 3,
+        "name": "demo-profile-chart",
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "ContainerAppConsoleLogs_CL | where ContainerAppName_s in ('travel-style-492ea24d', 'failure-492ea24d') | extend j=parse_json(Log_s) | where tostring(j.event)=='prediction_batch' | summarize Predictions=sum(toint(j.count)), Uncertain=sum(toint(j.uncertain_count)) by bin(TimeGenerated,1m) | order by TimeGenerated asc",
+          "size": 0,
+          "title": "Predictions and uncertain profiles per minute",
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces",
+          "crossComponentResources": [
+            "/subscriptions/b175b91e-058e-4a22-8e96-39e6e432b006/resourceGroups/rg-mlop-pj-492ea24d/providers/Microsoft.OperationalInsights/workspaces/log-mlop-pj-492ea24d"
+          ],
+          "visualization": "timechart",
+          "timeContextFromParameter": "TimeRange"
+        }
+      },
+      {
         "type": 3,
         "name": "requests",
         "content": {
@@ -31,7 +132,8 @@
             "/subscriptions/b175b91e-058e-4a22-8e96-39e6e432b006/resourceGroups/rg-mlop-pj-492ea24d/providers/Microsoft.OperationalInsights/workspaces/log-mlop-pj-492ea24d"
           ],
           "visualization": "table",
-          "title": "requests"
+          "title": "requests",
+          "timeContextFromParameter": "TimeRange"
         }
       },
       {
@@ -47,7 +149,8 @@
             "/subscriptions/b175b91e-058e-4a22-8e96-39e6e432b006/resourceGroups/rg-mlop-pj-492ea24d/providers/Microsoft.OperationalInsights/workspaces/log-mlop-pj-492ea24d"
           ],
           "visualization": "table",
-          "title": "profiles"
+          "title": "profiles",
+          "timeContextFromParameter": "TimeRange"
         }
       },
       {
@@ -63,10 +166,11 @@
             "/subscriptions/b175b91e-058e-4a22-8e96-39e6e432b006/resourceGroups/rg-mlop-pj-492ea24d/providers/Microsoft.OperationalInsights/workspaces/log-mlop-pj-492ea24d"
           ],
           "visualization": "table",
-          "title": "failure"
+          "title": "failure",
+          "timeContextFromParameter": "TimeRange"
         }
       }
     ]
   },
-  "scope": "Read-only ARM export of the actual Azure workbook; not a Portal screenshot."
+  "scope": "Actual Azure workbook export. Charts configured and queries checked; Portal rendering requires refresh."
 }

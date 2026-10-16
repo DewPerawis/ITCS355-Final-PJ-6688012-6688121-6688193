@@ -1,0 +1,50 @@
+{
+  "checked_at": "2026-10-16T12:25:27.812860+00:00",
+  "resource_group": "rg-mlop-pj-492ea24d",
+  "billing_from_utc": "2026-10-11T00:00:00+00:00",
+  "billing_to_utc": "2026-10-16T12:25:27.812860+00:00",
+  "basis": "Updated reported project resource-group cost; not a final invoice",
+  "errors": [],
+  "billing_response": {
+    "columns": [
+      {
+        "name": "PreTaxCost",
+        "type": "Number"
+      },
+      {
+        "name": "Currency",
+        "type": "String"
+      }
+    ],
+    "nextLink": null,
+    "rows": [
+      [
+        1.44540967899556,
+        "USD"
+      ]
+    ]
+  },
+  "reported_pretax_cost": 1.44540967899556,
+  "currency": "USD",
+  "prediction_query_response": {
+    "tables": [
+      {
+        "columns": [
+          {
+            "name": "Predictions",
+            "type": "long"
+          }
+        ],
+        "name": "PrimaryResult",
+        "rows": [
+          [
+            2707
+          ]
+        ]
+      }
+    ]
+  },
+  "observed_predictions": 2707,
+  "reported_cost_per_1000_predictions": 0.5339525965997636,
+  "limits": "Billing and telemetry may lag. Includes idle cloud time through the query window. Not a final invoice or a before-credit cost."
+}

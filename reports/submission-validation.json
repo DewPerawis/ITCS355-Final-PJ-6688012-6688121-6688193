@@ -1,0 +1,34 @@
+{
+  "checked_at": "2026-10-16T13:03:28.307328+00:00",
+  "artifact_hashes_match": {
+    "data/raw/google_review_ratings.csv": true,
+    "models/artifacts/abfd88e893ca/bundle.joblib": true
+  },
+  "test_results": [
+    {
+      "scope": "existing local CI and real-model API",
+      "tests": 59,
+      "passed": true,
+      "fresh_environment_installed": false
+    },
+    {
+      "scope": "extracted ZIP contract/API/runtime",
+      "tests": 12,
+      "passed": true,
+      "fresh_environment_installed": false
+    }
+  ],
+  "portability_audit_passed_in_extracted_zip": true,
+  "model_card_pages": 1,
+  "model_card_format": "A4; rendered and visually checked",
+  "full_training_study_rerun": false,
+  "fresh_package_install_tested": false,
+  "local_only_files_untracked": 35,
+  "local_only_files_preserved": true,
+  "cleanup_verified": true,
+  "limits": [
+    "The local and extracted-ZIP tests use the existing pinned WSL environment.",
+    "No live cloud redeployment or fresh training study was run.",
+    "Repository access, final commit/push and LMS submission remain owner actions."
+  ]
+}
