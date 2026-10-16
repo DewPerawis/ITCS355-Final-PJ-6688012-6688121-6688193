@@ -33,7 +33,7 @@ python -m uvicorn service.app:app --host 127.0.0.1 --port 8000
 
 Open http://127.0.0.1:8000/docs. GET /ready should return 200. Use profiles from reports/golden-profiles.json for POST /predict. Inputs contain exactly 24 named numeric fields in [0,5], with 1-100 profiles per request. Stop the server with Ctrl+C.
 
-The presentation notebook also supports MODE = "local". Run setup A/B, then C-F. Use J to stop its local server. Preserve the original saved notebook outputs when inspecting them.
+The presentation notebook also supports MODE = "local". Select local mode in cell A before running setup A/B, then C-F. Its earlier cloud default is historical; the endpoint has been retired. Use J to stop its local server. Preserve the original saved notebook outputs when inspecting them.
 
 ## Reproduce training separately
 
@@ -48,6 +48,6 @@ This re-runs model selection and fitting. A new selection report includes timing
 
 ## Repository-only checkout
 
-Git does not include raw data or binary model artifacts. Prefer the accompanying ZIP for the exact artifact. Alternatively download the UCI archive at source_url in reports/data-source.json, place google_review_ratings.csv in data/raw/, and verify its saved SHA-256. Then reproduce training in a separate copy as above. The private DVC remote and cloud registry become unavailable after cleanup.
+Git does not include raw data or binary model artifacts. Prefer the accompanying ZIP for the exact artifact. Alternatively download the UCI archive at source_url in reports/data-source.json, place google_review_ratings.csv in data/raw/, and verify its saved SHA-256. Then reproduce training in a separate copy as above. The private DVC remote and cloud registry are unavailable after verified cleanup.
 
 See DATA_LICENSE.md for dataset attribution. See reports/submission-validation.json for the review actually performed; the commands above also describe steps a new reviewer can run.

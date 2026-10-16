@@ -1,30 +1,27 @@
 # Delivery status
 
-Post-demo cleanup: VERIFIED. See reports/cleanup.json for the verified resource group and timestamp. The inventory and pending-action notes below describe the earlier review.
+Post-demo cleanup: VERIFIED. [reports/cleanup.json](../reports/cleanup.json) records `cleanup_verified: true` for the project resource group. [The final status check](../reports/submission-status.json) also records `false` for group existence and the manually disabled deployment workflow. Live Azure services are retired; review uses local files and saved evidence.
 
-Final review: 16 October 2026. Local CI/API checks passed 59 tests. A separately extracted submission ZIP passed the portability audit and 12 contract/API/runtime tests using the existing pinned WSL environment. No packages were installed, full study rerun, cloud deployment, cleanup, commit or push performed by this review.
+## Five milestones
 
-The repository is private. The read-only Azure check found 13 remaining resources. Cleanup, instructor GitHub access (if using repository links), the final reviewed commit/push and LMS submission still need action. The ZIP can be reviewed locally without Azure or GitHub access.
+| Milestone | Saved status | Evidence |
+|---|---|---|
+| Data, training and registry | Completed runs recorded | [fresh data/model assets](../reports/finish-assets.json), [managed training/registry](../reports/finish-training-registry.json) |
+| Deployed API | Deployment and HTTP checks recorded; service retired after demo | [CI deployment result](../reports/ci-deploy-result.json) |
+| CI/CD | Successful deployment and intentional failure gate recorded; workflow now disabled | [CI evidence](../reports/finish-ci-evidence.json) |
+| Monitoring, failure and recovery | Dashboard, actual alert and recovered staging incident recorded | [monitor](../reports/finish-monitor.json), [alert](../reports/finish-alert.json), [failure](../reports/finish-failure.json), [recovery](../reports/finish-recovery.json) |
+| Delivery evidence | Documents, PDFs, validated local ZIP and cleanup evidence supplied | [validation](../reports/submission-validation.json), [cleanup](../reports/cleanup.json), [checklist](SUBMISSION_CHECKLIST.md) |
 
-See reports/submission-validation.json, submission-preflight.json and billing-submission-check.json. The cost is now 1.44540968 USD over the latest query window, not the earlier tiny demo-period row. It is provisional.
+Local checks passed 59 existing system/API tests. A separately extracted ZIP passed 12 contract/API/runtime tests and the portability audit. The raw-data and canonical-model hashes match the saved manifests. Model card: one A4 page. These checks use the existing pinned WSL environment; a fresh package installation and full study rerun were not part of final review.
 
-Historical evidence check: 2026-10-11T20:48:36.689593+00:00. The following table records that saved run; it is not a live cloud availability check.
+The latest saved cost query reports 1.44540968 USD and 2,707 logged profiles over the same window: 0.53395260 USD per 1,000 profiles. It is provisional, includes idle cloud time, and is not a final invoice. See [COST_REPORT.md](COST_REPORT.md).
 
-| Evidence | Status |
-|---|---|
-| versioned_data_remote | Verified |
-| managed_training_registry | Verified |
-| deployed_inference | Verified |
-| ci_cd_evidence | Verified |
-| dashboard | Verified |
-| actual_alert_event | Verified |
-| failure_and_recovery | Verified |
-| controlled_input_drift_evidence | Verified |
-| cost_documented | Verified |
-| actual_cost_available | Verified |
-| model_card | Verified |
-| portability | Verified |
+## Reading historical reports
 
-Latency and cold start are reported separately. Cleanup must be run and verified after evidence is saved.
+`finish-delivery.json` is the earlier operational check, before cleanup. `submission-preflight.json` records the earlier inventory of 13 resources. Their old cleanup status is retained as history. Use `cleanup.json` for the later verified deletion and `submission-validation.json` for the local review checks.
 
-Do not mark the project complete while required evidence is pending.
+The cloud latency target was missed, cold activation is one observation, and the drift test is offline. The saved reports support completed operations, not current cloud availability.
+
+## Owner submission actions
+
+Instructor access to private repository links and the final LMS upload/status must be confirmed by the owner. After a documentation change, commit/push the reviewed files and rebuild the companion ZIP so it contains the latest documents. These administrative actions are separate from the supplied operational evidence.

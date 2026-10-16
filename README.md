@@ -1,87 +1,141 @@
 # Travel Style Segmentation & Drift Monitoring
 
-ITCS355 project by Perawis Buranasing (6688012), Supitsara Tanasarnsukstid (6688121), and Atichat Kangsamut (6688193).
+**ITCS355 - Machine Learning Operation and Deployment | Final Project**
 
-The service groups 24-category travel-rating profiles with K-Means. It returns a segment, cluster distance, and an uncertainty flag. Segment names are provisional; this is not a personality test.
+An end-to-end MLOps service for grouping travel preferences. It accepts 24 travel-category ratings and returns a K-Means segment, distance from the cluster center, an uncertainty flag, and the model version. The intended user is a travel platform that needs a preference group for personalization. Segment names are provisional; this is not a personality test.
 
-Start with [the final submission guide](docs/FINAL_SUBMISSION.md) for the grading evidence and [the local review guide](docs/LOCAL_REVIEW.md) to run the submitted ZIP without Azure. The repository is private; GitHub links need reviewer access. The ZIP includes the pinned public dataset and canonical model, but no Git history or credentials.
+The project covers data versioning, reproducible training, model registration, a FastAPI service, Azure deployment, CI/CD, monitoring, an actual alert, and a deliberate failure with recovery. The comparison model is a Gaussian Mixture Model (GMM).
 
-Proposal responsibilities: Perawis - data, DVC, preprocessing, training, MLflow and registry; Supitsara - API, Docker, deployment, CI/CD and load testing; Atichat - dashboard, drift, alerts, failure demo, cost and model card. These are the submitted role assignments, not a separate audit of individual contributions.
+## Review this submission
+
+1. Read the [submission checklist](#submission-checklist) below to find each required component.
+2. Open the [presentation PDF](output/presentation/6688012_6688121_6688193_Presentation.pdf) and the [one-page model card](output/pdf/MODEL_CARD.pdf).
+3. Follow the [local review guide](docs/LOCAL_REVIEW.md) to test the API using the companion submission ZIP.
+4. Use the [evidence index](docs/FINAL_SUBMISSION.md) for the rubric mapping and saved cloud results.
+
+**Cloud status:** the project resource group has been deleted and cleanup is verified in [reports/cleanup.json](reports/cleanup.json). The deployment workflow is disabled after the demo; [the final status check](reports/submission-status.json) records both states. The Azure API, private DVC remote, registry and live dashboard are therefore no longer available. Their saved evidence remains in this repository. Local review uses the supplied ZIP and does not need Azure.
+
+The repository was private at the final check. The instructor needs GitHub access to inspect its history and Actions. The companion ZIP includes the source, notebooks, saved reports, public CSV and canonical model so file review does not require GitHub access. Raw data and model binaries are included in the ZIP, not tracked in Git.
+
+## Team
+
+| Student | ID | Proposal responsibilities |
+|---|---|---|
+| Perawis Buranasing | 6688012 | Data, DVC, preprocessing, training, MLflow and model registry |
+| Supitsara Tanasarnsukstid | 6688121 | FastAPI, Docker, Azure deployment, CI/CD and load testing |
+| Atichat Kangsamut | 6688193 | Dashboard, drift checks, alerts, failure demo, cost report and model card |
+
+These are the roles in the submitted proposal. All members were assigned to review the final system and demonstration.
+
+## Submission checklist
+
+Checked items identify supplied implementation and saved evidence. They do not claim a rubric score or that the retired cloud services are still running.
+
+- [x] **Versioned data and code:** Git history, [DVC pointer](data/raw.dvc), [data source and SHA-256](reports/data-source.json), [data audit](reports/data-audit.json), and [fresh DVC pull evidence](reports/finish-assets.json).
+- [x] **Automated reproducible training:** [stage runner](scripts/reproduce.py), [DVC pipeline](dvc.yaml), [study settings](configs/study.json), and [selection report](reports/selection.json).
+- [x] **Registered model with lineage:** [managed training and registry result](reports/finish-training-registry.json), [training proof](reports/azure-training-proof.json), and [bundle manifest](reports/bundle-manifest.json).
+- [x] **Deployed inference:** [API source](service/app.py) and [real HTTP deployment checks](reports/ci-deploy-result.json), including golden predictions, invalid input and a batch of 100.
+- [x] **CI/CD with tests that can fail:** [workflow](.github/workflows/ci.yml) and [verified successful/blocked deployment evidence](reports/finish-ci-evidence.json).
+- [x] **Monitoring dashboard:** [workbook export](reports/dashboard-workbook.json), [chart update evidence](reports/dashboard-chart-update.json), and [saved telemetry](reports/azure-telemetry.json).
+- [x] **At least one working alert:** [actual fired/resolved alert record](reports/finish-alert.json). This proves an Azure Monitor alert event; email notifications were not configured.
+- [x] **Deliberate failure and recovery:** [staging failure record](reports/finish-failure.json), [confirmed recovery](reports/finish-recovery.json), and [API regression tests](tests/test_api.py).
+- [x] **Cost per 1,000 predictions:** [cost report](docs/COST_REPORT.md) and [latest saved billing/count responses](reports/billing-submission-check.json).
+- [x] **One-page model card:** [PDF](output/pdf/MODEL_CARD.pdf) and [Markdown version](docs/MODEL_CARD.md).
+- [x] **Presentation and demonstration materials:** [15-slide PDF](output/presentation/6688012_6688121_6688193_Presentation.pdf), [PPTX](output/presentation/6688012_6688121_6688193_Presentation.pptx), and [demo notebook](output/presentation/LIVE_DEMO.ipynb).
+- [x] **Post-demo cloud cleanup:** [verified resource-group removal](reports/cleanup.json).
+- [x] **Local review copy checked:** [validation report](reports/submission-validation.json) records 59 local system/API tests, 12 tests on an extracted ZIP, and matching data/model hashes.
+
+The course brief separates the 30-mark repository assessment from the 15-mark live demo and defense. The final system is assessed against R1-R5; see the [rubric evidence index](docs/FINAL_SUBMISSION.md#rubric-and-evidence-index).
 
 ## System
 
-Blob/DVC -> Azure ML training and registry -> ACR -> Container Apps -> Azure Monitor.
+```text
+UCI CSV -> Git/DVC -> preprocessing and training -> MLflow / Azure ML registry
+                                                    |
+GitHub Actions tests -> verified model -> Docker / ACR -> Container Apps API
+                                                            |
+                                            Azure Monitor dashboard and alert
+                                                            |
+                                           staging failure -> recovery check
+```
 
-GitHub Actions tests the code, downloads the verified model, builds an immutable image, and deploys only after tests pass. A separate staging app demonstrates a wrong segment mapping and recovery.
+Provider integration is kept in `cloudlayer/`. The bundle contains preprocessing, feature order, clustering model, segment mapping, distance thresholds and version metadata. Startup checks verify the artifact hash, environment and golden predictions before readiness succeeds.
 
-| Part | Saved evidence |
+The deliberate staging failure swaps segment names while the API can still return normal prediction responses. A semantic canary detects the mismatch. The team restored the configuration, confirmed recovery, and retained a regression test for the failure.
+
+## Important paths
+
+All paths below are relative to this repository root.
+
+| Path | Purpose / where to start |
 |---|---|
-| Data and fresh DVC pull | reports/data-audit.json, reports/finish-assets.json |
-| Managed training and registry | reports/finish-training-registry.json |
-| Live API and latest CI image | reports/ci-deploy-result.json |
-| Successful CI and blocked deployment | reports/ci-runs.json, reports/finish-ci-evidence.json |
-| Dashboard, actual alert, failure/recovery | reports/dashboard-workbook.json, reports/finish-monitor.json, reports/finish-alert.json, reports/finish-failure.json |
-| Controlled input drift | reports/input-drift.json |
-| Cost and delivery checks | reports/cost-per-1000.json, docs/DELIVERY_STATUS.md |
-| Model card | docs/MODEL_CARD.md; output/pdf/MODEL_CARD.pdf |
-| Presentation and live demo | output/presentation/6688012_6688121_6688193_Presentation.pptx; docs/PRESENTATION.md |
+| [docs/](docs/) | Review documents. Start with [FINAL_SUBMISSION.md](docs/FINAL_SUBMISSION.md), [LOCAL_REVIEW.md](docs/LOCAL_REVIEW.md), [COST_REPORT.md](docs/COST_REPORT.md) and [MODEL_CARD.md](docs/MODEL_CARD.md). |
+| [reports/](reports/) | Saved JSON/CSV/log evidence. Start with `submission-validation.json`, `finish-ci-evidence.json`, `finish-failure.json`, `billing-submission-check.json` and `cleanup.json`. The evidence index links the exact files. |
+| [src/](src/) | Shared data preparation, model study, bundle export and prediction logic: `data.py`, `train.py`, `bundle.py`. |
+| [service/](service/) | FastAPI routes in `app.py`; artifact, version and golden checks in `runtime.py`. |
+| [tests/](tests/) | Data/model, API contract, semantic regression and provider-operation checks. Local tests mock cloud operations. |
+| [scripts/](scripts/) | Local stage runner, WSL setup, HTTP/load checks and portability audit. Full retraining starts with `reproduce.py all` in a separate copy. |
+| [notebooks/](notebooks/) | Saved workflow from data audit to delivery. See the [notebook index](notebooks/README.md). Read saved outputs first; cloud notebooks are historical after cleanup. |
+| [cloudlayer/](cloudlayer/) | Azure access, Blob transfer, managed training, deployment, CI evidence, monitoring and cleanup operations. These are not needed for local API review. |
+| [tracking/](tracking/) | Local MLflow experiment records and model registration helpers. |
+| [monitoring/](monitoring/) | Controlled input-drift check and monitoring queries. The drift experiment is offline. |
+| [infra/](infra/) | Azure platform and recovery templates. Applying them creates resources; review does not require deployment. |
+| [configs/](configs/) | Data split, study, cloud and cost settings. |
+| [data/raw.dvc](data/raw.dvc) | Version pointer for the raw CSV. The actual `data/raw/google_review_ratings.csv` is included in the companion ZIP. |
+| `models/artifacts/abfd88e893ca/bundle.joblib` | Canonical tested model, included in the ZIP. Its expected hash is in [the manifest](reports/bundle-manifest.json). |
+| [output/presentation/](output/presentation/) | Presentation PDF/PPTX, demo notebook, helper and report-based figures. |
+| [output/pdf/](output/pdf/) | One-page model card and an earlier exported presentation PDF. Use the ID-named presentation above as the final deck. |
+| [proposals/current/](proposals/current/) | Original submitted proposal. Its latency and budget numbers are targets, not measured results. |
+| [requirements-service.lock.txt](requirements-service.lock.txt) | Pinned local API/runtime dependencies; add `httpx==0.28.1` for API tests. Other requirement files support training, notebooks, tracking and cloud work. |
 
-The latest verified CI source commit is `9fea51a`. Both required runs use that commit:
+## Run a local review
+
+Extract the companion ZIP and open its `MLOP-PJ` directory in WSL/Linux. Use **Python 3.13.11**. A new review environment can run:
+
+```bash
+python3 --version
+python3 -m venv .venv-review
+source .venv-review/bin/activate
+python -m pip install -r requirements-service.lock.txt httpx==0.28.1
+python scripts/portability_audit.py
+python -m unittest tests.test_contract_ci tests.test_api tests.test_runtime
+python -m uvicorn service.app:app --host 127.0.0.1 --port 8000
+```
+
+Check the Python version before continuing. Open <http://127.0.0.1:8000/docs> after starting the server. Stop it with Ctrl+C. The [local review guide](docs/LOCAL_REVIEW.md) includes hash checks, request examples and the separate training procedure.
+
+| API route | Purpose |
+|---|---|
+| `GET /health` | Process liveness |
+| `GET /ready` | Confirms a checked model is loaded |
+| `POST /predict` | Scores 1-100 profiles, each with exactly 24 named finite numeric ratings in [0,5] |
+| `GET /canary` | Checks semantic mapping against golden profiles |
+
+Use the `profiles` array in [reports/golden-profiles.json](reports/golden-profiles.json) as example input. Invalid requests return 422. Valid uncertain profiles return 200 with a null segment. Distance is not a probability.
+
+For a Git-only checkout, raw data and the binary model are absent. Obtain the exact files from the attached ZIP or follow the public UCI download and separate reproduction steps in [LOCAL_REVIEW.md](docs/LOCAL_REVIEW.md#repository-only-checkout). The retired private DVC remote cannot be pulled after cleanup.
+
+## Results and limitations
+
+| Measure | Saved result / interpretation |
+|---|---|
+| Data | 5,456 raw rows; 5,454 accepted; two quarantined. Identical profiles remain in one split: 3,817 train, 817 validation, 820 test. IDs are excluded from features. |
+| Clustering | K-Means k=5: validation silhouette 0.1448, test silhouette 0.1445. GMM validation silhouette 0.0957. These are clustering metrics, not prediction accuracy. |
+| Warm latency | Local p95 274.54 ms; initial cloud p95 813.77 ms. A separate pooled-client check measured 624.83 ms over 200 requests at concurrency 10. Client methods differ; cloud results include network time and miss the team's 300 ms target. |
+| Cold activation | One readiness request after verified zero replicas: 3,819.60 ms, including network and activation. This is not a cold-start percentile. |
+| Drift | Offline controlled input shift. Input drift alone does not prove concept drift or quality loss. |
+| Cost | Planning estimate: 88.89 THB, or 8.89 THB per 1,000 assumed predictions. Latest saved reported cost: 1.44540968 USD / 2,707 profiles * 1,000 = 0.53395260 USD per 1,000 profiles. Billing is provisional and includes idle cloud time. |
+| Validation scope | Existing pinned WSL environment used; no fresh package installation or full study rerun was performed during final review. |
+
+Measurement files: [local latency](reports/serving-recheck/local-load.json), [initial cloud latency](reports/azure-load.json), [pooled cloud check](reports/pooled-load.json), [cold activation](reports/finish-cold.json), [drift](reports/input-drift.json), and [cost report](docs/COST_REPORT.md).
+
+## CI and delivery evidence
+
+The verified CI source is `9fea51ae4e81251ac358a2c62139df591688275d`:
 
 - [Successful tests and deployment](https://github.com/DewPerawis/MLOP-PJ/actions/runs/38173375457)
-- [Intentional test failure; deployment skipped](https://github.com/DewPerawis/MLOP-PJ/actions/runs/38173380800)
+- [Intentional failed test; deployment skipped](https://github.com/DewPerawis/MLOP-PJ/actions/runs/38173380800)
 
-Documentation and evidence updates can reuse these runs while CI inputs stay unchanged. Changed source needs new runs. The check in `cloudlayer/finish_ci.py` verifies this before accepting evidence.
+The second run is expected evidence of the deployment gate. It is separate from the staging semantic-failure demo. Later documentation/report changes retain this evidence only while the CI inputs match the tested source. No post-cleanup cloud deployment is needed for documentation updates.
 
-## Results and limits
-
-UCI Travel Review Ratings: 5,456 raw rows, 5,454 accepted, two quarantined. Identical profiles stay in one split: 3,817 train, 817 validation, 820 test. User IDs are excluded. Data source and license are in reports/data-source.json.
-
-K-Means k=5 had validation silhouette 0.1448 and test silhouette 0.1445. GMM validation silhouette was 0.0957. These are clustering metrics, not prediction accuracy.
-
-Local warm p95 was 274.54 ms. Azure warm p95 was 813.77 ms from WSL, including network time; the 300 ms cloud target was not met. The first readiness request after verified zero replicas took 3,819.60 ms in one WSL HTTPS measurement. This includes network time and scale activation; it is not a cold-start percentile. See reports/finish-cold.json. The drift check is an offline controlled shift, not live feature-drift monitoring.
-
-A separate connection-pool check measured cloud p95 624.83 ms with zero errors across 200 requests at concurrency 10. It uses HTTPX and ten concurrent warm-up requests. This differs from the first client's method and still misses 300 ms. Reproduce it with `python -m scripts.check_pooled_load` while the API is available; it makes 210 requests and requires httpx==0.28.1. Results are in reports/pooled-load.json.
-
-The short-demo estimate is 88.89 THB, or 8.89 THB per 1,000 predictions for the assumed 10,000 predictions. Billing now reports a provisional cost row; it may not include all usage yet. Read docs/COST_REPORT.md for the separate calculation and limits.
-
-The read-only check on 16 October reported 1.44540968 USD for the project group and 2,707 logged valid profiles over the same window: 0.53395260 USD per 1,000 profiles. This includes idle cloud time and is still provisional. At that check, 13 resources remained. See reports/billing-submission-check.json and reports/submission-preflight.json; cleanup is pending until separately verified.
-
-## Run locally
-
-Use WSL and Python 3.13.11. Existing users select `~/.venvs/mlop-pj/bin/python` in VS Code. For a clean review environment, follow docs/LOCAL_REVIEW.md. The original notebook setup below installs packages and rewrites a notebook lock file; it is not needed for the ZIP review.
-
-For a fresh checkout, first check that `python3 --version` is 3.13.11, then run:
-
-```bash
-bash scripts/setup_wsl.sh
-source ~/.venvs/mlop-pj/bin/activate
-python -m pip install -r requirements-cloud.txt
-```
-
-Raw data and model binaries are kept out of Git. Azure Blob is private; a reviewer needs scoped access or an agreed local copy. With Azure access and the cloud packages installed:
-
-```bash
-az login
-python -m dvc remote add --local --force azure azure://mlop-data/dvc
-python -m dvc remote modify --local azure account_name stmloppj492ea24d
-python -m dvc pull data/raw.dvc -r azure
-```
-
-In a separate fresh checkout, reproduce the local stages with `python scripts/reproduce.py all`. This runs training and writes reports and model files. It does not deploy cloud resources. Cloud notebooks 18-22 reuse the saved model and shared scripts. Read docs/FINAL_STEPS.md before running final checks.
-
-After cloud cleanup, the private DVC remote will be gone. Download the public UCI ZIP from `source_url` in reports/data-source.json, extract google_review_ratings.csv into data/raw/, and check it with `python scripts/reproduce.py audit` before reproducing. The audit rejects a different raw SHA-256. Record which data-access option was tested for submission.
-
-For the serving environment, install requirements-service.lock.txt and httpx==0.28.1. Run the cloud-free synthetic check with `python -m unittest tests.test_contract_ci`. Tests that use the saved real model need the artifact first; CI fetches it with `python -m cloudlayer.ci_fetch` after Azure login and project variable setup.
-
-The API accepts exactly 24 finite ratings in [0,5], with 1-100 profiles per batch. Use the feature names in reports/bundle-manifest.json. Invalid input returns 422. An uncertain profile returns 200 with a null segment.
-
-## Delivery
-
-Keep real dashboard and alert screenshots, both CI links, model lineage, load/cold reports, cost calculation, and the model card. Prepare the 8-minute demo and 5-minute Q&A described in the course brief. Check the exported model card fits one page.
-
-The 15-slide deck uses the supplied example template and saved results. Read docs/PRESENTATION.md for timing and the live API demo. The presentation PDF is in output/pdf/MLOP-PJ_Presentation.pdf; the exported model card is one A4 page.
-
-Read docs/SUBMISSION_CHECKLIST.md for the course requirements, our own targets, and optional screenshots. The current reported cost is provisional; cloud cleanup is still required after the demo. Saved provider evidence describes the completed runs; it does not imply that cloud services will stay online after submission.
-
-Save evidence before cleanup. The project cleanup reminder is 13 October 2026 at 21:15 Bangkok time; it does not delete anything automatically. Deleting the project group removes the API, cloud data, registry, training, and monitoring. Run the cleanup command in docs/FINAL_STEPS.md only when these resources are no longer needed.
+See [delivery status](docs/DELIVERY_STATUS.md) for current saved checks and [dataset attribution](docs/DATA_LICENSE.md) for the UCI source and license. The ZIP includes `SUBMISSION_MANIFEST.json` with its base commit, tested CI commit and per-file SHA-256 values. It is a file-review snapshot; Git history and Actions remain in this repository.

@@ -1,0 +1,10 @@
+{
+  "checked_at": "2026-10-16T13:16:47.060997+00:00",
+  "repository": "https://github.com/DewPerawis/MLOP-PJ",
+  "visibility": "private",
+  "description": "ITCS355 MLOps project: travel preference segmentation with reproducible training, Azure deployment, CI/CD, monitoring, and tested failure recovery.",
+  "workflow_state": "disabled_manually",
+  "resource_group_exists": false,
+  "cleanup_verified": true,
+  "scope": "Repository About description updated as requested; workflow and Azure status queried without changes"
+}

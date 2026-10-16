@@ -1,5 +1,7 @@
 # GitHub setup
 
+**Historical operations guide.** The demo has finished, cloud cleanup is verified, and the deployment workflow is disabled. The steps below describe the original setup; do not rerun them for final review. Use [LOCAL_REVIEW.md](LOCAL_REVIEW.md) and [FINAL_SUBMISSION.md](FINAL_SUBMISSION.md).
+
 Run Group 4 in Notebook 21 first. The Azure identity uses OIDC, so there is no password to save in GitHub.
 
 After ci-setup, run the new GitHub settings cell in Notebook 21. It creates the staging environment, limits deployment to main, and sets the five repository variables. It does not commit or push. If that cell passes, skip manual steps 1-2 and continue at step 3.

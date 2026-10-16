@@ -1,5 +1,7 @@
 # Presentation
 
+**Post-demo status:** cloud resources have been removed. Use local mode for review; saved cloud results remain historical evidence.
+
 Open `output/presentation/6688012_6688121_6688193_Presentation.pptx`. It has 15 slides, short speaker notes, and an 8-minute plan. Keep 5 more minutes for questions. The PDF is in `output/presentation/6688012_6688121_6688193_Presentation.pdf`.
 
 | Slides | Topic | Time |
@@ -17,12 +19,12 @@ Open `output/presentation/LIVE_DEMO.ipynb` in VS Code WSL with the MLOP-PJ kerne
 
 After reopening the laptop or restarting the kernel:
 
-1. Run A with `MODE = "cloud"`, then B. Wait for READY FOR DEMO.
+1. Run A with `MODE = "local"`, then B. Wait for READY FOR DEMO.
 2. On stage, run C (input), D (prediction), E (expected 422), and F (batch 100). The output cards call the real API and show the mode.
 3. Use G for saved CI links and H for the saved staging incident. I accepts modified input during Q&A.
 4. Use J to stop the local demo process. Cloud cleanup is a separate final step.
 
-Cloud mode needs internet and existing Azure resources, but no local server, Docker, Azure login or retraining. Local fallback is explicit: change MODE to local, then rerun A/B. It needs the existing bundle and matching API packages; B starts the local server. Keep the kernel open while presenting.
+The original cloud mode needed internet and existing Azure resources, but no local server, Docker, Azure login or retraining. Local fallback is explicit: change MODE to local, then rerun A/B. It needs the existing bundle and matching API packages; B starts the local server. Keep the kernel open while presenting.
 
 Do not run all cells on stage: that includes preparation, optional inputs and the stop cell. Collapse code and read the result cards. Local results and saved evidence must be labelled honestly.
 

@@ -1,42 +1,37 @@
-# Notebooks
+# Notebook index
 
-Use VS Code in WSL and select **MLOP-PJ (WSL)**.
+These notebooks preserve the development workflow and its saved outputs. For final review, start with [the project README](../README.md), [the evidence index](../docs/FINAL_SUBMISSION.md) and [the local review guide](../docs/LOCAL_REVIEW.md).
 
-- `00_project_start.ipynb`: check the kernel and package versions.
-- `01_data_audit.ipynb`: download the public UCI file, save its hash, and check invalid rows, zeros, and duplicates.
-- `02_prepare_data.ipynb`: quarantine bad rows and make a repeatable split by identical profile groups.
-- `03_baseline_study.ipynb`: compare zero policies and K-Means settings on validation; fit one GMM comparison.
-- `04_save_model.ipynb`: save the selected pipeline, check reload, and report held-out test metrics.
-- `05_tracking_registry.ipynb`: record the completed study, version raw data with DVC, and register the saved bundle in local MLflow.
-- `06_local_api.ipynb`: check the API contract and readiness with an in-process client.
-- `07_cloud_readiness.ipynb`: check Docker and Azure CLI/login state without creating resources.
-- `08_docker_http.ipynb`: build the saved model into Docker, check real HTTP, and measure local warm latency.
-- `09_http_recheck.ipynb`: reuse the same image and remeasure after fixing repeated client setup.
-- `10_serving_recheck.ipynb`: build the optimized serving source and recheck correctness and local latency.
-- `11_azure_preflight.ipynb`: read service providers, candidate-region support, VM quota, and CLI extensions.
-- `12_azure_tools.ipynb`: install the missing Container Apps CLI extension and register Microsoft.App.
-- `13_cost_plan.ipynb`: read retail prices and estimate a short demo before credits.
-- `14_access_quota.ipynb`: read control-plane permissions and Azure ML/Container Apps quotas.
-- `15_platform_preview.ipynb`: refresh prices/quota for centralindia, check the region policy, and preview without applying. Rerun both code cells after the region fix.
-- `16_platform_deploy.ipynb`: deploy or verify the existing platform after the duplicate-role failure.
-- `17_blob_upload.ipynb`: grant user Blob access, upload pinned data/model files, and verify downloaded hashes.
+The Azure resource group has been deleted and the deployment workflow disabled after the demo. Cloud notebook cells may create resources, make API requests or require retired storage/models. Read their saved results; do not run all notebooks to inspect the submission.
 
-00-10 have saved results. Notebook 10 passed the local p95 target at 274.54 ms with no errors. The new report from 11 passed; save the notebook to replace its old displayed error. No retraining or rerun of 10 is needed. Local results are not Azure deployment results.
+Use VS Code in WSL and the project Python 3.13.11 environment when running local checks. Preserve original notebook outputs and metadata.
 
-Keep the same WSL kernel. The cost estimate uses an assumed exchange rate and reserve; it is not a bill or spending cap. Earlier read-only checks created no paid resources; 16 has now created services and charges can apply.
+| Notebook | Purpose |
+|---|---|
+| [00_project_start.ipynb](00_project_start.ipynb) | Kernel and package checks |
+| [01_data_audit.ipynb](01_data_audit.ipynb) | Public data source, pinned hash, malformed rows, zeros and duplicates |
+| [02_prepare_data.ipynb](02_prepare_data.ipynb) | Quarantine and repeatable split with identical profiles kept together |
+| [03_baseline_study.ipynb](03_baseline_study.ipynb) | Zero policies, K-Means settings, stability and GMM comparison |
+| [04_save_model.ipynb](04_save_model.ipynb) | Bundle export, reload checks and held-out test metrics |
+| [05_tracking_registry.ipynb](05_tracking_registry.ipynb) | Local MLflow study/registry and DVC versioning |
+| [06_local_api.ipynb](06_local_api.ipynb) | In-process API contract and readiness |
+| [07_cloud_readiness.ipynb](07_cloud_readiness.ipynb) | Local Docker/Azure tool and login checks |
+| [08_docker_http.ipynb](08_docker_http.ipynb) | Initial Docker build, real HTTP smoke and load measurements |
+| [09_http_recheck.ipynb](09_http_recheck.ipynb) | Remeasurement after changing HTTP client reuse |
+| [10_serving_recheck.ipynb](10_serving_recheck.ipynb) | Serving optimization and local p95 recheck |
+| [11_azure_preflight.ipynb](11_azure_preflight.ipynb) | Providers, regions, quotas and CLI extensions |
+| [12_azure_tools.ipynb](12_azure_tools.ipynb) | Azure tooling and provider registration |
+| [13_cost_plan.ipynb](13_cost_plan.ipynb) | Retail-price planning estimate |
+| [14_access_quota.ipynb](14_access_quota.ipynb) | Permissions and service quota checks |
+| [15_platform_preview.ipynb](15_platform_preview.ipynb) | Region policy and platform preview |
+| [16_platform_deploy.ipynb](16_platform_deploy.ipynb) | Platform deployment and verification |
+| [17_blob_upload.ipynb](17_blob_upload.ipynb) | Blob upload, access and round-trip hash checks |
+| [18_live_api.ipynb](18_live_api.ipynb) | Deployed API and HTTP checks |
+| [19_training_registry.ipynb](19_training_registry.ipynb) | Managed training and model registry |
+| [20_monitoring_recovery.ipynb](20_monitoring_recovery.ipynb) | Dashboard, deliberate failure, alert and recovery |
+| [21_cicd.ipynb](21_cicd.ipynb) | GitHub OIDC, workflow configuration and CI evidence |
+| [22_delivery.ipynb](22_delivery.ipynb) | Cold activation, billing and original delivery evidence |
 
-The earlier 12 timeout is fixed. The saved status has no errors and finds containerapp 1.3.0b5. Do not reinstall the extension. A pending provider is not an error.
+The separate [presentation demo](../output/presentation/LIVE_DEMO.ipynb) supports local mode using the supplied bundle. Follow [LOCAL_REVIEW.md](../docs/LOCAL_REVIEW.md); cloud mode no longer applies after cleanup.
 
-The saved user status from 12 has no errors and 13-14 have completed. Run 15 next. If its validation and preview pass, review the resource list before running 16. Stop on errors, Modify, or Delete changes. 16 creates services and can incur charges; it does not deploy the prediction API yet. Region availability and quota are not a guarantee of successful deployment.
-
-Run one part, review the result, then continue. Keep saved outputs. Write short, simple English and useful comments.
-
-Use notebooks for exploration. Move agreed code into `src/` so tests and pipelines share it.
-
-Lab 5 Part A overlaps with the project's pipeline, identity, and cost work. The project also uses ideas from Labs 1-4. Lab 5 Part B does not make an LLM or a second provider a project requirement. See the course brief in `../../project/project-brief.md`.
-
-Current: the saved 16 verification passed. Run all three code cells in 17 in order. Stop if Blob access fails.
-
-## Continue after 17
-
-Use `notebooks/18_live_api.ipynb` to start. Continue with 19_training_registry, 20_monitoring_recovery, 21_cicd, and 22_delivery. The five notebooks cover the API, managed training, monitoring and recovery, CI/CD, and delivery checks in separate main parts. Read `docs/RUN_FINISH.md` and `docs/GITHUB_SETUP.md`. Saved local results and the completed Blob upload stay unchanged. Cloud runs, GitHub runs, and billing evidence still need real results.
+Earlier latency measurements and errors are retained to explain changes. Local latency, cloud client latency and server telemetry have different measurement scopes. The final reports and guides identify the current evidence instead of treating every historical output as the latest result.

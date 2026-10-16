@@ -1,29 +1,28 @@
 # Submission checklist
 
-The capstone brief requires versioned data/code, reproducible training, a registered model with lineage, deployed inference, CI/CD with tests that can fail, a dashboard, a working alert, cost per 1,000 predictions, a one-page model card, and a deliberate failure demo.
+This checklist maps the capstone requirements to supplied files. Checked items refer to implementation and saved evidence, not a guaranteed grade or a currently running cloud service.
 
-| Item | Evidence |
-|---|---|
-| Data/code and fresh DVC pull | reports/data-audit.json; finish-assets.json |
-| Managed training and registry | reports/finish-training-registry.json |
-| Deployed inference | reports/ci-deploy-result.json |
-| Normal CI and deliberate failure gate | reports/finish-ci-evidence.json; ci-runs.json |
-| Dashboard and actual alert | reports/dashboard-workbook.json; finish-alert.json |
-| Failure and confirmed recovery | reports/finish-failure.json |
-| Cost per 1,000 predictions | docs/COST_REPORT.md; reports/cost-per-1000.json |
-| One-page model card | output/pdf/MODEL_CARD.pdf |
-| Presentation and live demo | output/presentation/6688012_6688121_6688193_Presentation.pptx; docs/PRESENTATION.md |
+- [x] Versioned code: repository Git history and the source commit in [CI evidence](../reports/finish-ci-evidence.json).
+- [x] Versioned data: [DVC pointer](../data/raw.dvc), [source/license/hash](../reports/data-source.json), [audit](../reports/data-audit.json), and [fresh pull](../reports/finish-assets.json).
+- [x] Automated reproducible training: [stage runner](../scripts/reproduce.py), [pipeline](../dvc.yaml), [selection](../reports/selection.json), and [training proof](../reports/azure-training-proof.json).
+- [x] Registered model and lineage: [registry result](../reports/finish-training-registry.json) and [bundle manifest](../reports/bundle-manifest.json).
+- [x] Deployed inference: [real HTTP and image verification](../reports/ci-deploy-result.json).
+- [x] CI/CD with a failing gate: [workflow](../.github/workflows/ci.yml), [successful run](https://github.com/DewPerawis/MLOP-PJ/actions/runs/38173375457), and [deliberate test failure with skipped deploy](https://github.com/DewPerawis/MLOP-PJ/actions/runs/38173380800).
+- [x] Dashboard: [workbook](../reports/dashboard-workbook.json), [chart evidence](../reports/dashboard-chart-update.json), and [telemetry](../reports/azure-telemetry.json).
+- [x] Working alert: [actual fired/resolved alert](../reports/finish-alert.json). Email notifications were not configured.
+- [x] Deliberate failure and recovery: [failure](../reports/finish-failure.json), [recovery](../reports/finish-recovery.json), and [regression tests](../tests/test_api.py).
+- [x] Cost per 1,000 predictions: [cost report](COST_REPORT.md) and [latest saved billing/count evidence](../reports/billing-submission-check.json).
+- [x] One-page model card: [A4 PDF](../output/pdf/MODEL_CARD.pdf).
+- [x] Presentation materials: [PDF](../output/presentation/6688012_6688121_6688193_Presentation.pdf), [PPTX](../output/presentation/6688012_6688121_6688193_Presentation.pptx), and [demo notebook](../output/presentation/LIVE_DEMO.ipynb).
+- [x] Cleanup after the demo: [resource-group deletion verified](../reports/cleanup.json).
+- [x] Local review instructions and tested files: [review guide](LOCAL_REVIEW.md), [validation report](../reports/submission-validation.json), and the accompanying ZIP with pinned data/model files.
 
-The 300 ms warm p95 target is our proposal target. It is not a fixed number in the capstone brief. Our cloud result misses it; report the result and explain the measurement scope.
+## Scope and interpretation
 
-The brief requires a working dashboard and alert, but does not specify Portal screenshots as the only acceptable proof. Saved provider responses, logs, and a live demo support these claims. Screenshots are useful extra evidence.
+The cloud warm p95 target of 300 ms belongs to the proposal; the saved cloud results miss it. The cold result is one observation. The drift experiment is offline. Costs remain provisional; the earlier cost-per-1000.json is a historical demo-period result, not the latest reported total.
 
-The brief requires documented cost per 1,000 predictions. Lab 5 separately requires actual cost from billing. We now have a reported cost row, but billing can still be incomplete. Keep the estimate and provisional reported cost separate; do not call the reported row a final invoice.
+The brief requires a dashboard and working alert, but does not prescribe Portal screenshots as the only proof. Saved provider responses, logs and the completed demonstration support the operational claims. Cloud resources have now been removed; use the local review guide instead of the old endpoint.
 
-Final CI evidence must cover the submitted source. A later commit that changes only documentation/evidence can reuse the tested commit if all CI inputs are unchanged. Changed or uncommitted CI inputs require new runs.
+The repository criteria are R1-R5 at six marks each (30 marks). Demo and defense are separate (15 marks). Source: the instructor's capstone brief and course specification reviewed for this project.
 
-Rehearse the 8-minute presentation and allow 5 minutes for questions. Save evidence before cleanup, then remove the project cloud resources after the live demo and verify removal. Cleanup is still required; the reminder does not delete anything.
-
-Sources checked: the instructor's Capstone Project Brief, the course specification's Rubric Scoring sheet, and Lab 5 Task 5. The rubric has five criteria worth six marks each. This checklist does not guarantee a grade.
-
-For the 16 October review, see FINAL_SUBMISSION.md. The main repository is private, cleanup is pending, and the final upload must include an accessible review copy. The latest cost query is in reports/billing-submission-check.json. Keep the earlier demo-period cost as historical evidence.
+The owner must still ensure the instructor can access the private repository if its links are used, upload the final files, and verify the LMS submission status. These administrative steps are not claimed complete by this checklist.

@@ -1,5 +1,7 @@
 # Finish the project
 
+**Historical operations guide.** The demo has finished, cloud cleanup is verified, and the deployment workflow is disabled. The steps below describe the original setup; do not rerun them for final review. Use [LOCAL_REVIEW.md](LOCAL_REVIEW.md) and [FINAL_SUBMISSION.md](FINAL_SUBMISSION.md).
+
 Use `notebooks/18_live_api.ipynb` in VS Code opened through WSL. Select Python (mlop-pj). Continue with 18_live_api, 19_training_registry, 20_monitoring_recovery, 21_cicd, and 22_delivery. Each file covers one main part. Notebook 17 is complete; no rerun is needed for its upload.
 
 | Group | What to run | Passing evidence |
